@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Trang web chính thức của MC Hoàng Phúc - chuyên nghiệp, trẻ trung, tự tin." />
+  <meta name="author" content="xAI Team" />
+  <title>MC Hoàng Phúc</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function() {
+    emailjs.init({
+      publicKey: "JZTaxhQzbVfL6U83X",
+    });
+  })();
+</script>
+  <style>
+    /* ==========================================================================
+       Biến toàn cục
+       ========================================================================== */
+    :root {
+      --color-primary: #00ffd1; /* Xanh ngọc sáng */
+      --color-dark: #1e1e1e; /* Xám đậm gần đen */
+      --color-light: #ffffff; /* Trắng */
+      --color-muted: #a0a0a0; /* Xám nhạt */
+      --color-dark-hover: #2a2a2a; /* Xám đậm hơn khi hover */
+      --spacing-unit: 1rem; /* Đơn vị khoảng cách */
+      --radius-sm: 6px; /* Bo góc nhỏ */
+      --radius-md: 12px; /* Bo góc trung bình */
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15); /* Bóng nhỏ */
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.2); /* Bóng trung bình */
+      --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.25); /* Bóng lớn */
+      --font-main: 'Inter', sans-serif; /* Font chính */
+      --font-accent: 'EB Garamond', serif; /* Font tiêu đề */
+      --transition-fast: 0.2s ease; /* Hiệu ứng nhanh */
+      --transition-slow: 0.4s ease; /* Hiệu ứng chậm */
+    }
+
+    /* ==========================================================================
+       Reset và base styles
+       ========================================================================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--color-dark);
+      color: var(--color-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding-top: 60px; /* Chừa chỗ cho header cố định */
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       Utilities
+       ========================================================================== */
+    .container {
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: var(--spacing-unit);
+      padding-right: var(--spacing-unit);
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* ==========================================================================
+       Header Section (Giới thiệu bản thân) - Cố định
+       ========================================================================== */
+    .header {
+      background-color: var(--color-dark);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: var(--spacing-unit) 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header__container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header__logo {
+      font-family: var(--font-accent);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-light);
+      text-transform: uppercase;
+    }
+
+    .header__nav {
+      display: flex;
+      gap: calc(var(--spacing-unit) * 1);
+    }
+
+    .header__nav-link {
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--color-light);
+      text-transform: uppercase;
+      padding: calc(var(--spacing-unit) * 0.5);
+      transition: color var(--transition-fast);
+    }
+
+    .header__nav-link--active::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background-color: var(--color-primary);
+      bottom: 0;
+      left: 0;
+    }
+
+    .header__nav-link:hover {
+      color: var(--color-primary);
+    }
+
+    /* ==========================================================================
+       Intro Section (Giới thiệu bản thân)
+       ========================================================================== */
+    .intro {
+      min-height: 100vh;
+      background-color: var(--color-dark);
+      display: flex;
+      align-items: center;
+      padding-top: calc(var(--spacing-unit) * 4);
+      padding-bottom: calc(var(--spacing-unit) * 4);
+    }
+
+    .intro__container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: calc(var(--spacing-unit) * 2);
+      align-items: center;
+    }
+
+    .intro__image {
+      width: 100%;
+    }
+
+    .intro__image img {
+      width: 100%;
+      max-height: 600px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition-slow);
+    }
+
+    .intro__image img:hover {
+      transform: scale(1.02);
+    }
+
+    .intro__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .intro__title {
+      font-family: var(--font-accent);
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: var(--color-light);
+      text-transform: uppercase;
+      line-height: 1.2;
+      margin-bottom: var(--spacing-unit);
+    }
+
+    .intro__title span {
+      display: block;
+    }
+
+    .intro__roles {
+      margin-top: var(--spacing-unit);
+      margin-bottom: calc(var(--spacing-unit) * 1.5);
+    }
+
+    .intro__roles p {
+      font-family: var(--font-main);
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--color-primary);
+      text-transform: uppercase;
+      margin-bottom: calc(var(--spacing-unit) * 0.5);
+    }
+
+    .intro__quote {
+      font-family: var(--font-accent);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--color-muted);
+      max-width: 400px;
+    }
+
+    /* ==========================================================================
+       Skills Section (Kỹ năng) - Cập nhật mới
+       ========================================================================== */
+    .skills {
+      padding-top: calc(var(--spacing-unit) * 4);
+      padding-bottom: calc(var(--spacing-unit) * 4);
+      background-color: var(--color-dark);
+    }
+
+    .skills__container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: calc(var(--spacing-unit) * 2);
+    }
+
+    .skills__content {
+      padding-right: calc(var(--spacing-unit) * 2);
+    }
+
+    .skills__title {
+      font-family: var(--font-accent);
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: var(--color-light);
+      text-transform: uppercase;
+      margin-bottom: var(--spacing-unit);
+      text-align: center;
+    }
+
+    .skills__subtitle {
+      font-family: var(--font-main);
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--color-primary);
+      margin-bottom: calc(var(--spacing-unit) * 2);
+      text-align: center;
+    }
+
+    .skills__image {
+      width: 100%;
+    }
+
+    .skills__image img {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition-slow);
+    }
+
+    .skills__image img:hover {
+      transform: scale(1.02);
+    }
+
+    .skills__grid {
+      display: flex;
+      justify-content: center;
+      gap: calc(var(--spacing-unit) * 1.5);
+      margin-top: calc(var(--spacing-unit) * 2);
+    }
+
+    .skills__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 220px; /* Chiều rộng cố định để đồng đều */
+      padding: calc(var(--spacing-unit) * 1);
+      background-color: var(--color-dark);
+      border-radius: var(--radius-sm);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .skills__item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .skills__item-icon {
+      width: 40px;
+      height: 40px;
+      background-color: var(--color-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: calc(var(--spacing-unit) * 0.75);
+    }
+
+    .skills__item-icon i {
+      font-size: 1.2rem;
+      color: var(--color-dark);
+    }
+
+    .skills__item-title {
+      font-family: var(--font-main);
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--color-light);
+      text-transform: uppercase;
+      margin-bottom: calc(var(--spacing-unit) * 0.5);
+      text-align: center;
+    }
+
+    .skills__item-description {
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--color-muted);
+      text-align: center;
+      margin-bottom: calc(var(--spacing-unit) * 0.75);
+      line-height: 1.4;
+    }
+
+    .skills__item-button {
+      font-family: var(--font-main);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--color-primary);
+      background-color: transparent;
+      border: 1px solid var(--color-primary);
+      padding: calc(var(--spacing-unit) * 0.4) calc(var(--spacing-unit) * 0.8);
+      border-radius: var(--radius-sm);
+      transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .skills__item-button:hover {
+      background-color: var(--color-primary);
+      color: var(--color-dark);
+    }
+
+    /* ==========================================================================
+       Contact Section (Liên hệ)
+       ========================================================================== */
+    .contact {
+      padding-top: calc(var(--spacing-unit) * 4);
+      padding-bottom: calc(var(--spacing-unit) * 4);
+      background-color: var(--color-dark);
+      border-top: 1px solid var(--color-muted);
+    }
+
+    .contact__container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: calc(var(--spacing-unit) * 2);
+    }
+
+    .contact__form {
+      padding: calc(var(--spacing-unit) * 1.5);
+      background-color: var(--color-dark);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .contact__form-title {
+      font-family: var(--font-accent);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--color-light);
+      text-transform: uppercase;
+      margin-bottom: calc(var(--spacing-unit) * 1.5);
+      text-align: center;
+    }
+
+    .contact__form-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing-unit) * 1);
+    }
+
+    .contact__form-input,
+    .contact__form-textarea {
+      padding: calc(var(--spacing-unit) * 0.75);
+      background-color: var(--color-dark);
+      color: var(--color-light);
+      border: 1px solid var(--color-primary);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-main);
+      font-size: 1rem;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .contact__form-input:focus,
+    .contact__form-textarea:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 4px var(--color-primary);
+      outline: none;
+    }
+
+    .contact__form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .contact__form-button {
+      padding: calc(var(--spacing-unit) * 0.75);
+      background-color: var(--color-primary);
+      color: var(--color-dark);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-main);
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background-color var(--transition-fast);
+    }
+
+    .contact__form-button:hover {
+      background-color: #00e0bb;
+    }
+
+    .contact__info {
+      padding: calc(var(--spacing-unit) * 1.5);
+      background-color: var(--color-dark);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .contact__info-title {
+      font-family: var(--font-accent);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-light);
+      margin-bottom: var(--spacing-unit);
+      text-align: center;
+    }
+
+    .contact__info-item {
+      font-family: var(--font-main);
+      font-size: 1rem;
+      color: var(--color-muted);
+      margin-bottom: calc(var(--spacing-unit) * 0.5);
+      text-align: center;
+    }
+
+    .contact__info-highlight {
+      color: var(--color-primary);
+    }
+
+    /* ==========================================================================
+       Footer - Cố định
+       ========================================================================== */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: var(--color-dark);
+      padding: calc(var(--spacing-unit) * 0.5) 0;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+    }
+
+    .footer__content {
+      text-align: center;
+      font-family: var(--font-main);
+      font-size: 0.85rem;
+      color: var(--color-muted);
+    }
+
+    /* ==========================================================================
+       Responsive Design
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .intro__title {
+        font-size: 3rem;
+      }
+
+      .skills__title {
+        font-size: 2.2rem;
+      }
+
+      .contact__form-title {
+        font-size: 1.8rem;
+      }
+
+      .skills__item {
+        width: 200px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header__container {
+        flex-direction: column;
+        gap: calc(var(--spacing-unit) * 0.5);
+      }
+
+      .header__logo {
+        font-size: 1.2rem;
+      }
+
+      .header__nav {
+        gap: calc(var(--spacing-unit) * 0.5);
+      }
+
+      .header__nav-link {
+        font-size: 0.8rem;
+        padding: calc(var(--spacing-unit) * 0.3);
+      }
+
+      .intro__container,
+      .skills__container,
+      .contact__container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .intro__image img {
+        max-height: 400px;
+      }
+
+      .skills__content {
+        padding-right: 0;
+      }
+
+      .skills__grid {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .skills__item {
+        width: 45%;
+        margin-bottom: calc(var(--spacing-unit) * 1);
+      }
+
+      .contact__form,
+      .contact__info {
+        padding: var(--spacing-unit);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header__logo {
+        font-size: 1rem;
+      }
+
+      .header__nav-link {
+        font-size: 0.7rem;
+        padding: calc(var(--spacing-unit) * 0.2);
+      }
+
+      .intro__title {
+        font-size: 2.5rem;
+      }
+
+      .intro__roles p {
+        font-size: 1rem;
+      }
+
+      .intro__quote {
+        font-size: 0.95rem;
+      }
+
+      .skills__title {
+        font-size: 2rem;
+      }
+
+      .skills__subtitle {
+        font-size: 1rem;
+      }
+
+      .skills__item {
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .skills__item-title {
+        font-size: 1rem;
+      }
+
+      .skills__item-description {
+        font-size: 0.85rem;
+      }
+
+      .contact__form-title {
+        font-size: 1.6rem;
+      }
+
+      .contact__info-title {
+        font-size: 1.4rem;
+      }
+    }
+
+    /* ==========================================================================
+       Accessibility Enhancements
+       ========================================================================== */
+    .header__nav-link:focus,
+    .skills__item-button:focus,
+    .contact__form-button:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .contact__form-input:focus,
+    .contact__form-textarea:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    /* ==========================================================================
+       Animation
+       ========================================================================== */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .intro__content,
+    .skills__item,
+    .contact__form,
+    .contact__info {
+      animation: fadeIn 0.6s ease forwards;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header Section (Cố định) -->
+  <header class="header">
+    <div class="container header__container">
+      <a href="/hoangphuc/index.html" class="header__logo">MC Hoàng Phúc</a>
+      <nav class="header__nav">
+        <a href="/hoangphuc/index.html" class="header__nav-link header__nav-link--active">Trang Chủ</a>
+        <a href="/hoangphuc/about.html" class="header__nav-link">Giới Thiệu</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Intro Section (Giới thiệu bản thân) -->
+  <section class="intro">
+    <div class="container intro__container">
+      <figure class="intro__image">
+        <img src="/img/phuc3.JPG" alt="MC Hoàng Phúc ngồi mặc vest đen" />
+      </figure>
+      <div class="intro__content">
+        <h1 class="intro__title">
+          MC <span>Hoàng</span> <span>Phúc</span>
+        </h1>
+        <div class="intro__roles">
+          <p>Chuyên Nghiệp</p>
+          <p>Trẻ Trung</p>
+          <p>Tự Tin</p>
+        </div>
+        <p class="intro__quote">"Mang đến năng lượng tích cực cho mọi sân khấu."</p>
+      </div>
+    </div>
+  </section>
+  <hr />
+  <section id="skills" class="skills">
+    <div class="container skills__container">
+      <div class="skills__content">
+        <h2 class="skills__title">Kỹ Năng</h2>
+        <p class="skills__subtitle">Tôi có thể làm gì</p>
+        <div class="skills__grid">
+          <div class="skills__item">
+            <div class="skills__item-icon"><i class="fas fa-microphone"></i></div>
+            <h3 class="skills__item-title">Dẫn Chương Trình</h3>
+            <p class="skills__item-description">"Khả năng giao tiếp tốt và luôn tạo không khí tích cực.Kết nối khán giả với chương trình"</p>
+            <button class="skills__item-button" onclick="window.location.href='/skill/dan-chuong-trinh.html'">Xem chi tiết</button>
+          </div>
+          <div class="skills__item">
+            <div class="skills__item-icon"><i class="fas fa-video"></i></div>
+            <h3 class="skills__item-title">Host Livestream</h3>
+            <p class="skills__item-description">"Tạo không khí sôi động, tương tác với khán giả."</p>
+            <button class="skills__item-button" onclick="window.location.href='/skill/host-livestream.html'">Xem chi tiết</button>
+          </div>
+          <div class="skills__item">
+            <div class="skills__item-icon"><i class="fas fa-volume-up"></i></div>
+            <h3 class="skills__item-title">Lồng Tiếng</h3>
+            <p class="skills__item-description">"Giọng nói truyền cảm, phù hợp quảng cáo và video."</p>
+            <button class="skills__item-button" onclick="window.location.href='/skill/voice.html'">Xem chi tiết</button>
+          </div>
+        </div>
+      </div>
+      <figure class="skills__image">
+        <img src="/img/phuc4.jpg" alt="MC Hoàng Phúc tay chống cằm" />
+      </figure>
+    </div>
+  </section>
+  <hr />
+
+  <!-- Contact Section (Liên hệ) -->
+  <section class="contact">
+    <div class="container contact__container">
+        <div class="contact__form">
+            <h2 class="contact__form-title">Liên Hệ</h2>
+            <form class="contact__form-wrapper" id="contactForm">
+                <input type="text" class="contact__form-input" name="from_name"" placeholder="Họ và tên" required />
+                <input type="email" class="contact__form-input" name="email" placeholder="Email" required />
+                <textarea class="contact__form-textarea" name="message" placeholder="Nội dung" required></textarea>
+                <button type="submit" class="contact__form-button">Gửi</button>
+            </form>
+        </div>
+        <div class="contact__info">
+            <h3 class="contact__info-title">MC Hoàng Phúc</h3>
+            <p class="contact__info-item"><span class="contact__info-highlight">MC sự kiện, tiệc cưới - Livestream - Voice</span></p>
+            <p class="contact__info-item">📞 Số điện thoại: <a href="tel:0359581896" class="contact__info-highlight">0359 581 896</a></p>
+            <p class="contact__info-item">✉️ Email: <span class="contact__info-highlight">mchoangphuc2207@gmail.com</span></p>
+        </div>
+    </div>
+</section>
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Ngăn chặn hành động gửi mặc định của form
+
+      emailjs.sendForm('service_6zj04n6', 'template_8mr9qj7', this)
+          .then(function() {
+              alert('Gửi thành công!');
+          }, function(error) {
+              alert('Gửi thất bại: ' + JSON.stringify(error));
+          });
+  });
+</script> 
+
+  <!-- Footer (Cố định) -->
+  <footer class="footer">
+    <div class="footer__content">© 2025 MC Hoàng Phúc. All rights reserved.</div>
+  </footer>
+</body>
+</html>
