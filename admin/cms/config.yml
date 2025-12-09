@@ -1,18 +1,8 @@
 backend:
-  name: github
-  # Thay bằng repo thật của bạn, ví dụ: hoangphucmc/hoangphuc
-  repo: hoanggiang20041/hoangphuc
-  branch: main
-  # URL máy chủ OAuth (triển khai trên Vercel/Netlify). Xem hướng dẫn bên dưới
-  base_url: https://hoangphuc-weld.vercel.app/
-  auth_endpoint: /api/auth
-
-locale: vi
-media_folder: "img/uploads"        # nơi lưu ảnh trong repo
-public_folder: "/img/uploads"      # URL public
-slug:
-  encoding: "ascii"
-  clean_accents: true
+name: git-gateway
+branch: main
+media_folder: img/uploads
+public_folder: /img/uploads
 
 collections:
   - name: "settings"
