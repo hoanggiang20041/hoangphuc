@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - MC Hoàng Phúc</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1e1e1e 0%, #0f0f0f 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 40px 20px;
+        }
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00ffd1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            margin-bottom: 40px;
+        }
+        .admin-link {
+            display: inline-block;
+            background: #00ffd1;
+            color: #1e1e1e;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        .admin-link:hover {
+            background: #00e0bb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 255, 209, 0.3);
+        }
+        .demo-link {
+            display: inline-block;
+            background: transparent;
+            color: #00ffd1;
+            text-decoration: none;
+            padding: 12px 25px;
+            border: 2px solid #00ffd1;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        .demo-link:hover {
+            background: #00ffd1;
+            color: #1e1e1e;
+        }
+        .info {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 209, 0.2);
+        }
+        .info h3 {
+            color: #00ffd1;
+            margin-bottom: 15px;
+        }
+        .info p {
+            color: #a0a0a0;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .credentials {
+            background: rgba(0, 255, 209, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .credentials strong {
+            color: #00ffd1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">MC Hoàng Phúc</div>
+        <div class="subtitle">Admin Panel - Quản lý website chuyên nghiệp</div>
+        
+        <div>
+            <a href="admin/index.html" class="admin-link">
+                <i class="fas fa-user-shield"></i> Truy cập Admin Panel
+            </a>
+        </div>
+        
+        <div>
+            <a href="admin/demo.html" class="demo-link">
+                <i class="fas fa-info-circle"></i> Xem hướng dẫn
+            </a>
+        </div>
+        
+        <div class="info">
+            <h3>🚀 Tính năng chính</h3>
+            <p>• <strong>Quản lý nội dung:</strong> Chỉnh sửa tiêu đề, mô tả, thông tin liên hệ</p>
+            <p>• <strong>Quản lý media:</strong> Thêm/sửa/xóa ảnh, video, audio</p>
+            <p>• <strong>Quản lý kỹ năng:</strong> Thêm/sửa/xóa các kỹ năng</p>
+            <p>• <strong>Quản lý trang:</strong> Tạo và quản lý các trang con</p>
+            
+            <div class="credentials">
+                <strong>Thông tin đăng nhập:</strong><br>
+                Tên đăng nhập: <strong>admin</strong><br>
+                Mật khẩu: <strong>hoangphuc2025</strong>
+            </div>
+            
+            <p><strong>⚠️ Lưu ý:</strong> Thay đổi mật khẩu mặc định ngay sau khi sử dụng lần đầu!</p>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</body>
+</html> 

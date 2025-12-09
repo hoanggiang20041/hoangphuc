@@ -1,0 +1,60 @@
+backend:
+  name: github
+  # Thay bằng repo thật của bạn, ví dụ: hoangphucmc/hoangphuc
+  repo: hoanggiang20041/hoangphuc
+  branch: main
+  # URL máy chủ OAuth (triển khai trên Vercel/Netlify). Xem hướng dẫn bên dưới
+  base_url: https://hoangphuc-weld.vercel.app/
+  auth_endpoint: /api/auth
+
+locale: vi
+media_folder: "img/uploads"        # nơi lưu ảnh trong repo
+public_folder: "/img/uploads"      # URL public
+slug:
+  encoding: "ascii"
+  clean_accents: true
+
+collections:
+  - name: "settings"
+    label: "Cấu hình website"
+    files:
+      - name: "site"
+        label: "Thông tin chung"
+        file: "admin/data/content.json"
+        fields:
+          - label: "Tiêu đề"
+            name: "site.title"
+            widget: string
+          - label: "Mô tả"
+            name: "site.description"
+            widget: text
+          - label: "Số điện thoại"
+            name: "site.phone"
+            widget: string
+          - label: "Email"
+            name: "site.email"
+            widget: string
+          - label: "Câu trích dẫn"
+            name: "site.quote"
+            widget: text
+          - label: "Mạng xã hội"
+            name: "site.social"
+            widget: object
+            fields:
+              - { label: Facebook, name: facebook, widget: string, required: false }
+              - { label: Instagram, name: instagram, widget: string, required: false }
+              - { label: YouTube, name: youtube, widget: string, required: false }
+  - name: "gallery"
+    label: "Thư viện Ảnh"
+    label_singular: "Ảnh"
+    folder: "admin/data/gallery"
+    create: true
+    format: json
+    slug: "{{slug}}"
+    fields:
+      - { label: "Tiêu đề", name: "title", widget: string }
+      - { label: "Ảnh", name: "image", widget: image, media_folder: "img/uploads", public_folder: "/img/uploads" }
+      - { label: "Mô tả", name: "description", widget: text, required: false }
+      - { label: "Danh mục", name: "category", widget: string, required: false }
+      - { label: "Ngày", name: "date", widget: datetime, format: "YYYY-MM-DD", time_format: false }
+

@@ -24,11 +24,11 @@
        Biến toàn cục
        ========================================================================== */
         :root {
-            --color-primary: #00ffd1;
+            --color-primary: #D4AF37;
             /* Xanh ngọc sáng */
             --color-secondary: #1e90ff;
             /* Xanh dương nhẹ */
-            --color-dark: #1e1e1e;
+            --color-dark: #0b0b0b;
             /* Xám đậm gần đen */
             --color-light: #ffffff;
             /* Trắng */
@@ -681,41 +681,17 @@
             animation: slide 20s infinite;
         }
 
-        .tabs {
-    display: flex;
-    margin-bottom: 20px;
-}
+        .tabs { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 20px; justify-content:center; }
+.tab-button { padding:10px 16px; border:1px solid rgba(212,175,55,0.4); background:transparent; color:var(--color-light); cursor:pointer; border-radius:8px; letter-spacing:.5px; transition:all var(--transition-smooth); }
+.tab-button.active, .tab-button:hover { background:linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); color:var(--color-dark); border-color:transparent; }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
 
-.tab-button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    margin-right: 10px;
-}
+.video-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px; }
+.video-item { width:100%; aspect-ratio:16 / 9; border-radius: var(--radius-lg); overflow:hidden; box-shadow: var(--shadow-lg); background:#000; }
+.video-item iframe{ width:100%; height:100%; border:0; display:block; }
 
-.tab-button.active {
-    background-color: #007bff;
-    color: white;
-}
-
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-.video-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-}
-
-.video-item {
-    width: 100%;
-}
+@media (max-width:768px){ .video-grid{ grid-template-columns:1fr; gap:10px; } }
     </style>
 </head>
 

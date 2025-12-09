@@ -24,9 +24,9 @@
        Biến toàn cục
        ========================================================================== */
         :root {
-            --color-primary: #00ffd1;
+            --color-primary: #D4AF37;
             --color-secondary: #1e90ff;
-            --color-dark: #1e1e1e;
+            --color-dark: #0b0b0b;
             --color-light: #ffffff;
             --color-muted: #a0a0a0;
             --color-bg-light: #2a2a2a;
@@ -671,6 +671,27 @@
         .events__slideshow-wrapper {
             animation: slide 20s infinite;
         }
+
+    /* Luxury overrides */
+    .header{background-color: var(--color-dark);backdrop-filter: blur(8px);border-bottom:1px solid rgba(212,175,55,0.12);}
+    .header__logo{color:var(--color-primary);letter-spacing:1px}
+    .header__nav-link{letter-spacing:.5px}
+    .header__nav-link::before{content:'';position:absolute;left:0;bottom:0;height:2px;width:0;background:linear-gradient(90deg,var(--color-primary),transparent);transition:width var(--transition-smooth)}
+    .header__nav-link:hover::before,.header__nav-link--active::before{width:100%}
+
+    .events__title,.events__subtitle,.story__title,.academy__title,.contact__title{letter-spacing:.5px}
+    .events__title,.story__title,.academy__title,.contact__title{position:relative}
+    .events__title::after,.story__title::after,.academy__title::after,.contact__title::after{content:'';display:block;width:64px;height:2px;background-color:var(--color-primary);margin:12px auto 0;border-radius:2px}
+
+    .events__button{border:2px solid var(--color-primary);letter-spacing:.5px}
+    .events__button:hover{background:linear-gradient(135deg,var(--color-primary),var(--color-primary-dark));color:var(--color-dark);transform:translateY(-1px)}
+
+    .events__slideshow-item img,.events__video{border-radius:var(--radius-lg);box-shadow:var(--shadow-lg)}
+    .contact__form,.contact__info{background:linear-gradient(135deg,var(--color-dark-secondary),rgba(26,31,46,0.8));border:1px solid rgba(212,175,55,0.12)}
+    .contact__form-input,.contact__form-textarea{border:2px solid rgba(212,175,55,0.2)}
+    .contact__form-input:focus,.contact__form-textarea:focus{border-color:var(--color-primary);box-shadow:0 0 16px rgba(212,175,55,0.2)}
+
+    @media (max-width:768px){.events__title{font-size:clamp(1.6rem,6vw,2.2rem)}.events__subtitle{font-size:clamp(1.2rem,4.8vw,1.6rem)}}
     </style>
 </head>
 

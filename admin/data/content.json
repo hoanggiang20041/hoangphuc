@@ -1,0 +1,103 @@
+{
+  "site": {
+    "title": "MC Hoàng Phúc",
+    "description": "Chuyên nghiệp, trẻ trung, tự tin",
+    "phone": "0359 581 896",
+    "email": "mchoangphuc2207@gmail.com",
+    "quote": "Mang đến năng lượng tích cực cho mọi sân khấu.",
+    "social": {
+      "facebook": "https://facebook.com/mchoangphuc",
+      "instagram": "https://instagram.com/mchoangphuc",
+      "youtube": "https://youtube.com/mchoangphuc"
+    }
+  },
+  "pages": {
+    "home": {
+      "title": "MC Hoàng Phúc - Dẫn chương trình chuyên nghiệp",
+      "hero": {
+        "title": "MC Hoàng Phúc",
+        "subtitle": "Dẫn chương trình chuyên nghiệp",
+        "description": "Chuyên nghiệp, trẻ trung, tự tin - Mang đến năng lượng tích cực cho mọi sân khấu."
+      },
+      "about": {
+        "title": "Về tôi",
+        "content": "Tôi là MC Hoàng Phúc, một MC trẻ với nhiều năm kinh nghiệm trong lĩnh vực dẫn chương trình. Tôi tự tin có thể mang đến những trải nghiệm tuyệt vời cho mọi sự kiện."
+      }
+    },
+    "about": {
+      "title": "Giới thiệu - MC Hoàng Phúc",
+      "content": "Tôi là MC Hoàng Phúc, sinh năm 2002, hiện đang sinh sống và làm việc tại Hà Nội. Với niềm đam mê nghệ thuật và khả năng giao tiếp tốt, tôi đã tham gia nhiều sự kiện lớn nhỏ khác nhau."
+    }
+  },
+  "skills": [
+    {
+      "id": 1,
+      "name": "Dẫn chương trình",
+      "description": "Dẫn dắt các sự kiện, lễ hội, tiệc cưới với phong cách chuyên nghiệp",
+      "icon": "fas fa-microphone",
+      "level": "Chuyên nghiệp"
+    },
+    {
+      "id": 2,
+      "name": "Host Livestream",
+      "description": "Dẫn dắt các chương trình livestream, tương tác với khán giả",
+      "icon": "fas fa-video",
+      "level": "Thành thạo"
+    },
+    {
+      "id": 3,
+      "name": "Voice Over",
+      "description": "Lồng tiếng cho video, quảng cáo, phim với giọng đọc truyền cảm",
+      "icon": "fas fa-volume-up",
+      "level": "Tốt"
+    }
+  ],
+  "media": {
+    "images": [
+      {
+        "id": 1,
+        "name": "MC Hoàng Phúc 1",
+        "filename": "phuc1.jpg",
+        "description": "Ảnh chân dung MC Hoàng Phúc",
+        "category": "portrait",
+        "uploadDate": "2025-01-20"
+      },
+      {
+        "id": 2,
+        "name": "MC Hoàng Phúc 2",
+        "filename": "phuc2.jpg",
+        "description": "Ảnh MC Hoàng Phúc tại sự kiện",
+        "category": "event",
+        "uploadDate": "2025-01-20"
+      }
+    ],
+    "videos": [
+      {
+        "id": 1,
+        "name": "Giới thiệu MC Hoàng Phúc",
+        "filename": "intro.mp4",
+        "description": "Video giới thiệu về MC Hoàng Phúc",
+        "category": "intro",
+        "uploadDate": "2025-01-20"
+      }
+    ]
+  },
+  "events": [
+    {
+      "id": 1,
+      "title": "Tiệc cưới An & Bình",
+      "date": "2025-02-14",
+      "location": "Hà Nội",
+      "type": "wedding",
+      "status": "completed"
+    },
+    {
+      "id": 2,
+      "title": "Lễ khai trương cửa hàng",
+      "date": "2025-02-20",
+      "location": "Hà Nội",
+      "type": "opening",
+      "status": "upcoming"
+    }
+  ]
+}

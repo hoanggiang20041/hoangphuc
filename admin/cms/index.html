@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMS | MC Hoàng Phúc</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0b0b0b;--fg:#f5f5f5;--muted:#b5b5b5;--gold:#D4AF37}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    .header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(212,175,55,.15);position:sticky;top:0;background:rgba(11,11,11,.8);backdrop-filter:blur(8px);z-index:5}
+    .title{font-weight:600;letter-spacing:.5px}
+    .hint{color:var(--muted);font-size:12px}
+    .wrap{max-width:1200px;margin:0 auto;padding:12px 16px}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(212,175,55,.5);border-radius:8px;color:var(--fg);text-decoration:none}
+    .btn:hover{background:linear-gradient(135deg,var(--gold),#B08D28);color:#0b0b0b;border-color:transparent}
+    .note{margin:12px 0;color:var(--muted)}
+    .frame{height:calc(100vh - 90px);border:0;width:100%}
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">MC Hoàng Phúc • CMS (Decap)</div>
+    <div class="hint">Nếu được yêu cầu đăng nhập, chọn “Đăng nhập với GitHub”.</div>
+  </div>
+  <div class="wrap">
+    <div class="note">Trang này dùng Decap CMS để quản lý nội dung và upload ảnh. Cấu hình ở <code>/admin/cms/config.yml</code>.</div>
+  </div>
+  <!-- Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    // Chỉ định file cấu hình
+    window.CMS_MANUAL_INIT = true;
+    fetch('./config.yml').then(r=>r.text()).then(cfg=>{
+      window.CMS.init({ config: jsyaml.load(cfg) });
+    });
+  </script>
+</body>
+</html>
+
