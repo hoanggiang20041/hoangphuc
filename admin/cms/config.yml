@@ -1,8 +1,13 @@
 backend:
-name: git-gateway
-branch: main
-media_folder: img/uploads
-public_folder: /img/uploads
+  name: git-gateway
+  branch: main
+
+locale: vi
+media_folder: "img/uploads"
+public_folder: "/img/uploads"
+slug:
+  encoding: "ascii"
+  clean_accents: true
 
 collections:
   - name: "settings"
@@ -47,4 +52,3 @@ collections:
       - { label: "Mô tả", name: "description", widget: text, required: false }
       - { label: "Danh mục", name: "category", widget: string, required: false }
       - { label: "Ngày", name: "date", widget: datetime, format: "YYYY-MM-DD", time_format: false }
-
