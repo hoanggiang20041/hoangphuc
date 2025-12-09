@@ -1,0 +1,45 @@
+{
+  "title": "Các Sự Kiện Từng Dẫn",
+  "sections": [
+    {
+      "id": "mc_hoat_nao",
+      "title": "MC Hoạt Náo Các Chương Trình Thiện Nguyện",
+      "kind": "slideshow",
+      "items": [
+        { "type": "image", "url": "/img/DSC06831.jpg", "caption": "Sự kiện 1" },
+        { "type": "image", "url": "/img/DSC06841.jpg", "caption": "Sự kiện 2" },
+        { "type": "image", "url": "/img/DSC08283.jpg", "caption": "Sự kiện 3" },
+        { "type": "image", "url": "/img/DSC08311.jpg", "caption": "Sự kiện 4" }
+      ]
+    },
+    {
+      "id": "mc_cong_giao",
+      "title": "MC Công Giáo",
+      "kind": "slideshow",
+      "items": [
+        { "type": "image", "url": "/img/z6421152368871_ab382956c16a484bbf8d76668476d78f.jpg", "caption": "Sự kiện 1" },
+        { "type": "image", "url": "/img/z6421152376444_eb1ef4461a4eeb4b144a33dc4abd1612.jpg", "caption": "Sự kiện 2" },
+        { "type": "image", "url": "/img/z6421153537757_d02901d9724207f9278c4d45763732fa.jpg", "caption": "Sự kiện 3" }
+      ]
+    },
+    {
+      "id": "ghi_hinh_phim_truong",
+      "title": "GHI HÌNH PHIM TRƯỜNG",
+      "kind": "videos",
+      "items": [
+        { "type": "video", "url": "https://drive.google.com/file/d/1m-MHB5aMsa9kZkouhTqDclrtNewoKJlW/preview", "caption": "Phim trường" }
+      ]
+    },
+    {
+      "id": "ghi_hinh_ngoai_canh",
+      "title": "GHI HÌNH NGOẠI CẢNH",
+      "kind": "slideshow",
+      "items": [
+        { "type": "image", "url": "/img/IMG_8157 (2).JPG", "caption": "Ngoại cảnh 1" },
+        { "type": "image", "url": "/img/IMG_8160 (1).JPG", "caption": "Ngoại cảnh 2" },
+        { "type": "image", "url": "/img/IMG_8164 (2).JPG", "caption": "Ngoại cảnh 3" }
+      ]
+    }
+  ]
+}
+

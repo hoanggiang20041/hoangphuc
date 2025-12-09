@@ -1,0 +1,25 @@
+{
+  "title": "MẪU GIỌNG MIỀN NAM",
+  "tabs": [
+    {
+      "title": "TVC",
+      "videos": [
+        { "video_url": "https://drive.google.com/file/d/14H3xJLGbTxzgrogwNmIo8pPrY7wOZiMG/preview" },
+        { "video_url": "https://drive.google.com/file/d/1Nc9a8azNTM5la006ocxHiaoP3F3aybk9/preview" },
+        { "video_url": "https://drive.google.com/file/d/16QEfXhlQ5HsucDi7tnn2TZpmR_ZpdahC/preview" },
+        { "video_url": "https://drive.google.com/file/d/1GVlir-rY0mcZnh0WovW103n0Bl3zGD4A/preview" },
+        { "video_url": "https://drive.google.com/file/d/1qQ_zBJVYoxXB9taZKINZ0QUsypmIWP4i/preview" }
+      ]
+    },
+    {
+      "title": "PODCAST TỰ SỰ",
+      "videos": [
+        { "video_url": "https://drive.google.com/file/d/1t7uTx3fi26j5Mf3gW3l41fjCHsto6IU7/preview" },
+        { "video_url": "https://drive.google.com/file/d/1-x65JuvLDw4UotxEuhCGSFvnB70JShZr/preview" },
+        { "video_url": "https://drive.google.com/file/d/1HJUfohqd7A5jHd-Cz6Ubkzk79OPMGtL-/preview" },
+        { "video_url": "https://drive.google.com/file/d/1UmEGRQMdJgTPRHoLEFUwXfiSduJM3oF1/preview" }
+      ]
+    }
+  ]
+}
+
