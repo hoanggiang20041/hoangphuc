@@ -783,70 +783,58 @@
             <div class="footer__content">© 2025 MC Hoàng Phúc. All rights reserved.</div>
         </footer>
 
-        <!-- JavaScript cho Slideshow -->
+        <!-- JavaScript: Build Voice tabs from CMS JSON -->
         <script>
-            const wrappers = document.querySelectorAll('.events__slideshow-wrapper');
-            wrappers.forEach(wrapper => {
-                const items = wrapper.querySelectorAll('.events__slideshow-item');
-                const totalItems = items.length;
-                let currentIndex = 0;
+          (async function(){
+            try{
+              const res = await fetch('/admin/data/skills/voice.json', { cache: 'no-store' });
+              if(!res.ok) throw new Error('Không tải được JSON');
+              const data = await res.json();
+              const container = document.querySelector('.events > .container');
+              if(!container) return;
+              const title = data.title || 'MẪU GIỌNG MIỀN NAM';
+              const tabs = Array.isArray(data.tabs) ? data.tabs : [];
+              // Build tabs header
+              const tabsHeader = `<div class="tabs">${tabs.map((t,idx)=>`<button class="tab-button ${idx===0?'active':''}" data-tab="tab_${idx}">${t.title || ('Tab '+(idx+1))}</button>`).join('')}</div>`;
+              // Build tabs content
+              const tabsBody = tabs.map((t,idx)=>{
+                const vids = Array.isArray(t.videos) ? t.videos : [];
+                const grid = vids.map(v=>{
+                  const url = v.video_url || v.url;
+                  if(/youtube\.com|youtu\.be/.test(url)){
+                    const vid = url.includes('youtu.be') ? url.split('/').pop().split('?')[0] : (new URL(url).searchParams.get('v'));
+                    return `<div class="video-item"><iframe src="https://www.youtube.com/embed/${vid}?rel=0" allowfullscreen loading="lazy"></iframe></div>`;
+                  } else if(/vimeo\.com/.test(url)){
+                    const parts = url.split('/'); const vid = parts[parts.length-1];
+                    return `<div class="video-item"><iframe src="https://player.vimeo.com/video/${vid}" allowfullscreen loading="lazy"></iframe></div>`;
+                  }
+                  // Google Drive preview or direct MP4
+                  return `<div class="video-item"><iframe src="${url}" allow="autoplay; fullscreen" loading="lazy"></iframe></div>`;
+                }).join('');
+                return `<div id="tab_${idx}" class="tab-content ${idx===0?'active':''}"><div class="video-grid">${grid}</div></div>`;
+              }).join('');
 
-                function updateSlide() {
-                    wrapper.style.animation = 'none'; // Tắt animation CSS khi click
-                    wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-                }
+              container.innerHTML = `<h1 class="events__title">${title}</h1>${tabsHeader}${tabsBody}`;
 
-                wrapper.parentElement.querySelector('.prev').addEventListener('click', () => {
-                    currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-                    updateSlide();
-                });
+              // Tab switching
+              container.addEventListener('click', function(e){
+                const btn = e.target.closest('.tab-button');
+                if(!btn) return;
+                const tabId = btn.getAttribute('data-tab');
+                container.querySelectorAll('.tab-button').forEach(b=>b.classList.remove('active'));
+                btn.classList.add('active');
+                container.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+                const active = container.querySelector(`#${CSS.escape(tabId)}`);
+                if(active) active.classList.add('active');
+              });
+            }catch(e){ console.warn(e); }
+          })();
 
-                wrapper.parentElement.querySelector('.next').addEventListener('click', () => {
-                    currentIndex = (currentIndex + 1) % totalItems;
-                    updateSlide();
-                });
-
-                // Tự động chạy slideshow
-                setInterval(() => {
-                    currentIndex = (currentIndex + 1) % totalItems;
-                    updateSlide();
-                }, 5000);
-            });
-
-            function scrollToSection(sectionId) {
-                const section = document.getElementById(sectionId);
-                if (section) {
-                    section.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-            function openTab(evt, tabName) {
-        // Ẩn tất cả các tab
-        var i, tabcontent, tabbuttons;
-        tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].classList.remove("active");
-        }
-
-        // Xóa lớp active khỏi tất cả các nút
-        tabbuttons = document.getElementsByClassName("tab-button");
-        for (i = 0; i < tabbuttons.length; i++) {
-            tabbuttons[i].classList.remove("active");
-        }
-
-        // Hiện tab hiện tại và đánh dấu nút
-        document.getElementById(tabName).classList.add("active");
-        evt.currentTarget.classList.add("active");
-    }
-    document.getElementById('contactForm').addEventListener('submit', function(event) {
-      event.preventDefault(); // Ngăn chặn hành động gửi mặc định của form
-
-      emailjs.sendForm('service_6zj04n6', 'template_8mr9qj7', this)
-          .then(function() {
-              alert('Gửi thành công!');
-          }, function(error) {
-              alert('Gửi thất bại: ' + JSON.stringify(error));
+          document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            emailjs.sendForm('service_6zj04n6', 'template_8mr9qj7', this)
+              .then(function(){ alert('Gửi thành công!'); }, function(error){ alert('Gửi thất bại: ' + JSON.stringify(error)); });
           });
-  });
         </script>
 </body>
 
