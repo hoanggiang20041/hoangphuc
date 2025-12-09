@@ -276,6 +276,85 @@ collections:
       - { label: "Danh mục", name: "category", widget: "string", required: false }
       - { label: "Ngày", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
 
+  # ========== VIDEO (LINK) ==========
+  - name: "videos"
+    label: "🎬 Video (URL)"
+    folder: "admin/data/videos"
+    create: true
+    format: "json"
+    slug: "{{slug}}"
+    fields:
+      - { label: "Tiêu đề", name: "title", widget: "string" }
+      - { label: "Video URL (YouTube/Vimeo/MP4)", name: "video_url", widget: "string" }
+      - { label: "Nền tảng", name: "platform", widget: "select", required: false, options: ["youtube", "vimeo", "other"] }
+      - { label: "Thumbnail (upload)", name: "thumbnail", widget: "image", required: false }
+      - { label: "Thumbnail (URL)", name: "thumbnail_url", widget: "string", required: false }
+      - { label: "Mô tả", name: "description", widget: "text", required: false }
+      - { label: "Danh mục", name: "category", widget: "string", required: false }
+      - { label: "Ngày", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
+
+  # ========== KỸ NĂNG (TRANG CHI TIẾT) ==========
+  - name: "skills_pages"
+    label: "🧩 Trang Kỹ Năng"
+    files:
+      - name: "skill_dan_chuong_trinh"
+        label: "Dẫn Chương Trình"
+        file: "admin/data/skills/dan-chuong-trinh.json"
+        format: "json"
+        fields:
+          - { label: "Tiêu đề trang", name: "title", widget: "string" }
+          - label: "Các phân đoạn"
+            name: "sections"
+            widget: "list"
+            fields:
+              - { label: "ID (neo cuộn)", name: "id", widget: "string", required: false }
+              - { label: "Tiêu đề", name: "title", widget: "string" }
+              - { label: "Kiểu", name: "kind", widget: "select", options: ["slideshow", "videos"], default: "slideshow" }
+              - label: "Nội dung"
+                name: "items"
+                widget: "list"
+                fields:
+                  - { label: "Loại", name: "type", widget: "select", options: ["image", "video"], default: "image" }
+                  - { label: "Ảnh (upload)", name: "image", widget: "image", required: false }
+                  - { label: "URL", name: "url", widget: "string", required: false }
+                  - { label: "Chú thích", name: "caption", widget: "string", required: false }
+      - name: "skill_host_livestream"
+        label: "Host Livestream"
+        file: "admin/data/skills/host-livestream.json"
+        format: "json"
+        fields:
+          - { label: "Tiêu đề trang", name: "title", widget: "string" }
+          - label: "Các phân đoạn"
+            name: "sections"
+            widget: "list"
+            fields:
+              - { label: "ID (neo cuộn)", name: "id", widget: "string", required: false }
+              - { label: "Tiêu đề", name: "title", widget: "string", required: false }
+              - { label: "Kiểu", name: "kind", widget: "select", options: ["slideshow", "videos"], default: "slideshow" }
+              - label: "Nội dung"
+                name: "items"
+                widget: "list"
+                fields:
+                  - { label: "Loại", name: "type", widget: "select", options: ["image", "video"], default: "image" }
+                  - { label: "Ảnh (upload)", name: "image", widget: "image", required: false }
+                  - { label: "URL", name: "url", widget: "string", required: false }
+                  - { label: "Chú thích", name: "caption", widget: "string", required: false }
+      - name: "skill_voice"
+        label: "Voice (Lồng Tiếng)"
+        file: "admin/data/skills/voice.json"
+        format: "json"
+        fields:
+          - { label: "Tiêu đề trang", name: "title", widget: "string" }
+          - label: "Tabs"
+            name: "tabs"
+            widget: "list"
+            fields:
+              - { label: "Tiêu đề tab", name: "title", widget: "string" }
+              - label: "Danh sách video"
+                name: "videos"
+                widget: "list"
+                field: { label: "Video URL", name: "video_url", widget: "string" }
+
   # ========== THƯ VIỆN ẢNH ==========
   - name: "gallery"
     label: "🖼️ Thư Viện Ảnh"
