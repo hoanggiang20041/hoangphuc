@@ -1,0 +1,28 @@
+{
+  "intro": {
+    "title": "Giới Thiệu Về Tôi",
+    "quote": "Từng sân khấu là một hành trình, từng câu nói là một dấu ấn.",
+    "main_image": "/img/phuc1.jpg",
+    "description": "Đây là website giới thiệu về hành trình MC của tôi. Hy vọng có cơ hội được hợp tác với quý vị!",
+    "gallery_image_1": "/img/IMG_8035.JPG",
+    "gallery_image_2": "/img/IMG_8033.JPG",
+    "contact_info": {
+      "name": "Trương Hoàng Phúc",
+      "phone": "0359 581 896",
+      "height": "1m75",
+      "region": "MC miền Nam",
+      "email": "mchoangphuc2207@gmail.com"
+    }
+  },
+  "story": {
+    "title": "Câu Chuyện Của Tôi",
+    "part_1": "Tôi là Hoàng Phúc, một người mới bắt đầu trở thành MC. Hành trình của tôi bắt đầu từ niềm đam mê dẫn chương trình, khi tôi nhận ra mình yêu thích việc giao tiếp và kết nối với mọi người. Sau khi quyết định theo đuổi ước mơ này, tôi tham gia các khóa học giao tiếp và thực hành dẫn dắt những sự kiện nhỏ.",
+    "part_2": "Mỗi lần đứng trước đám đông, tôi cảm nhận được sự hồi hộp và phấn khích. Những trải nghiệm này không chỉ giúp tôi rèn luyện kỹ năng mà còn nuôi dưỡng niềm tự tin. Với lòng kiên trì và đam mê, tôi hy vọng sẽ ngày càng phát triển và trở thành một MC chuyên nghiệp trong tương lai."
+  },
+  "academy": {
+    "title": "Lễ Tốt Nghiệp Tại Host Academy - Học Viện Đào Tạo Kỹ Năng Nói",
+    "course": "Khóa Nâng Cao 07",
+    "description": "Tôi tự hào là học viên của Host Academy, nơi đã trang bị cho tôi những kỹ năng dẫn chương trình và khả năng ứng biến linh hoạt. Mỗi lần đứng trên sân khấu, tôi cảm thấy hồi hộp nhưng cũng rất phấn khích. Với đam mê và quyết tâm, tôi hy vọng sẽ tiếp tục phát triển và vươn xa hơn trong lĩnh vực MC."
+  }
+}
+

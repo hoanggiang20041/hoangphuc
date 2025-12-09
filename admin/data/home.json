@@ -1,0 +1,34 @@
+{
+  "intro": {
+    "image": "/img/phuc3.JPG",
+    "title": "MC Hoàng Phúc",
+    "roles": ["Chuyên Nghiệp", "Trẻ Trung", "Tự Tin"],
+    "quote": "Mang đến năng lượng tích cực cho mọi sân khấu."
+  },
+  "skills": {
+    "title": "Kỹ Năng",
+    "subtitle": "Tôi có thể làm gì",
+    "image": "/img/phuc4.JPG",
+    "items": [
+      {
+        "title": "Dẫn Chương Trình",
+        "description": "Khả năng giao tiếp tốt và luôn tạo không khí tích cực. Kết nối khán giả với chương trình",
+        "icon": "fas fa-microphone",
+        "link": "/skill/dan-chuong-trinh.html"
+      },
+      {
+        "title": "Host Livestream",
+        "description": "Tạo không khí sôi động, tương tác với khán giả.",
+        "icon": "fas fa-video",
+        "link": "/skill/host-livestream.html"
+      },
+      {
+        "title": "Lồng Tiếng",
+        "description": "Giọng nói truyền cảm, phù hợp quảng cáo và video.",
+        "icon": "fas fa-volume-up",
+        "link": "/skill/voice.html"
+      }
+    ]
+  }
+}
+
