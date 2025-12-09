@@ -1,0 +1,15 @@
+{
+  "site": {
+    "title": "MC Hoàng Phúc",
+    "description": "Trang web chính thức của MC Hoàng Phúc - chuyên nghiệp, trẻ trung, tự tin.",
+    "phone": "0359 581 896",
+    "email": "mchoangphuc2207@gmail.com",
+    "quote": "Mang đến năng lượng tích cực cho mọi sân khấu.",
+    "social": {
+      "facebook": "https://facebook.com/",
+      "instagram": "https://instagram.com/",
+      "youtube": "https://youtube.com/"
+    }
+  }
+}
+
