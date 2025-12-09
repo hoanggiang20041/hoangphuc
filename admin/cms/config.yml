@@ -276,23 +276,6 @@ collections:
       - { label: "Danh mục", name: "category", widget: "string", required: false }
       - { label: "Ngày", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
 
-  # ========== VIDEO (LINK) ==========
-  - name: "videos"
-    label: "🎬 Video (URL)"
-    folder: "admin/data/videos"
-    create: true
-    format: "json"
-    slug: "{{slug}}"
-    fields:
-      - { label: "Tiêu đề", name: "title", widget: "string" }
-      - { label: "Video URL (YouTube/Vimeo/MP4)", name: "video_url", widget: "string" }
-      - { label: "Nền tảng", name: "platform", widget: "select", required: false, options: ["youtube", "vimeo", "other"] }
-      - { label: "Thumbnail (upload)", name: "thumbnail", widget: "image", required: false }
-      - { label: "Thumbnail (URL)", name: "thumbnail_url", widget: "string", required: false }
-      - { label: "Mô tả", name: "description", widget: "text", required: false }
-      - { label: "Danh mục", name: "category", widget: "string", required: false }
-      - { label: "Ngày", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
-
   # ========== KỸ NĂNG (TRANG CHI TIẾT) ==========
   - name: "skills_pages"
     label: "🧩 Trang Kỹ Năng"
