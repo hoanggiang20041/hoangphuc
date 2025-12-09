@@ -1377,7 +1377,52 @@ ok
               alert('Gửi thất bại: ' + JSON.stringify(error));
           });
   });
-</script> 
+</script>
+<script>
+  // Load content from CMS JSON (home.json)
+  (async function(){
+    try{
+      const res = await fetch('/admin/data/home.json', { cache: 'no-store' });
+      if(!res.ok) return;
+      const data = await res.json();
+      // Intro
+      if(data.intro){
+        const imgSrc = data.intro.image_url || data.intro.image;
+        const imgEl = document.querySelector('.intro__image img');
+        if(imgSrc && imgEl) imgEl.src = imgSrc;
+        const rolesEl = document.querySelector('.intro__roles');
+        if(Array.isArray(data.intro.roles) && rolesEl){
+          rolesEl.innerHTML = data.intro.roles.map(r=>`<p>${r}</p>`).join('');
+        }
+        const quoteEl = document.querySelector('.intro__quote');
+        if(data.intro.quote && quoteEl){ quoteEl.textContent = data.intro.quote; }
+        const titleEl = document.querySelector('.intro__title');
+        if(data.intro.title && titleEl){ titleEl.innerHTML = data.intro.title.replace(/\s+/g,' ').split(' ').map((w,i)=> i===0? w : `<span>${w}</span>`).join(' '); }
+      }
+      // Skills
+      if(data.skills){
+        const skillsTitle = document.querySelector('.skills__title');
+        if(data.skills.title && skillsTitle) skillsTitle.textContent = data.skills.title;
+        const skillsSub = document.querySelector('.skills__subtitle');
+        if(data.skills.subtitle && skillsSub) skillsSub.textContent = data.skills.subtitle;
+        const skillsImgSrc = data.skills.image_url || data.skills.image;
+        const skillsImgEl = document.querySelector('.skills__image img');
+        if(skillsImgSrc && skillsImgEl) skillsImgEl.src = skillsImgSrc;
+        const grid = document.querySelector('.skills__grid');
+        if(grid && Array.isArray(data.skills.items)){
+          grid.innerHTML = data.skills.items.map(item => `
+            <div class=\"skills__item\">
+              <div class=\"skills__item-icon\"><i class=\"${item.icon || 'fas fa-star'}\"></i></div>
+              <h3 class=\"skills__item-title\">${item.title || ''}</h3>
+              <p class=\"skills__item-description\">${item.description || ''}</p>
+              ${item.link ? `<button class=\"skills__item-button\" onclick=\"window.location.href='${item.link}'\">Xem chi tiết</button>` : ''}
+            </div>
+          `).join('');
+        }
+      }
+    }catch(e){ console.warn('Không thể tải home.json', e); }
+  })();
+</script>
 
   <!-- Footer (Cố định) -->
   <footer class="footer">
