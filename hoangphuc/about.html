@@ -856,5 +856,84 @@
         });
     });
   </script>
+<script>
+  // Load content from CMS JSON (about.json) including images and linked media
+  (async function(){
+    try{
+      const res = await fetch('/admin/data/about.json', { cache: 'no-store' });
+      if(!res.ok) return;
+      const data = await res.json();
+      if(data.intro){
+        const t = data.intro;
+        const titleEl = document.querySelector('.intro__title');
+        if(t.title && titleEl) titleEl.textContent = t.title;
+        const quoteEl = document.querySelector('.intro__quote');
+        if(t.quote && quoteEl) quoteEl.textContent = '"' + t.quote.replace(/^"|"$/g,'') + '"';
+        const mainImgEl = document.querySelector('.intro__image img');
+        const mainSrc = t.main_image_url || t.main_image;
+        if(mainImgEl && mainSrc) mainImgEl.src = mainSrc;
+        const galleryImgs = document.querySelectorAll('.intro__gallery img');
+        if(galleryImgs[0]) galleryImgs[0].src = (t.gallery_image_1_url || t.gallery_image_1 || galleryImgs[0].src);
+        if(galleryImgs[1]) galleryImgs[1].src = (t.gallery_image_2_url || t.gallery_image_2 || galleryImgs[1].src);
+        const tbl = document.querySelector('.intro__contact-table');
+        if(tbl && t.contact_info){
+          const c = t.contact_info;
+          tbl.innerHTML = `
+            <tr><td>Họ và tên</td><td>${c.name || ''}</td></tr>
+            <tr><td>Số điện thoại</td><td>${c.phone || ''}</td></tr>
+            <tr><td>Chiều cao</td><td>${c.height || ''}</td></tr>
+            <tr><td>Khu vực</td><td>${c.region || ''}</td></tr>
+            <tr><td>Email</td><td>${c.email || ''}</td></tr>
+          `;
+        }
+      }
+      if(data.story){
+        const s = data.story;
+        const title = document.querySelector('.story__title');
+        if(s.title && title) title.textContent = s.title;
+        const parts = document.querySelectorAll('.story__part');
+        if(parts[0] && s.part_1) parts[0].textContent = s.part_1;
+        if(parts[1] && s.part_2) parts[1].textContent = s.part_2;
+      }
+      if(data.academy){
+        const a = data.academy;
+        const titles = document.querySelectorAll('.academy__title');
+        if(titles[0] && a.title) titles[0].textContent = a.title;
+        if(titles[1] && a.course) titles[1].textContent = a.course;
+        const desc = document.querySelector('.academy__description');
+        if(desc && a.description) desc.textContent = a.description;
+      }
+      // Build slideshow from JSON list (supports image or video URLs)
+      if(Array.isArray(data.slideshow)){
+        const wrap = document.querySelector('.slideshow__wrapper');
+        if(wrap){
+          const itemsHtml = data.slideshow.map(item => {
+            const type = (item.type || 'image').toLowerCase();
+            const url = item.url || '';
+            const caption = item.caption ? ` aria-label="${item.caption.replace(/\"/g,'\\\"')}"` : '';
+            if(type === 'video'){
+              if(/youtube\.com|youtu\.be/.test(url)){
+                // Build YouTube embed URL
+                let videoId = url.includes('youtu.be') ? url.split('/').pop().split('?')[0] : new URL(url).searchParams.get('v');
+                const embed = `https://www.youtube.com/embed/${videoId}?rel=0&showinfo=0`;
+                return `<div class="slideshow__item"><iframe${caption} src="${embed}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
+              } else if(/vimeo\.com/.test(url)) {
+                const parts = url.split('/');
+                const vid = parts[parts.length - 1];
+                const embed = `https://player.vimeo.com/video/${vid}`;
+                return `<div class="slideshow__item"><iframe${caption} src="${embed}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
+              } else {
+                return `<div class="slideshow__item"><video${caption} src="${url}" controls playsinline></video></div>`;
+              }
+            }
+            // default image
+            return `<div class="slideshow__item"><img${caption} src="${url}" alt="" /></div>`;
+          }).join('');
+          wrap.innerHTML = itemsHtml || wrap.innerHTML;
+        }
+      }
+    }catch(e){ console.warn('Không thể tải about.json', e); }
+  })();
+</script>
 </body>
 </html>
