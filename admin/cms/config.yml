@@ -263,8 +263,8 @@ collections:
                 widget: "string"
 
   # ========== VIDEO (LINK) ==========
-  - name: "videos"
-    label: "🎬 Video (URL)"
+  - name: "videos_list"
+    label: "🎬 Danh sách Video"
     folder: "admin/data/videos"
     create: true
     format: "json"
@@ -337,12 +337,12 @@ collections:
             fields:
               - { label: "Tiêu đề tab", name: "title", widget: "string" }
               - label: "Danh sách video"
-                name: "videos"
+                name: "videos_items"
                 widget: "list"
                 field: { label: "Video URL", name: "video_url", widget: "string" }
 
   # ========== THƯ VIỆN ẢNH ==========
-  - name: "gallery"
+  - name: "gallery_collection"
     label: "🖼️ Thư Viện Ảnh"
     label_singular: "Ảnh"
     folder: "admin/data/gallery"
