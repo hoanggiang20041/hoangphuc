@@ -1,36 +1,66 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CMS | MC Hoàng Phúc</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body style="margin:0; background:#0b0b0b;">
-  <!-- Div rỗng để CMS mount vào -->
-  <div id="nc-root"></div>
-
-  <!-- Thư viện hỗ trợ -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+  <title>Content Manager</title>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  
+</head>
+<body>
   <script>
-    // Ép buộc xóa mọi nội dung cũ để tránh lỗi React removeChild
-    document.addEventListener('DOMContentLoaded', () => {
-      window.CMS_MANUAL_INIT = true;
-      
-      // Thêm tham số timestamp để chống cache config.yml
-      fetch('./config.yml?t=' + Date.now())
-        .then(r => r.text())
-        .then(cfg => {
-          const config = jsyaml.load(cfg);
-          console.log("CMS Config loaded successfully");
-          window.CMS.init({ config });
-        })
-        .catch(err => {
-          console.error("CMS Config Error:", err);
-          alert("Không thể tải file cấu hình. Vui lòng kiểm tra lại file config.yml");
-        });
+    CMS.init({
+      config: {
+        backend: {
+          name: 'github',
+          repo: 'hoanggiang20041/hoangphuc',
+          branch: 'main',
+          base_url: 'https://hoangphuc-56rg.vercel.app',
+          auth_endpoint: 'api/auth',
+        },
+        media_folder: 'img',
+        public_folder: '/img',
+        collections: [
+          {
+            name: 'col_settings',
+            label: 'Cấu hình Website',
+            files: [
+              {
+                name: 'file_site_content',
+                label: 'Thông tin chung',
+                file: 'admin/data/content.json',
+                fields: [
+                  { label: 'Tiêu đề website', name: 'title', widget: 'string' },
+                  { label: 'Mô tả website', name: 'description', widget: 'text' },
+                  { label: 'Số điện thoại', name: 'phone', widget: 'string' },
+                  { label: 'Email', name: 'email', widget: 'string' }
+                ]
+              }
+            ]
+          },
+          {
+            name: 'col_home',
+            label: 'Trang Chủ',
+            files: [
+              {
+                name: 'file_home_content',
+                label: 'Nội dung Trang Chủ',
+                file: 'admin/data/home.json',
+                fields: [
+                  { 
+                    label: 'Phần Giới Thiệu', 
+                    name: 'intro', 
+                    widget: 'object',
+                    fields: [
+                      { label: 'Tiêu đề', name: 'title', widget: 'string' },
+                      { label: 'Câu trích dẫn', name: 'quote', widget: 'text' }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     });
   </script>
 </body>
