@@ -9,35 +9,35 @@ media_folder: "img"
 public_folder: "/img"
 
 collections:
-  # ========== CẤU HÌNH WEBSITE ==========
+  # ========== CAU HINH WEBSITE ==========
   - name: "settings"
-    label: "⚙️ Cấu hình Website"
+    label: "Cau hinh Website"
     files:
       - name: "site"
-        label: "Thông tin chung"
+        label: "Thong tin chung"
         file: "admin/data/content.json"
         format: "json"
         fields:
-          - label: "Thông tin chung"
+          - label: "Thong tin chung"
             name: "site"
             widget: "object"
             fields:
-              - label: "Tiêu đề website"
+              - label: "Tieu de website"
                 name: "title"
                 widget: "string"
-              - label: "Mô tả website"
+              - label: "Mo ta website"
                 name: "description"
                 widget: "text"
-              - label: "Số điện thoại"
+              - label: "So dien thoai"
                 name: "phone"
                 widget: "string"
               - label: "Email"
                 name: "email"
                 widget: "string"
-              - label: "Câu trích dẫn"
+              - label: "Cau trich dan"
                 name: "quote"
                 widget: "text"
-              - label: "Mạng xã hội"
+              - label: "Mang xa hoi"
                 name: "social"
                 widget: "object"
                 fields:
@@ -54,333 +54,333 @@ collections:
                     widget: "string"
                     required: false
 
-  # ========== TRANG CHỦ ==========
+  # ========== TRANG CHU ==========
   - name: "home"
-    label: "Trang Chủ"
+    label: "Trang Chu"
     files:
       - name: "home_content"
-        label: "Nội dung Trang Chủ"
+        label: "Noi dung Trang Chu"
         file: "admin/data/home.json"
         format: "json"
         fields:
-          - label: "Phần Giới Thiệu"
+          - label: "Phan Gioi Thieu"
             name: "intro"
             widget: "object"
             fields:
-              - label: "Ảnh đại diện (upload)"
+              - label: "Anh dai dien (upload)"
                 name: "image"
                 widget: "image"
                 required: false
-              - label: "Ảnh đại diện (URL)"
+              - label: "Anh dai dien (URL)"
                 name: "image_url"
                 widget: "string"
                 required: false
-              - label: "Tiêu đề"
+              - label: "Tieu de"
                 name: "title"
                 widget: "string"
-              - label: "Các vai trò"
+              - label: "Cac vai tro"
                 name: "roles"
                 widget: "list"
                 field:
-                  label: "Vai trò"
+                  label: "Vai tro"
                   name: "role"
                   widget: "string"
-              - label: "Câu trích dẫn"
+              - label: "Cau trich dan"
                 name: "quote"
                 widget: "text"
           
-          - label: "Phần Kỹ Năng"
+          - label: "Phan Ky Nang"
             name: "home_skills"
             widget: "object"
             fields:
-              - label: "Tiêu đề"
+              - label: "Tieu de"
                 name: "title"
                 widget: "string"
-              - label: "Mô tả"
+              - label: "Mo ta"
                 name: "subtitle"
                 widget: "string"
-              - label: "Ảnh (upload)"
+              - label: "Anh (upload)"
                 name: "image"
                 widget: "image"
                 required: false
-              - label: "Ảnh (URL)"
+              - label: "Anh (URL)"
                 name: "image_url"
                 widget: "string"
                 required: false
-              - label: "Các kỹ năng"
+              - label: "Cac ky nang"
                 name: "items"
                 widget: "list"
                 fields:
-                  - label: "Tiêu đề kỹ năng"
+                  - label: "Tieu de ky nang"
                     name: "title"
                     widget: "string"
-                  - label: "Mô tả"
+                  - label: "Mo ta"
                     name: "description"
                     widget: "text"
                   - label: "Icon (Font Awesome class)"
                     name: "icon"
                     widget: "string"
-                    hint: "Ví dụ: fas fa-microphone"
-                  - label: "Link chi tiết"
+                    hint: "Vi du: fas fa-microphone"
+                  - label: "Link chi tiet"
                     name: "link"
                     widget: "string"
 
-  # ========== TRANG GIỚI THIỆU ==========
+  # ========== TRANG GIOI THIEU ==========
   - name: "about"
-    label: "👤 Trang Giới Thiệu"
+    label: "Trang Gioi Thieu"
     files:
       - name: "about_content"
-        label: "Nội dung Trang Giới Thiệu"
+        label: "Noi dung Trang Gioi Thieu"
         file: "admin/data/about.json"
         format: "json"
         fields:
-          - label: "Phần Giới Thiệu"
+          - label: "Phan Gioi Thieu"
             name: "intro"
             widget: "object"
             fields:
-              - label: "Tiêu đề"
+              - label: "Tieu de"
                 name: "title"
                 widget: "string"
-              - label: "Câu trích dẫn"
+              - label: "Cau trich dan"
                 name: "quote"
                 widget: "text"
-              - label: "Ảnh chính (upload)"
+              - label: "Anh chinh (upload)"
                 name: "main_image"
                 widget: "image"
                 required: false
-              - label: "Ảnh chính (URL)"
+              - label: "Anh chinh (URL)"
                 name: "main_image_url"
                 widget: "string"
                 required: false
-              - label: "Mô tả"
+              - label: "Mo ta"
                 name: "description"
                 widget: "text"
-              - label: "Ảnh phụ 1 (upload)"
+              - label: "Anh phu 1 (upload)"
                 name: "gallery_image_1"
                 widget: "image"
                 required: false
-              - label: "Ảnh phụ 1 (URL)"
+              - label: "Anh phu 1 (URL)"
                 name: "gallery_image_1_url"
                 widget: "string"
                 required: false
-              - label: "Ảnh phụ 2 (upload)"
+              - label: "Anh phu 2 (upload)"
                 name: "gallery_image_2"
                 widget: "image"
                 required: false
-              - label: "Ảnh phụ 2 (URL)"
+              - label: "Anh phu 2 (URL)"
                 name: "gallery_image_2_url"
                 widget: "string"
                 required: false
-              - label: "Thông tin liên hệ"
+              - label: "Thong tin lien he"
                 name: "contact_info"
                 widget: "object"
                 fields:
-                  - label: "Họ và tên"
+                  - label: "Ho va ten"
                     name: "name"
                     widget: "string"
-                  - label: "Số điện thoại"
+                  - label: "So dien thoai"
                     name: "phone"
                     widget: "string"
-                  - label: "Chiều cao"
+                  - label: "Chieu cao"
                     name: "height"
                     widget: "string"
-                  - label: "Khu vực"
+                  - label: "Khu vuc"
                     name: "region"
                     widget: "string"
                   - label: "Email"
                     name: "email"
                     widget: "string"
           
-          - label: "Phần Câu Chuyện"
+          - label: "Phan Cau Chuyen"
             name: "story"
             widget: "object"
             fields:
-              - label: "Tiêu đề"
+              - label: "Tieu de"
                 name: "title"
                 widget: "string"
-              - label: "Phần 1"
+              - label: "Phan 1"
                 name: "part_1"
                 widget: "text"
-              - label: "Phần 2"
+              - label: "Phan 2"
                 name: "part_2"
                 widget: "text"
           
-          - label: "Phần Học Viện"
+          - label: "Phan Hoc Vien"
             name: "academy"
             widget: "object"
             fields:
-              - label: "Tiêu đề"
+              - label: "Tieu de"
                 name: "title"
                 widget: "string"
-              - label: "Khóa học"
+              - label: "Khoa hoc"
                 name: "course"
                 widget: "string"
-              - label: "Mô tả"
+              - label: "Mo ta"
                 name: "description"
                 widget: "text"
 
-          - label: "Slideshow (Ảnh/Video bằng URL)"
+          - label: "Slideshow (Anh/Video bang URL)"
             name: "slideshow"
             widget: "list"
             fields:
-              - label: "Loại"
+              - label: "Loai"
                 name: "type"
                 widget: "select"
                 options:
-                  - { label: "Ảnh", value: "image" }
+                  - { label: "Anh", value: "image" }
                   - { label: "Video", value: "video" }
               - label: "URL"
                 name: "url"
                 widget: "string"
-              - label: "Ảnh thumbnail (upload)"
+              - label: "Anh thumbnail (upload)"
                 name: "thumb"
                 widget: "image"
                 required: false
-              - label: "Ảnh thumbnail (URL)"
+              - label: "Anh thumbnail (URL)"
                 name: "thumb_url"
                 widget: "string"
                 required: false
-              - label: "Chú thích"
+              - label: "Chu thich"
                 name: "caption"
                 widget: "string"
                 required: false
 
-  # ========== THÀNH PHẦN CÓ THỂ TÁI SỬ DỤNG ==========
+  # ========== THANH PHAN CO THE TAI SU DUNG ==========
   - name: "components"
-    label: "🎨 Thành Phần"
+    label: "Thanh Phan"
     files:
       - name: "footer"
         label: "Footer"
         file: "admin/data/footer.json"
         format: "json"
         fields:
-          - label: "Nội dung Footer"
+          - label: "Noi dung Footer"
             name: "footer"
             widget: "object"
             fields:
-              - label: "Bản quyền"
+              - label: "Ban quyen"
                 name: "copyright"
                 widget: "string"
 
   # ========== VIDEO (LINK) ==========
   - name: "videos_list"
-    label: "🎬 Danh sách Video"
+    label: "Danh sach Video"
     folder: "admin/data/videos"
     create: true
     format: "json"
     slug: "{{slug}}"
     fields:
-      - { label: "Tiêu đề", name: "title", widget: "string" }
-      - { label: "Video URL (YouTube/Vimeo/MP4)", name: "video_url", widget: "string", hint: "Dán link YouTube hoặc link file .mp4 từ bên ngoài vào đây." }
-      - { label: "Nền tảng", name: "platform", widget: "select", required: false, options: ["youtube", "vimeo", "other"] }
+      - { label: "Tieu de", name: "title", widget: "string" }
+      - { label: "Video URL (YouTube/Vimeo/MP4)", name: "video_url", widget: "string", hint: "Dan link YouTube hoac link file .mp4 tu ben ngoai vao day." }
+      - { label: "Nen tang", name: "platform", widget: "select", required: false, options: ["youtube", "vimeo", "other"] }
       - { label: "Thumbnail (upload)", name: "thumbnail", widget: "image", required: false }
       - { label: "Thumbnail (URL)", name: "thumbnail_url", widget: "string", required: false }
-      - { label: "Mô tả", name: "description", widget: "text", required: false }
-      - { label: "Danh mục", name: "category", widget: "string", required: false }
-      - { label: "Ngày", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
+      - { label: "Mo ta", name: "description", widget: "text", required: false }
+      - { label: "Danh muc", name: "category", widget: "string", required: false }
+      - { label: "Ngay", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
 
-  # ========== KỸ NĂNG (TRANG CHI TIẾT) ==========
+  # ========== KY NANG (TRANG CHI TIET) ==========
   - name: "skills_pages"
-    label: "🧩 Trang Kỹ Năng"
+    label: "Trang Ky Nang"
     files:
       - name: "skill_dan_chuong_trinh"
-        label: "Dẫn Chương Trình"
+        label: "Dan Chuong Trinh"
         file: "admin/data/skills/dan-chuong-trinh.json"
         format: "json"
         fields:
-          - { label: "Tiêu đề trang", name: "title", widget: "string" }
-          - label: "Các phân đoạn"
+          - { label: "Tieu de trang", name: "title", widget: "string" }
+          - label: "Cac phan doan"
             name: "sections"
             widget: "list"
             fields:
-              - { label: "ID (neo cuộn)", name: "id", widget: "string", required: false }
-              - { label: "Tiêu đề", name: "title", widget: "string" }
-              - { label: "Kiểu", name: "kind", widget: "select", options: ["slideshow", "videos"], default: "slideshow" }
-              - label: "Nội dung"
+              - { label: "ID (neo cuon)", name: "id", widget: "string", required: false }
+              - { label: "Tieu de", name: "title", widget: "string" }
+              - { label: "Kieu", name: "kind", widget: "select", options: ["slideshow", "videos"], default: "slideshow" }
+              - label: "Noi dung"
                 name: "items"
                 widget: "list"
                 fields:
-                  - { label: "Loại", name: "type", widget: "select", options: ["image", "video"], default: "image" }
-                  - { label: "Ảnh (upload)", name: "image", widget: "image", required: false }
+                  - { label: "Loai", name: "type", widget: "select", options: ["image", "video"], default: "image" }
+                  - { label: "Anh (upload)", name: "image", widget: "image", required: false }
                   - { label: "URL", name: "url", widget: "string", required: false }
-                  - { label: "Chú thích", name: "caption", widget: "string", required: false }
+                  - { label: "Chu thich", name: "caption", widget: "string", required: false }
       - name: "skill_host_livestream"
         label: "Host Livestream"
         file: "admin/data/skills/host-livestream.json"
         format: "json"
         fields:
-          - { label: "Tiêu đề trang", name: "title", widget: "string" }
-          - label: "Các phân đoạn"
+          - { label: "Tieu de trang", name: "title", widget: "string" }
+          - label: "Cac phan doan"
             name: "sections"
             widget: "list"
             fields:
-              - { label: "ID (neo cuộn)", name: "id", widget: "string", required: false }
-              - { label: "Tiêu đề", name: "title", widget: "string", required: false }
-              - { label: "Kiểu", name: "kind", widget: "select", options: ["slideshow", "videos"], default: "slideshow" }
-              - label: "Nội dung"
+              - { label: "ID (neo cuon)", name: "id", widget: "string", required: false }
+              - { label: "Tieu de", name: "title", widget: "string", required: false }
+              - { label: "Kieu", name: "kind", widget: "select", options: ["slideshow", "videos"], default: "slideshow" }
+              - label: "Noi dung"
                 name: "items"
                 widget: "list"
                 fields:
-                  - { label: "Loại", name: "type", widget: "select", options: ["image", "video"], default: "image" }
-                  - { label: "Ảnh (upload)", name: "image", widget: "image", required: false }
+                  - { label: "Loai", name: "type", widget: "select", options: ["image", "video"], default: "image" }
+                  - { label: "Anh (upload)", name: "image", widget: "image", required: false }
                   - { label: "URL", name: "url", widget: "string", required: false }
-                  - { label: "Chú thích", name: "caption", widget: "string", required: false }
+                  - { label: "Chu thich", name: "caption", widget: "string", required: false }
       - name: "skill_voice"
-        label: "Voice (Lồng Tiếng)"
+        label: "Voice (Long Tieng)"
         file: "admin/data/skills/voice.json"
         format: "json"
         fields:
-          - { label: "Tiêu đề trang", name: "title", widget: "string" }
+          - { label: "Tieu de trang", name: "title", widget: "string" }
           - label: "Tabs"
             name: "tabs"
             widget: "list"
             fields:
-              - { label: "Tiêu đề tab", name: "title", widget: "string" }
-              - label: "Danh sách video"
+              - { label: "Tieu de tab", name: "title", widget: "string" }
+              - label: "Danh sach video"
                 name: "videos_items"
                 widget: "list"
                 field: { label: "Video URL", name: "video_url", widget: "string" }
 
-  # ========== THƯ VIỆN ẢNH ==========
+  # ========== THU VIEN ANH ==========
   - name: "gallery_collection"
-    label: "🖼️ Thư Viện Ảnh"
-    label_singular: "Ảnh"
+    label: "Thu Vien Anh"
+    label_singular: "Anh"
     folder: "admin/data/gallery"
     create: true
     format: "json"
     slug: "{{slug}}"
     fields:
-      - label: "Tiêu đề"
+      - label: "Tieu de"
         name: "title"
         widget: "string"
-      - label: "Ảnh (upload)"
+      - label: "Anh (upload)"
         name: "image"
         widget: "image"
         required: false
         media_folder: "img"
         public_folder: "/img"
-      - label: "Ảnh (URL)"
+      - label: "Anh (URL)"
         name: "image_url"
         widget: "string"
         required: false
-      - label: "Mô tả"
+      - label: "Mo ta"
         name: "description"
         widget: "text"
         required: false
-      - label: "Danh mục"
+      - label: "Danh muc"
         name: "category"
         widget: "select"
         options:
-          - label: "Sự kiện"
+          - label: "Su kien"
             value: "event"
-          - label: "Tiệc cưới"
+          - label: "Tiec cuoi"
             value: "wedding"
           - label: "Livestream"
             value: "livestream"
-          - label: "Khác"
+          - label: "Khac"
             value: "other"
         required: false
-      - label: "Ngày"
+      - label: "Ngay"
         name: "date"
         widget: "datetime"
         format: "YYYY-MM-DD"
