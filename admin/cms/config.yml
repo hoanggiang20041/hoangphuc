@@ -10,10 +10,10 @@ public_folder: "/img"
 
 collections:
   # ========== CAU HINH WEBSITE ==========
-  - name: "settings"
+  - name: "col_settings"
     label: "Cau hinh Website"
     files:
-      - name: "site"
+      - name: "file_site_content"
         label: "Thong tin chung"
         file: "admin/data/content.json"
         format: "json"
@@ -55,10 +55,10 @@ collections:
                     required: false
 
   # ========== TRANG CHU ==========
-  - name: "home"
+  - name: "col_home"
     label: "Trang Chu"
     files:
-      - name: "home_content"
+      - name: "file_home_content"
         label: "Noi dung Trang Chu"
         file: "admin/data/home.json"
         format: "json"
@@ -126,10 +126,10 @@ collections:
                     widget: "string"
 
   # ========== TRANG GIOI THIEU ==========
-  - name: "about"
+  - name: "col_about"
     label: "Trang Gioi Thieu"
     files:
-      - name: "about_content"
+      - name: "file_about_content"
         label: "Noi dung Trang Gioi Thieu"
         file: "admin/data/about.json"
         format: "json"
@@ -246,10 +246,10 @@ collections:
                 required: false
 
   # ========== THANH PHAN CO THE TAI SU DUNG ==========
-  - name: "components"
+  - name: "col_components"
     label: "Thanh Phan"
     files:
-      - name: "footer"
+      - name: "file_footer_content"
         label: "Footer"
         file: "admin/data/footer.json"
         format: "json"
@@ -263,7 +263,7 @@ collections:
                 widget: "string"
 
   # ========== VIDEO (LINK) ==========
-  - name: "videos_list"
+  - name: "col_videos_list"
     label: "Danh sach Video"
     folder: "admin/data/videos"
     create: true
@@ -280,10 +280,10 @@ collections:
       - { label: "Ngay", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
 
   # ========== KY NANG (TRANG CHI TIET) ==========
-  - name: "skills_pages"
+  - name: "col_skills_pages"
     label: "Trang Ky Nang"
     files:
-      - name: "skill_dan_chuong_trinh"
+      - name: "file_skill_dan_chuong_trinh"
         label: "Dan Chuong Trinh"
         file: "admin/data/skills/dan-chuong-trinh.json"
         format: "json"
@@ -304,7 +304,7 @@ collections:
                   - { label: "Anh (upload)", name: "image", widget: "image", required: false }
                   - { label: "URL", name: "url", widget: "string", required: false }
                   - { label: "Chu thich", name: "caption", widget: "string", required: false }
-      - name: "skill_host_livestream"
+      - name: "file_skill_host_livestream"
         label: "Host Livestream"
         file: "admin/data/skills/host-livestream.json"
         format: "json"
@@ -325,7 +325,7 @@ collections:
                   - { label: "Anh (upload)", name: "image", widget: "image", required: false }
                   - { label: "URL", name: "url", widget: "string", required: false }
                   - { label: "Chu thich", name: "caption", widget: "string", required: false }
-      - name: "skill_voice"
+      - name: "file_skill_voice"
         label: "Voice (Long Tieng)"
         file: "admin/data/skills/voice.json"
         format: "json"
@@ -342,7 +342,7 @@ collections:
                 field: { label: "Video URL", name: "video_url", widget: "string" }
 
   # ========== THU VIEN ANH ==========
-  - name: "gallery_collection"
+  - name: "col_gallery_collection"
     label: "Thu Vien Anh"
     label_singular: "Anh"
     folder: "admin/data/gallery"
