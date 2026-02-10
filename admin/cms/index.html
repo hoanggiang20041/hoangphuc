@@ -3,65 +3,73 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager</title>
+  <title>CMS | MC Hoàng Phúc</title>
+  <!-- Load Decap CMS via CDN -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </head>
 <body>
   <script>
-    CMS.init({
-      config: {
-        backend: {
-          name: 'github',
-          repo: 'hoanggiang20041/hoangphuc',
-          branch: 'main',
-          base_url: 'https://hoangphuc-56rg.vercel.app',
-          auth_endpoint: 'api/auth',
-        },
-        media_folder: 'img',
-        public_folder: '/img',
-        collections: [
-          {
-            name: 'col_settings',
-            label: 'Cấu hình Website',
-            files: [
+    // Chỉ khởi tạo khi script Decap đã tải xong
+    window.onload = () => {
+      if (window.CMS) {
+        window.CMS.init({
+          config: {
+            backend: {
+              name: 'github',
+              repo: 'hoanggiang20041/hoangphuc',
+              branch: 'main',
+              base_url: 'https://hoangphuc-56rg.vercel.app',
+              auth_endpoint: 'api/auth',
+            },
+            media_folder: 'img',
+            public_folder: '/img',
+            collections: [
               {
-                name: 'file_site_content',
-                label: 'Thông tin chung',
-                file: 'admin/data/content.json',
-                fields: [
-                  { label: 'Tiêu đề website', name: 'title', widget: 'string' },
-                  { label: 'Mô tả website', name: 'description', widget: 'text' },
-                  { label: 'Số điện thoại', name: 'phone', widget: 'string' },
-                  { label: 'Email', name: 'email', widget: 'string' }
-                ]
-              }
-            ]
-          },
-          {
-            name: 'col_home',
-            label: 'Trang Chủ',
-            files: [
-              {
-                name: 'file_home_content',
-                label: 'Nội dung Trang Chủ',
-                file: 'admin/data/home.json',
-                fields: [
-                  { 
-                    label: 'Phần Giới Thiệu', 
-                    name: 'intro', 
-                    widget: 'object',
+                name: 'col_settings',
+                label: 'Cấu hình Website',
+                files: [
+                  {
+                    name: 'file_site_content',
+                    label: 'Thông tin chung',
+                    file: 'admin/data/content.json',
                     fields: [
-                      { label: 'Tiêu đề', name: 'title', widget: 'string' },
-                      { label: 'Câu trích dẫn', name: 'quote', widget: 'text' }
+                      { label: 'Tiêu đề website', name: 'title', widget: 'string' },
+                      { label: 'Mô tả website', name: 'description', widget: 'text' },
+                      { label: 'Số điện thoại', name: 'phone', widget: 'string' },
+                      { label: 'Email', name: 'email', widget: 'string' }
+                    ]
+                  }
+                ]
+              },
+              {
+                name: 'col_home',
+                label: 'Trang Chủ',
+                files: [
+                  {
+                    name: 'file_home_content',
+                    label: 'Nội dung Trang Chủ',
+                    file: 'admin/data/home.json',
+                    fields: [
+                      { 
+                        label: 'Phần Giới Thiệu', 
+                        name: 'intro', 
+                        widget: 'object',
+                        fields: [
+                          { label: 'Tiêu đề', name: 'title', widget: 'string' },
+                          { label: 'Câu trích dẫn', name: 'quote', widget: 'text' }
+                        ]
+                      }
                     ]
                   }
                 ]
               }
             ]
           }
-        ]
+        });
+      } else {
+        document.body.innerHTML = '<h1>Lỗi: Không thể tải Decap CMS từ CDN.</h1>';
       }
-    });
+    };
   </script>
 </body>
 </html>
