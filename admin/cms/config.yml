@@ -90,7 +90,7 @@ collections:
                 widget: "text"
           
           - label: "Phần Kỹ Năng"
-            name: "skills"
+            name: "home_skills"
             widget: "object"
             fields:
               - label: "Tiêu đề"
