@@ -38,7 +38,8 @@
   </div>
 
   <div class="container">
-    <div id="view-login" class="card hidden">
+    <!-- Login View -->
+    <div id="view-login" class="card">
       <h2>Đăng nhập quản trị</h2>
       <p style="color: #aaa;">Sử dụng Mật khẩu hoặc Magic Link để vào hệ thống.</p>
       <label>Email Admin</label>
@@ -47,11 +48,12 @@
       <input type="password" id="admin-password" placeholder="Nhập mật khẩu">
       <div style="display: flex; gap: 10px;">
         <button class="btn btn-gold" id="btn-login-pw">Đăng nhập ngay</button>
-        <button class="btn btn-outline" id="btn-login">Gửi Magic Link</button>
+        <button class="btn btn-outline" id="btn-login-magic">Gửi Magic Link</button>
       </div>
       <div id="login-msg"></div>
     </div>
 
+    <!-- Main Dashboard View -->
     <div id="view-admin" class="hidden">
       <div class="tabs" id="tab-list">
         <button class="tab active" data-file="index.html">Trang Chủ (Tự động đồng bộ)</button>
@@ -76,7 +78,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const ADMIN_EMAILS = ["giang10012004@gmail.com", "mchoangphuc2207@gmail.com"];
     const firebaseConfig = {
@@ -94,6 +96,12 @@
     let currentFile = "index.html";
     let htmlDoc = null;
 
+    // --- UI HELPERS ---
+    const showMsg = (id, text, type) => {
+      const el = document.getElementById(id);
+      el.innerHTML = `<p class="status-msg status-${type}">${text}</p>`;
+    };
+
     // --- AUTH ---
     const checkLoginLink = async () => {
       if (isSignInWithEmailLink(auth, window.location.href)) {
@@ -103,34 +111,62 @@
           await signInWithEmailLink(auth, email, window.location.href);
           window.localStorage.removeItem('emailForSignIn');
           window.history.replaceState({}, document.title, window.location.pathname);
-        } catch (e) { alert(e.message); }
+        } catch (e) { alert('Lỗi: ' + e.message); }
       }
     };
 
     onAuthStateChanged(auth, (user) => {
-      if (user && ADMIN_EMAILS.includes(user.email)) {
+      if (user) {
+        if (!ADMIN_EMAILS.includes(user.email)) {
+          alert("Email " + user.email + " không có quyền truy cập Admin!");
+          signOut(auth);
+          return;
+        }
         document.getElementById('view-login').classList.add('hidden');
         document.getElementById('view-admin').classList.remove('hidden');
         document.getElementById('auth-status').innerHTML = `
           <span style="font-size: 0.8rem; margin-right: 1rem;">${user.email}</span>
-          <button class="btn btn-outline btn-sm" onclick="auth.signOut()">Thoát</button>
+          <button class="btn btn-outline btn-sm" id="btn-logout">Thoát</button>
         `;
+        document.getElementById('btn-logout').onclick = () => signOut(auth);
         loadPage(currentFile);
       } else {
-        if (user) { alert("Không có quyền Admin!"); auth.signOut(); }
         document.getElementById('view-login').classList.remove('hidden');
         document.getElementById('view-admin').classList.add('hidden');
+        document.getElementById('auth-status').innerHTML = '';
       }
     });
 
-    document.getElementById('btn-login').onclick = async () => {
+    // Đăng nhập bằng mật khẩu
+    document.getElementById('btn-login-pw').onclick = async () => {
       const email = document.getElementById('admin-email').value;
+      const password = document.getElementById('admin-password').value;
+      const msg = document.getElementById('login-msg');
+      
+      if (!email || !password) return alert('Vui lòng nhập đầy đủ email và mật khẩu!');
+      if (!ADMIN_EMAILS.includes(email)) return alert('Email không có quyền truy cập!');
+      
+      msg.innerHTML = '<p class="status-msg">Đang đăng nhập...</p>';
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        showMsg('login-msg', 'Lỗi đăng nhập: ' + error.message, 'error');
+      }
+    };
+
+    // Đăng nhập bằng Magic Link
+    document.getElementById('btn-login-magic').onclick = async () => {
+      const email = document.getElementById('admin-email').value;
+      if (!email) return alert('Vui lòng nhập email!');
       if (!ADMIN_EMAILS.includes(email)) return alert('Email không hợp lệ!');
+      
       try {
         await sendSignInLinkToEmail(auth, email, { url: window.location.href, handleCodeInApp: true });
         window.localStorage.setItem('emailForSignIn', email);
-        document.getElementById('login-msg').innerHTML = '<p class="status-msg status-success">Đã gửi link đăng nhập!</p>';
-      } catch (e) { alert(e.message); }
+        showMsg('login-msg', 'Đã gửi link đăng nhập! Kiểm tra email của bạn.', 'success');
+      } catch (e) { 
+        showMsg('login-msg', 'Lỗi: ' + e.message, 'error');
+      }
     };
 
     // --- HTML EDITOR ---
@@ -182,6 +218,8 @@
         } else if (type === 'a') {
           fieldGroup.innerHTML += `<label>Text liên kết:</label><input type="text" value="${el.innerText}" oninput="updateText(this.value, ${index})">`;
           fieldGroup.innerHTML += `<label>Đường dẫn (href):</label><input type="text" value="${el.getAttribute('href')}" oninput="updateAttr(${index}, 'href', this.value)">`;
+        } else if (type === 'iframe') {
+          fieldGroup.innerHTML += `<label>Link Video (YouTube/Drive):</label><input type="text" value="${el.getAttribute('src')}" oninput="updateAttr(${index}, 'src', this.value)">`;
         } else if (el.innerText.length > 100 || type === 'p') {
           const area = document.createElement('textarea');
           area.value = el.innerText;
@@ -207,7 +245,8 @@
     window.updateImgSrc = (val, idx) => {
       const el = htmlDoc.querySelectorAll('[data-admin-editable]')[idx];
       el.setAttribute('src', val);
-      document.getElementById(`prev-${idx}`).src = val;
+      const prev = document.getElementById(`prev-${idx}`);
+      if (prev) prev.src = val;
     };
 
     window.handleImgUpload = async (input, idx) => {
@@ -249,8 +288,13 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token: idToken, path: currentFile, content: fullHtml })
         });
-        const result = await response.json();
-        if (result.success) status.innerHTML = '<p class="status-msg status-success">Đã cập nhật HTML thành công!</p>';
+        const responseText = await response.text();
+        let result;
+        try { result = JSON.parse(responseText); } catch(e) { 
+          status.innerHTML = `<p class="status-error">Lỗi Server (${response.status}): ${responseText.substring(0,100)}</p>`;
+          return;
+        }
+        if (response.ok) status.innerHTML = '<p class="status-msg status-success">Đã cập nhật HTML thành công!</p>';
         else status.innerHTML = `<p class="status-error">Lỗi: ${result.error}</p>`;
       } catch (e) { status.innerHTML = `<p class="status-error">Lỗi kết nối: ${e.message}</p>`; }
     };
