@@ -105,7 +105,44 @@ export default async function handler(req, res) {
       })
     });
 
-    if (putResp.ok) return res.status(200).json({ success: true, path: path });
+    if (putResp.ok) {
+      // 4) Tự động đồng bộ hóa nếu là file index
+      const syncMap = {
+        'index.html': 'hoangphuc/index.html',
+        'hoangphuc/index.html': 'index.html'
+      };
+
+      if (syncMap[path]) {
+        const syncPath = syncMap[path];
+        const syncUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${syncPath}`;
+        
+        // Lấy SHA của file đồng bộ
+        const syncFileResp = await fetch(syncUrl, {
+          headers: { Authorization: `Bearer ${config.githubToken}` },
+        });
+        
+        let syncSha;
+        if (syncFileResp.status === 200) {
+          const syncFileData = await syncFileResp.json();
+          syncSha = syncFileData.sha;
+        }
+
+        await fetch(syncUrl, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${config.githubToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: `Auto-sync: ${syncPath} from ${path} by ${email}`,
+            content: base64Content,
+            sha: syncSha,
+            branch: 'main',
+          })
+        });
+      }
+      return res.status(200).json({ success: true, path: path });
+    }
     
     const errData = await putResp.json();
     return res.status(500).json({ error: "GitHub API Error: " + errData.message });

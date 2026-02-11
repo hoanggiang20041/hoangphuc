@@ -40,16 +40,21 @@
   <div class="container">
     <div id="view-login" class="card hidden">
       <h2>Đăng nhập quản trị</h2>
-      <p style="color: #aaa;">Chỉ dành cho Admin. Magic Link sẽ được gửi qua email.</p>
-      <input type="email" id="admin-email" placeholder="admin@gmail.com">
-      <button class="btn btn-gold" id="btn-login">Gửi Magic Link</button>
+      <p style="color: #aaa;">Sử dụng Mật khẩu hoặc Magic Link để vào hệ thống.</p>
+      <label>Email Admin</label>
+      <input type="email" id="admin-email" placeholder="email-cua-ban@gmail.com">
+      <label>Mật khẩu (nếu có)</label>
+      <input type="password" id="admin-password" placeholder="Nhập mật khẩu">
+      <div style="display: flex; gap: 10px;">
+        <button class="btn btn-gold" id="btn-login-pw">Đăng nhập ngay</button>
+        <button class="btn btn-outline" id="btn-login">Gửi Magic Link</button>
+      </div>
       <div id="login-msg"></div>
     </div>
 
     <div id="view-admin" class="hidden">
       <div class="tabs" id="tab-list">
-        <button class="tab active" data-file="index.html">Trang Chủ (Root)</button>
-        <button class="tab" data-file="hoangphuc/index.html">Trang Chủ (Folder)</button>
+        <button class="tab active" data-file="index.html">Trang Chủ (Tự động đồng bộ)</button>
         <button class="tab" data-file="hoangphuc/about.html">Giới Thiệu</button>
         <button class="tab" data-file="skill/dan-chuong-trinh.html">Dẫn Chương Trình</button>
         <button class="tab" data-file="skill/host-livestream.html">Host Livestream</button>
