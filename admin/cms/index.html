@@ -4,72 +4,104 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CMS | MC Hoàng Phúc</title>
-  <!-- Load Decap CMS via jsdelivr (more stable in some regions) -->
-  <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.10.0/dist/decap-cms.js"></script>
 </head>
-<body>
+<body style="margin:0; background:#0b0b0b; color: white; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh;">
+  <div id="status">Đang tải hệ thống quản trị...</div>
+
   <script>
-    // Chỉ khởi tạo khi script Decap đã tải xong
-    window.onload = () => {
-      if (window.CMS) {
-        window.CMS.init({
-          config: {
-            backend: {
-              name: 'github',
-              repo: 'hoanggiang20041/hoangphuc',
-              branch: 'main',
-              base_url: 'https://hoangphuc-56rg.vercel.app',
-              auth_endpoint: 'api/auth',
-            },
-            media_folder: 'img',
-            public_folder: '/img',
-            collections: [
-              {
-                name: 'col_settings',
-                label: 'Cấu hình Website',
-                files: [
-                  {
-                    name: 'file_site_content',
-                    label: 'Thông tin chung',
-                    file: 'admin/data/content.json',
-                    fields: [
-                      { label: 'Tiêu đề website', name: 'title', widget: 'string' },
-                      { label: 'Mô tả website', name: 'description', widget: 'text' },
-                      { label: 'Số điện thoại', name: 'phone', widget: 'string' },
-                      { label: 'Email', name: 'email', widget: 'string' }
-                    ]
-                  }
-                ]
-              },
-              {
-                name: 'col_home',
-                label: 'Trang Chủ',
-                files: [
-                  {
-                    name: 'file_home_content',
-                    label: 'Nội dung Trang Chủ',
-                    file: 'admin/data/home.json',
-                    fields: [
-                      { 
-                        label: 'Phần Giới Thiệu', 
-                        name: 'intro', 
-                        widget: 'object',
-                        fields: [
-                          { label: 'Tiêu đề', name: 'title', widget: 'string' },
-                          { label: 'Câu trích dẫn', name: 'quote', widget: 'text' }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        });
-      } else {
-        document.body.innerHTML = '<h1>Lỗi: Không thể tải Decap CMS từ CDN.</h1>';
+    const cdns = [
+      "https://cdn.jsdelivr.net/npm/decap-cms@3.10.0/dist/decap-cms.js",
+      "https://unpkg.com/decap-cms@3.10.0/dist/decap-cms.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/decap-cms/3.0.12/decap-cms.js"
+    ];
+
+    let currentCdnIndex = 0;
+
+    function loadCMS() {
+      if (currentCdnIndex >= cdns.length) {
+        document.getElementById('status').innerHTML = '<h1 style="color: #ff4d4d">Lỗi: Không thể kết nối đến máy chủ thư viện.</h1><p>Vui lòng kiểm tra kết nối internet hoặc thử lại sau.</p>';
+        return;
       }
-    };
+
+      const script = document.createElement('script');
+      script.src = cdns[currentCdnIndex];
+      script.onload = initCMS;
+      script.onerror = () => {
+        console.warn("Failed to load CDN: " + cdns[currentCdnIndex]);
+        currentCdnIndex++;
+        loadCMS();
+      };
+      document.head.appendChild(script);
+    }
+
+    function initCMS() {
+      document.getElementById('status').style.display = 'none';
+      window.CMS.init({
+        config: {
+          backend: {
+            name: 'github',
+            repo: 'hoanggiang20041/hoangphuc',
+            branch: 'main',
+            base_url: 'https://hoangphuc-56rg.vercel.app',
+            auth_endpoint: 'api/auth',
+          },
+          media_folder: 'img',
+          public_folder: '/img',
+          collections: [
+            {
+              name: 'col_settings',
+              label: 'Cấu hình Website',
+              files: [
+                {
+                  name: 'file_site_content',
+                  label: 'Thông tin chung',
+                  file: 'admin/data/content.json',
+                  fields: [
+                    { label: 'Tiêu đề website', name: 'title', widget: 'string' },
+                    { label: 'Mô tả website', name: 'description', widget: 'text' },
+                    { label: 'Số điện thoại', name: 'phone', widget: 'string' },
+                    { label: 'Email', name: 'email', widget: 'string' }
+                  ]
+                }
+              ]
+            },
+            {
+              name: 'col_home',
+              label: 'Trang Chủ',
+              files: [
+                {
+                  name: 'file_home_content',
+                  label: 'Nội dung Trang Chủ',
+                  file: 'admin/data/home.json',
+                  fields: [
+                    { 
+                      label: 'Phần Giới Thiệu', 
+                      name: 'intro', 
+                      widget: 'object',
+                      fields: [
+                        { label: 'Tiêu đề', name: 'title', widget: 'string' },
+                        { label: 'Câu trích dẫn', name: 'quote', widget: 'text' }
+                      ]
+                    },
+                    {
+                      label: "Phan Ky Nang",
+                      name: "home_skills",
+                      widget: "object",
+                      fields: [
+                        { label: "Tieu de", name: "title", widget: "string" },
+                        { label: "Mo ta", name: "subtitle", widget: "string" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      });
+    }
+
+    loadCMS();
   </script>
 </body>
 </html>
