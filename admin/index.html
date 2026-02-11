@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | MC Hoàng Phúc</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #0b0b0b; --fg: #f5f5f5; --gold: #D4AF37; --card: #161616; --border: rgba(212,175,55,0.2); }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; }
+    .header { padding: 1rem 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(11,11,11,0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
+    .tab { padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--fg); cursor: pointer; white-space: nowrap; transition: 0.2s; }
+    .tab.active { background: var(--gold); color: #000; border-color: var(--gold); }
+    input, textarea { width: 100%; padding: 0.8rem; background: #000; border: 1px solid var(--border); border-radius: 6px; color: #fff; margin-bottom: 1rem; box-sizing: border-box; font-family: inherit; }
+    label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #aaa; }
+    .btn { padding: 0.8rem 1.5rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; }
+    .btn-gold { background: var(--gold); color: #000; }
+    .btn-gold:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: #fff; }
+    .hidden { display: none; }
+    .status-msg { margin-top: 1rem; padding: 1rem; border-radius: 6px; font-size: 0.9rem; }
+    .status-success { background: rgba(0,255,0,0.1); color: #4caf50; }
+    .status-error { background: rgba(255,0,0,0.1); color: #f44336; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div style="font-weight: 600;">MC HOÀNG PHÚC <span style="color: var(--gold); margin-left: 0.5rem; font-size: 0.8rem;">ADMIN</span></div>
+    <div id="auth-status"></div>
+  </div>
+
+  <div class="container">
+    <!-- Login View -->
+    <div id="view-login" class="card hidden">
+      <h2>Đăng nhập quản trị</h2>
+      <p style="color: #aaa; font-size: 0.9rem;">Hệ thống sẽ gửi link đăng nhập vào email của bạn.</p>
+      <label>Email Admin</label>
+      <input type="email" id="admin-email" placeholder="vi-du@gmail.com">
+      <button class="btn btn-gold" id="btn-login">Gửi Magic Link</button>
+      <div id="login-msg"></div>
+    </div>
+
+    <!-- Main Dashboard View -->
+    <div id="view-admin" class="hidden">
+      <div class="tabs" id="tab-list">
+        <button class="tab active" data-file="home.json">Trang Chủ</button>
+        <button class="tab" data-file="content.json">Thông Tin Chung</button>
+        <button class="tab" data-file="about.json">Giới Thiệu</button>
+      </div>
+
+      <div class="card">
+        <div id="editor-container">
+          <p>Đang tải nội dung...</p>
+        </div>
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+          <button class="btn btn-gold" id="btn-save">Lưu thay đổi lên GitHub</button>
+          <button class="btn btn-outline" id="btn-refresh">Tải lại</button>
+        </div>
+        <div id="save-status"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAIGdCJzDHVi0xhsz-y_FWhmk1b2InEFks",
+      authDomain: "mchoangphuc-c0922.firebaseapp.com",
+      projectId: "mchoangphuc-c0922",
+      storageBucket: "mchoangphuc-c0922.firebasestorage.app",
+      messagingSenderId: "940282310763",
+      appId: "1:940282310763:web:b8af0d089803f3f8a4012e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    let currentFile = "home.json";
+    let currentData = {};
+
+    // --- AUTH LOGIC ---
+    const checkLoginLink = async () => {
+      if (isSignInWithEmailLink(auth, window.location.href)) {
+        let email = window.localStorage.getItem('emailForSignIn');
+        if (!email) email = window.prompt('Vui lòng nhập email để xác nhận:');
+        try {
+          await signInWithEmailLink(auth, email, window.location.href);
+          window.localStorage.removeItem('emailForSignIn');
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (error) {
+          alert('Lỗi đăng nhập: ' + error.message);
+        }
+      }
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('view-login').classList.add('hidden');
+        document.getElementById('view-admin').classList.remove('hidden');
+        document.getElementById('auth-status').innerHTML = `
+          <span style="font-size: 0.8rem; margin-right: 1rem;">${user.email}</span>
+          <button class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="location.reload();">Thoát</button>
+        `;
+        loadData(currentFile);
+      } else {
+        document.getElementById('view-login').classList.remove('hidden');
+        document.getElementById('view-admin').classList.add('hidden');
+        document.getElementById('auth-status').innerHTML = '';
+      }
+    });
+
+    document.getElementById('btn-login').onclick = async () => {
+      const email = document.getElementById('admin-email').value;
+      if (!email) return alert('Nhập email!');
+      try {
+        await sendSignInLinkToEmail(auth, email, {
+          url: window.location.href,
+          handleCodeInApp: true,
+        });
+        window.localStorage.setItem('emailForSignIn', email);
+        document.getElementById('login-msg').innerHTML = '<p class="status-msg status-success">Link đăng nhập đã được gửi! Kiểm tra email của bạn.</p>';
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    // --- DATA LOGIC ---
+    async function loadData(file) {
+      const container = document.getElementById('editor-container');
+      container.innerHTML = '<p>Đang tải...</p>';
+      try {
+        // Đọc file từ GitHub trực tiếp để sửa
+        const resp = await fetch(`https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/admin/data/${file}`);
+        currentData = await resp.json();
+        renderEditor(currentData);
+      } catch (error) {
+        container.innerHTML = `<p class="status-error">Không tải được file ${file}. Lỗi: ${error.message}</p>`;
+      }
+    }
+
+    function renderEditor(data) {
+      const container = document.getElementById('editor-container');
+      container.innerHTML = '';
+      
+      // Đệ quy để tạo form cho JSON
+      function buildForm(obj, parentKey = '') {
+        for (const key in obj) {
+          const fullKey = parentKey ? `${parentKey}.${key}` : key;
+          const val = obj[key];
+          
+          if (typeof val === 'object' && !Array.isArray(val)) {
+            const div = document.createElement('div');
+            div.innerHTML = `<h3 style="margin-top: 1.5rem; color: var(--gold); border-bottom: 1px solid #333;">${key.toUpperCase()}</h3>`;
+            container.appendChild(div);
+            buildForm(val, fullKey);
+          } else if (Array.isArray(val)) {
+            // Đơn giản hóa: hiện text thô cho array
+            const label = document.createElement('label');
+            label.innerText = `${fullKey} (Danh sách - các mục cách nhau bằng dấu phẩy)`;
+            const input = document.createElement('input');
+            input.value = val.join(', ');
+            input.onchange = (e) => setDeepValue(currentData, fullKey, e.target.value.split(',').map(s => s.trim()));
+            container.appendChild(label);
+            container.appendChild(input);
+          } else {
+            const label = document.createElement('label');
+            label.innerText = fullKey;
+            if (val && val.length > 50) {
+              const textarea = document.createElement('textarea');
+              textarea.value = val;
+              textarea.onchange = (e) => setDeepValue(currentData, fullKey, e.target.value);
+              container.appendChild(label);
+              container.appendChild(textarea);
+            } else {
+              const input = document.createElement('input');
+              input.value = val;
+              input.onchange = (e) => setDeepValue(currentData, fullKey, e.target.value);
+              container.appendChild(label);
+              container.appendChild(input);
+            }
+          }
+        }
+      }
+      
+      buildForm(data);
+    }
+
+    function setDeepValue(obj, path, value) {
+      const parts = path.split('.');
+      let current = obj;
+      for (let i = 0; i < parts.length - 1; i++) {
+        current = current[parts[i]];
+      }
+      current[parts[parts.length - 1]] = value;
+    }
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.onclick = () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFile = tab.dataset.file;
+        loadData(currentFile);
+      };
+    });
+
+    document.getElementById('btn-save').onclick = async () => {
+      const status = document.getElementById('save-status');
+      status.innerHTML = '<p class="status-msg">Đang lưu lên GitHub...</p>';
+      
+      try {
+        const idToken = await auth.currentUser.getIdToken();
+        const response = await fetch('/api/save-content', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            token: idToken,
+            path: `admin/data/${currentFile}`,
+            content: currentData
+          })
+        });
+        
+        const result = await response.json();
+        if (response.ok) {
+          status.innerHTML = '<p class="status-msg status-success">Đã lưu thành công! Đợi 1-2 phút để web cập nhật.</p>';
+        } else {
+          status.innerHTML = `<p class="status-msg status-error">Lỗi: ${result.error}</p>`;
+        }
+      } catch (error) {
+        status.innerHTML = `<p class="status-msg status-error">Lỗi kết nối: ${error.message}</p>`;
+      }
+    };
+
+    checkLoginLink();
+  </script>
+</body>
+</html>
