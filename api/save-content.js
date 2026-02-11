@@ -1,80 +1,81 @@
-import { Octokit } from "@octokit/rest";
-
-// Cấu hình Admin Email Allowlist
+// Backend Gateway: Save content to GitHub using native fetch (Zero dependencies)
 const ADMIN_EMAILS = ["giang10012004@gmail.com", "mchoangphuc2207@gmail.com"];
 
 export default async function handler(req, res) {
-  // Cấu hình CORS
+  // CORS Headers
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
-  );
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
 
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  // Chỉ chấp nhận phương thức POST
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
   const { token, path, content } = req.body;
 
-  if (!token || !path || !content) {
-    return res.status(400).json({ error: "Thiếu dữ liệu gửi lên (token, path, hoặc content)." });
+  // Kiểm tra biến môi trường ngay lập tức
+  const config = {
+    firebaseKey: process.env.FIREBASE_API_KEY,
+    githubToken: process.env.GITHUB_TOKEN,
+    githubRepo: process.env.GITHUB_REPO
+  };
+
+  if (!config.firebaseKey || !config.githubToken || !config.githubRepo) {
+    return res.status(500).json({ 
+      error: "Server thiếu cấu hình biến môi trường (FIREBASE_API_KEY, GITHUB_TOKEN, hoặc GITHUB_REPO). Hãy kiểm tra Vercel Settings." 
+    });
   }
 
   try {
-    // 1. Xác thực Token từ Firebase qua Identity Toolkit API
-    const firebaseResp = await fetch(`https://identitytoolkit.googleapis.com/v1/getAccountInfo?key=${process.env.FIREBASE_API_KEY}`, {
+    // 1. Xác thực Firebase Token
+    const authResp = await fetch(`https://identitytoolkit.googleapis.com/v1/getAccountInfo?key=${config.firebaseKey}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ idToken: token })
     });
+    const authData = await authResp.json();
+    const email = authData.users?.[0]?.email;
+
+    if (!email || !ADMIN_EMAILS.includes(email)) {
+      return res.status(403).json({ error: `Email ${email || 'không xác định'} không có quyền Admin.` });
+    }
+
+    // 2. Lấy SHA của file cũ từ GitHub
+    const [owner, repo] = config.githubRepo.split('/');
+    const getUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
     
-    const firebaseData = await firebaseResp.json();
-    const userEmail = firebaseData.users?.[0]?.email;
-
-    if (!userEmail || !ADMIN_EMAILS.includes(userEmail)) {
-      return res.status(403).json({ error: `Unauthorized: Email ${userEmail || 'không xác định'} không có quyền Admin.` });
-    }
-
-    // 2. Khởi tạo GitHub Octokit
-    if (!process.env.GITHUB_TOKEN || !process.env.GITHUB_REPO) {
-      return res.status(500).json({ error: "Server thiếu cấu hình GITHUB_TOKEN hoặc GITHUB_REPO." });
-    }
-
-    const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-    const [owner, repo] = process.env.GITHUB_REPO.split('/');
-
-    // 3. Lấy SHA của file cũ (bắt buộc để cập nhật nội dung trên GitHub)
+    const fileResp = await fetch(getUrl, {
+      headers: { 'Authorization': `token ${config.githubToken}` }
+    });
+    
     let sha;
-    try {
-      const { data } = await octokit.repos.getContent({ owner, repo, path });
-      sha = data.sha;
-    } catch (e) {
-      // File chưa tồn tại, sẽ tạo mới (không cần sha)
+    if (fileResp.status === 200) {
+      const fileData = await fileResp.json();
+      sha = fileData.sha;
     }
 
-    // 4. Commit file lên GitHub
-    await octokit.repos.createOrUpdateFileContents({
-      owner,
-      repo,
-      path,
-      message: `Admin Update: ${path} by ${userEmail}`,
-      content: Buffer.from(JSON.stringify(content, null, 2)).toString('base64'),
-      sha,
-      branch: "main"
+    // 3. Ghi file mới lên GitHub
+    const putResp = await fetch(getUrl, {
+      method: 'PUT',
+      headers: { 
+        'Authorization': `token ${config.githubToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Admin Update: ${path} by ${email}`,
+        content: Buffer.from(JSON.stringify(content, null, 2)).toString('base64'),
+        sha: sha,
+        branch: "main"
+      })
     });
 
-    return res.status(200).json({ success: true, message: "Đã lưu thành công lên GitHub." });
-  } catch (error) {
-    console.error("API Error:", error);
-    return res.status(500).json({ error: error.message });
+    if (putResp.ok) {
+      return res.status(200).json({ success: true });
+    } else {
+      const errorData = await putResp.json();
+      return res.status(500).json({ error: "GitHub API Error: " + (errorData.message || 'Unknown') });
+    }
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
 }
