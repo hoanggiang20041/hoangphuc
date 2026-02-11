@@ -4,60 +4,65 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel | MC Hoàng Phúc</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --bg: #0b0b0b; --fg: #f5f5f5; --gold: #D4AF37; --card: #161616; --border: rgba(212,175,55,0.2); }
-    body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; }
+    :root { --bg: #0b0b0b; --fg: #f5f5f5; --gold: #D4AF37; --card: #161616; --border: rgba(212,175,55,0.2); --danger: #f44336; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; font-size: 14px; }
     .header { padding: 1rem 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(11,11,11,0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
-    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+    .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
     .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
     .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
     .tab { padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--fg); cursor: pointer; white-space: nowrap; transition: 0.2s; }
     .tab.active { background: var(--gold); color: #000; border-color: var(--gold); }
-    input, textarea { width: 100%; padding: 0.8rem; background: #000; border: 1px solid var(--border); border-radius: 6px; color: #fff; margin-bottom: 1rem; box-sizing: border-box; font-family: inherit; }
-    label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #aaa; }
-    .btn { padding: 0.8rem 1.5rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; }
+    input, textarea, select { width: 100%; padding: 0.8rem; background: #000; border: 1px solid var(--border); border-radius: 6px; color: #fff; margin-bottom: 1rem; box-sizing: border-box; font-family: inherit; }
+    label { display: block; margin-bottom: 0.4rem; font-size: 0.85rem; color: #aaa; font-weight: 500; }
+    .btn { padding: 0.7rem 1.2rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
     .btn-gold { background: var(--gold); color: #000; }
-    .btn-gold:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-gold:hover { opacity: 0.9; }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: #fff; }
+    .btn-danger { background: rgba(244, 67, 54, 0.15); color: var(--danger); border: 1px solid var(--danger); }
+    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
     .hidden { display: none; }
     .status-msg { margin-top: 1rem; padding: 1rem; border-radius: 6px; font-size: 0.9rem; }
     .status-success { background: rgba(0,255,0,0.1); color: #4caf50; }
     .status-error { background: rgba(255,0,0,0.1); color: #f44336; }
+    .img-preview { max-width: 200px; max-height: 150px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #333; display: block; object-fit: cover; }
+    .upload-group { display: flex; flex-direction: column; gap: 10px; padding: 10px; background: #0f0f0f; border-radius: 8px; border: 1px dashed #333; margin-bottom: 1rem; }
+    .editable-group { margin-bottom: 2rem; border-bottom: 1px solid #222; padding-bottom: 1.5rem; }
   </style>
 </head>
 <body>
   <div class="header">
-    <div style="font-weight: 600;">MC HOÀNG PHÚC <span style="color: var(--gold); margin-left: 0.5rem; font-size: 0.8rem;">ADMIN</span></div>
+    <div style="font-weight: 600;">MC HOÀNG PHÚ <span style="color: var(--gold); margin-left: 0.5rem; font-size: 0.8rem;">HTML ADMIN</span></div>
     <div id="auth-status"></div>
   </div>
 
   <div class="container">
-    <!-- Login View -->
     <div id="view-login" class="card hidden">
       <h2>Đăng nhập quản trị</h2>
-      <p style="color: #aaa; font-size: 0.9rem;">Hệ thống sẽ gửi link đăng nhập vào email của bạn.</p>
-      <label>Email Admin</label>
-      <input type="email" id="admin-email" placeholder="vi-du@gmail.com">
+      <p style="color: #aaa;">Chỉ dành cho Admin. Magic Link sẽ được gửi qua email.</p>
+      <input type="email" id="admin-email" placeholder="admin@gmail.com">
       <button class="btn btn-gold" id="btn-login">Gửi Magic Link</button>
       <div id="login-msg"></div>
     </div>
 
-    <!-- Main Dashboard View -->
     <div id="view-admin" class="hidden">
       <div class="tabs" id="tab-list">
-        <button class="tab active" data-file="home.json">Trang Chủ</button>
-        <button class="tab" data-file="content.json">Thông Tin Chung</button>
-        <button class="tab" data-file="about.json">Giới Thiệu</button>
+        <button class="tab active" data-file="index.html">Trang Chủ (Root)</button>
+        <button class="tab" data-file="hoangphuc/index.html">Trang Chủ (Folder)</button>
+        <button class="tab" data-file="hoangphuc/about.html">Giới Thiệu</button>
+        <button class="tab" data-file="skill/dan-chuong-trinh.html">Dẫn Chương Trình</button>
+        <button class="tab" data-file="skill/host-livestream.html">Host Livestream</button>
+        <button class="tab" data-file="skill/voice.html">Voice</button>
       </div>
 
       <div class="card">
         <div id="editor-container">
-          <p>Đang tải nội dung...</p>
+          <p>Chọn một trang để bắt đầu chỉnh sửa...</p>
         </div>
-        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-          <button class="btn btn-gold" id="btn-save">Lưu thay đổi lên GitHub</button>
-          <button class="btn btn-outline" id="btn-refresh">Tải lại</button>
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: space-between; align-items: center; border-top: 1px solid #333; padding-top: 1.5rem;">
+          <button class="btn btn-gold" id="btn-save">Lưu toàn bộ HTML lên GitHub</button>
+          <button class="btn btn-outline" id="btn-refresh" onclick="location.reload()">Tải lại trang</button>
         </div>
         <div id="save-status"></div>
       </div>
@@ -68,6 +73,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+    const ADMIN_EMAILS = ["giang10012004@gmail.com", "mchoangphuc2207@gmail.com"];
     const firebaseConfig = {
       apiKey: "AIzaSyAIGdCJzDHVi0xhsz-y_FWhmk1b2InEFks",
       authDomain: "mchoangphuc-c0922.firebaseapp.com",
@@ -80,168 +86,178 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    let currentFile = "home.json";
-    let currentData = {};
+    let currentFile = "index.html";
+    let htmlDoc = null;
 
-    // --- AUTH LOGIC ---
+    // --- AUTH ---
     const checkLoginLink = async () => {
       if (isSignInWithEmailLink(auth, window.location.href)) {
         let email = window.localStorage.getItem('emailForSignIn');
-        if (!email) email = window.prompt('Vui lòng nhập email để xác nhận:');
+        if (!email) email = window.prompt('Nhập email xác nhận:');
         try {
           await signInWithEmailLink(auth, email, window.location.href);
           window.localStorage.removeItem('emailForSignIn');
           window.history.replaceState({}, document.title, window.location.pathname);
-        } catch (error) {
-          alert('Lỗi đăng nhập: ' + error.message);
-        }
+        } catch (e) { alert(e.message); }
       }
     };
 
     onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user && ADMIN_EMAILS.includes(user.email)) {
         document.getElementById('view-login').classList.add('hidden');
         document.getElementById('view-admin').classList.remove('hidden');
         document.getElementById('auth-status').innerHTML = `
           <span style="font-size: 0.8rem; margin-right: 1rem;">${user.email}</span>
-          <button class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="location.reload();">Thoát</button>
+          <button class="btn btn-outline btn-sm" onclick="auth.signOut()">Thoát</button>
         `;
-        loadData(currentFile);
+        loadPage(currentFile);
       } else {
+        if (user) { alert("Không có quyền Admin!"); auth.signOut(); }
         document.getElementById('view-login').classList.remove('hidden');
         document.getElementById('view-admin').classList.add('hidden');
-        document.getElementById('auth-status').innerHTML = '';
       }
     });
 
     document.getElementById('btn-login').onclick = async () => {
       const email = document.getElementById('admin-email').value;
-      if (!email) return alert('Nhập email!');
+      if (!ADMIN_EMAILS.includes(email)) return alert('Email không hợp lệ!');
       try {
-        await sendSignInLinkToEmail(auth, email, {
-          url: window.location.href,
-          handleCodeInApp: true,
-        });
+        await sendSignInLinkToEmail(auth, email, { url: window.location.href, handleCodeInApp: true });
         window.localStorage.setItem('emailForSignIn', email);
-        document.getElementById('login-msg').innerHTML = '<p class="status-msg status-success">Link đăng nhập đã được gửi! Kiểm tra email của bạn.</p>';
-      } catch (error) {
-        alert(error.message);
-      }
+        document.getElementById('login-msg').innerHTML = '<p class="status-msg status-success">Đã gửi link đăng nhập!</p>';
+      } catch (e) { alert(e.message); }
     };
 
-    // --- DATA LOGIC ---
-    async function loadData(file) {
+    // --- HTML EDITOR ---
+    async function loadPage(file) {
       const container = document.getElementById('editor-container');
-      container.innerHTML = '<p>Đang tải...</p>';
+      container.innerHTML = '<p>Đang tải HTML từ GitHub...</p>';
       try {
-        // Đọc file từ GitHub trực tiếp để sửa
-        const resp = await fetch(`https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/admin/data/${file}`);
-        currentData = await resp.json();
-        renderEditor(currentData);
-      } catch (error) {
-        container.innerHTML = `<p class="status-error">Không tải được file ${file}. Lỗi: ${error.message}</p>`;
-      }
+        const resp = await fetch(`https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/${file}?t=${Date.now()}`);
+        const html = await resp.text();
+        const parser = new DOMParser();
+        htmlDoc = parser.parseFromString(html, 'text/html');
+        renderFields();
+      } catch (e) { container.innerHTML = `<p class="status-error">Lỗi tải file ${file}</p>`; }
     }
 
-    function renderEditor(data) {
+    function renderFields() {
       const container = document.getElementById('editor-container');
-      container.innerHTML = '';
+      container.innerHTML = `<h3>Chỉnh sửa: ${currentFile}</h3>`;
       
-      // Đệ quy để tạo form cho JSON
-      function buildForm(obj, parentKey = '') {
-        for (const key in obj) {
-          const fullKey = parentKey ? `${parentKey}.${key}` : key;
-          const val = obj[key];
-          
-          if (typeof val === 'object' && !Array.isArray(val)) {
-            const div = document.createElement('div');
-            div.innerHTML = `<h3 style="margin-top: 1.5rem; color: var(--gold); border-bottom: 1px solid #333;">${key.toUpperCase()}</h3>`;
-            container.appendChild(div);
-            buildForm(val, fullKey);
-          } else if (Array.isArray(val)) {
-            // Đơn giản hóa: hiện text thô cho array
-            const label = document.createElement('label');
-            label.innerText = `${fullKey} (Danh sách - các mục cách nhau bằng dấu phẩy)`;
-            const input = document.createElement('input');
-            input.value = val.join(', ');
-            input.onchange = (e) => setDeepValue(currentData, fullKey, e.target.value.split(',').map(s => s.trim()));
-            container.appendChild(label);
-            container.appendChild(input);
-          } else {
-            const label = document.createElement('label');
-            label.innerText = fullKey;
-            if (val && val.length > 50) {
-              const textarea = document.createElement('textarea');
-              textarea.value = val;
-              textarea.onchange = (e) => setDeepValue(currentData, fullKey, e.target.value);
-              container.appendChild(label);
-              container.appendChild(textarea);
-            } else {
-              const input = document.createElement('input');
-              input.value = val;
-              input.onchange = (e) => setDeepValue(currentData, fullKey, e.target.value);
-              container.appendChild(label);
-              container.appendChild(input);
-            }
-          }
-        }
+      const elements = htmlDoc.querySelectorAll('[data-admin-editable]');
+      if (elements.length === 0) {
+        container.innerHTML += `<p class="status-error">Trang này chưa được đánh dấu vùng chỉnh sửa (data-admin-editable).</p>`;
+        return;
       }
-      
-      buildForm(data);
+
+      elements.forEach((el, index) => {
+        const key = el.getAttribute('data-admin-editable') || `Phần ${index + 1}`;
+        const type = el.tagName.toLowerCase();
+        const fieldGroup = document.createElement('div');
+        fieldGroup.className = 'editable-group';
+        fieldGroup.innerHTML = `<label style="color: var(--gold); font-weight: 700;">${key.toUpperCase()}</label>`;
+
+        if (type === 'img') {
+          const preview = document.createElement('img');
+          preview.src = el.src;
+          preview.className = 'img-preview';
+          preview.id = `prev-${index}`;
+          fieldGroup.appendChild(preview);
+
+          const uploadGroup = document.createElement('div');
+          uploadGroup.className = 'upload-group';
+          uploadGroup.innerHTML = `
+            <label>Upload ảnh mới:</label>
+            <input type="file" accept="image/*" onchange="handleImgUpload(this, ${index})">
+            <label>Hoặc dán URL ảnh:</label>
+            <input type="text" value="${el.getAttribute('src')}" oninput="updateImgSrc(this.value, ${index})">
+          `;
+          fieldGroup.appendChild(uploadGroup);
+        } else if (type === 'a') {
+          fieldGroup.innerHTML += `<label>Text liên kết:</label><input type="text" value="${el.innerText}" oninput="updateText(this.value, ${index})">`;
+          fieldGroup.innerHTML += `<label>Đường dẫn (href):</label><input type="text" value="${el.getAttribute('href')}" oninput="updateAttr(${index}, 'href', this.value)">`;
+        } else if (el.innerText.length > 100 || type === 'p') {
+          const area = document.createElement('textarea');
+          area.value = el.innerText;
+          area.oninput = (e) => updateText(e.target.value, index);
+          fieldGroup.appendChild(area);
+        } else {
+          const input = document.createElement('input');
+          input.value = el.innerText;
+          input.oninput = (e) => updateText(e.target.value, index);
+          fieldGroup.appendChild(input);
+        }
+        container.appendChild(fieldGroup);
+      });
     }
 
-    function setDeepValue(obj, path, value) {
-      const parts = path.split('.');
-      let current = obj;
-      for (let i = 0; i < parts.length - 1; i++) {
-        current = current[parts[i]];
-      }
-      current[parts[parts.length - 1]] = value;
-    }
+    // --- HELPERS ---
+    window.updateText = (val, idx) => {
+      htmlDoc.querySelectorAll('[data-admin-editable]')[idx].innerText = val;
+    };
+    window.updateAttr = (idx, attr, val) => {
+      htmlDoc.querySelectorAll('[data-admin-editable]')[idx].setAttribute(attr, val);
+    };
+    window.updateImgSrc = (val, idx) => {
+      const el = htmlDoc.querySelectorAll('[data-admin-editable]')[idx];
+      el.setAttribute('src', val);
+      document.getElementById(`prev-${idx}`).src = val;
+    };
+
+    window.handleImgUpload = async (input, idx) => {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+      const reader = new FileReader();
+      const status = document.getElementById('save-status');
+      
+      reader.onload = async (e) => {
+        status.innerHTML = '<p class="status-msg">Đang upload ảnh lên GitHub...</p>';
+        const base64 = e.target.result;
+        const filename = `img/${Date.now()}_${file.name}`;
+        
+        try {
+          const idToken = await auth.currentUser.getIdToken();
+          const resp = await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: idToken, path: filename, content: base64, isImage: true })
+          });
+          const result = await resp.json();
+          if (result.success) {
+            updateImgSrc('/' + filename, idx);
+            status.innerHTML = '<p class="status-msg status-success">Upload ảnh thành công!</p>';
+          } else { throw new Error(result.error); }
+        } catch (err) { status.innerHTML = `<p class="status-error">Lỗi upload: ${err.message}</p>`; }
+      };
+      reader.readAsDataURL(file);
+    };
+
+    document.getElementById('btn-save').onclick = async () => {
+      const status = document.getElementById('save-status');
+      status.innerHTML = '<p class="status-msg">Đang lưu file HTML...</p>';
+      try {
+        const idToken = await auth.currentUser.getIdToken();
+        const fullHtml = '<!DOCTYPE html>\n' + htmlDoc.documentElement.outerHTML;
+        const response = await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: idToken, path: currentFile, content: fullHtml })
+        });
+        const result = await response.json();
+        if (result.success) status.innerHTML = '<p class="status-msg status-success">Đã cập nhật HTML thành công!</p>';
+        else status.innerHTML = `<p class="status-error">Lỗi: ${result.error}</p>`;
+      } catch (e) { status.innerHTML = `<p class="status-error">Lỗi kết nối: ${e.message}</p>`; }
+    };
 
     document.querySelectorAll('.tab').forEach(tab => {
       tab.onclick = () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         currentFile = tab.dataset.file;
-        loadData(currentFile);
+        loadPage(currentFile);
       };
     });
-
-    document.getElementById('btn-save').onclick = async () => {
-      const status = document.getElementById('save-status');
-      status.innerHTML = '<p class="status-msg">Đang lưu lên GitHub...</p>';
-      
-      try {
-        const idToken = await auth.currentUser.getIdToken();
-        const response = await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            token: idToken,
-            path: `admin/data/${currentFile}`,
-            content: currentData
-          })
-        });
-        
-        const responseText = await response.text();
-        let result;
-        try {
-          result = JSON.parse(responseText);
-        } catch (e) {
-          status.innerHTML = `<p class="status-msg status-error">Lỗi Server (Mã ${response.status}): Nội dung không phải JSON. <br><small>${responseText.substring(0, 200)}...</small></p>`;
-          return;
-        }
-
-        if (response.ok) {
-          status.innerHTML = '<p class="status-msg status-success">Đã lưu thành công! Đợi 1-2 phút để web cập nhật.</p>';
-        } else {
-          status.innerHTML = `<p class="status-msg status-error">Lỗi: ${result.error || 'Không xác định'}</p>`;
-        }
-      } catch (error) {
-        status.innerHTML = `<p class="status-msg status-error">Lỗi kết nối: ${error.message}</p>`;
-      }
-    };
 
     checkLoginLink();
   </script>

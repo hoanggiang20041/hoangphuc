@@ -1,16 +1,11 @@
-// Backend Gateway: Save content to GitHub using native fetch (Zero dependencies)
+// Backend Gateway: Save HTML or Upload Images to GitHub
 const ADMIN_EMAILS = ["giang10012004@gmail.com", "mchoangphuc2207@gmail.com"];
 
 function safeJsonParse(text) {
-  try {
-    return { ok: true, json: JSON.parse(text) };
-  } catch (e) {
-    return { ok: false };
-  }
+  try { return { ok: true, json: JSON.parse(text) }; } catch (e) { return { ok: false }; }
 }
 
 export default async function handler(req, res) {
-  // CORS Headers
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -19,9 +14,35 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
-  const { token, path, content } = req.body || {};
+  const { token, path, content, isImage } = req.body || {};
 
-  // Kiểm tra biến môi trường ngay lập tức
+  const allowedPaths = new Set([
+    'index.html',
+    'hoangphuc/index.html',
+    'hoangphuc/about.html',
+    'skill/dan-chuong-trinh.html',
+    'skill/host-livestream.html',
+    'skill/voice.html',
+  ]);
+
+  const isImgPath = typeof path === 'string' && path.startsWith('img/');
+  const isAllowedHtml = typeof path === 'string' && allowedPaths.has(path);
+
+  if (!isImgPath && !isAllowedHtml) {
+    return res.status(400).json({
+      error: 'Path không hợp lệ. Chỉ cho phép img/* hoặc các file HTML đã whitelist.',
+      path,
+    });
+  }
+
+  if (isImage && !isImgPath) {
+    return res.status(400).json({
+      error: 'Upload ảnh chỉ cho phép path bắt đầu bằng img/.',
+      path,
+    });
+  }
+
+
   const config = {
     firebaseKey: process.env.FIREBASE_API_KEY,
     githubToken: process.env.GITHUB_TOKEN,
@@ -29,136 +50,67 @@ export default async function handler(req, res) {
   };
 
   if (!config.firebaseKey || !config.githubToken || !config.githubRepo) {
-    return res.status(500).json({
-      error: "Server thiếu cấu hình biến môi trường (FIREBASE_API_KEY, GITHUB_TOKEN, hoặc GITHUB_REPO). Hãy kiểm tra Vercel Settings.",
-      missing: {
-        FIREBASE_API_KEY: !config.firebaseKey,
-        GITHUB_TOKEN: !config.githubToken,
-        GITHUB_REPO: !config.githubRepo,
-      },
-    });
-  }
-
-  if (!token || !path) {
-    return res.status(400).json({ error: 'Thiếu token hoặc path.' });
+    return res.status(500).json({ error: "Server thiếu cấu hình FIREBASE_API_KEY, GITHUB_TOKEN, hoặc GITHUB_REPO." });
   }
 
   try {
-    // 1) Verify Firebase token -> get email
-    const authResp = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${config.firebaseKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken: token }),
-      },
-    );
+    // 1) Verify Firebase token
+    const authResp = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${config.firebaseKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idToken: token }),
+    });
+    const authData = await authResp.json();
+    const email = authData.users?.[0]?.email;
 
-    const authText = await authResp.text();
-    const authParsed = safeJsonParse(authText);
-    if (!authParsed.ok) {
-      console.error('Firebase verify: non-JSON response', authResp.status, authText.slice(0, 300));
-      return res.status(500).json({
-        error: 'Firebase verify returned non-JSON response',
-        status: authResp.status,
-        bodyPreview: authText.slice(0, 300),
-      });
-    }
-
-    if (!authResp.ok) {
-      console.error('Firebase verify failed', authResp.status, authParsed.json);
-      return res.status(401).json({
-        error: 'Firebase verify failed',
-        status: authResp.status,
-        firebase: authParsed.json,
-      });
-    }
-
-    const email = authParsed.json.users?.[0]?.email;
     if (!email || !ADMIN_EMAILS.includes(email)) {
       return res.status(403).json({ error: `Email ${email || 'không xác định'} không có quyền Admin.` });
     }
 
-    // 2) GitHub get sha (if exists)
+    // 2) GitHub logic
     const [owner, repo] = config.githubRepo.split('/');
-    if (!owner || !repo) {
-      return res.status(500).json({ error: 'GITHUB_REPO sai định dạng, phải là owner/repo' });
-    }
-
-    if (!String(path).startsWith('admin/data/')) {
-      return res.status(400).json({ error: 'Path không hợp lệ (chỉ cho phép admin/data/*).' });
-    }
-
     const contentUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
+    // Lấy SHA file cũ
     const fileResp = await fetch(contentUrl, {
-      headers: {
-        Authorization: `Bearer ${config.githubToken}`,
-        'User-Agent': 'hoangphuc-admin',
-        Accept: 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
+      headers: { Authorization: `Bearer ${config.githubToken}` },
     });
-
     let sha;
     if (fileResp.status === 200) {
-      const fileText = await fileResp.text();
-      const parsed = safeJsonParse(fileText);
-      if (!parsed.ok) {
-        console.error('GitHub get content non-JSON', fileResp.status, fileText.slice(0, 300));
-        return res.status(500).json({
-          error: 'GitHub get content returned non-JSON',
-          status: fileResp.status,
-          bodyPreview: fileText.slice(0, 300),
-        });
-      }
-      sha = parsed.json.sha;
-    } else if (fileResp.status !== 404) {
-      const t = await fileResp.text();
-      console.error('GitHub get content error', fileResp.status, t.slice(0, 300));
-      return res.status(500).json({
-        error: 'GitHub get content error',
-        status: fileResp.status,
-        bodyPreview: t.slice(0, 300),
-      });
+      const fileData = await fileResp.json();
+      sha = fileData.sha;
     }
 
-    // 3) Put content
-    const putBody = {
-      message: `Admin Update: ${path} by ${email}`,
-      content: Buffer.from(JSON.stringify(content ?? {}, null, 2)).toString('base64'),
-      branch: 'main',
-    };
-    if (sha) putBody.sha = sha;
+    // 3) Chuẩn bị nội dung gửi lên GitHub
+    let base64Content;
+    if (isImage) {
+      // content lúc này là string base64 từ frontend gửi lên (bỏ phần data:image/...)
+      base64Content = content.split(',')[1] || content;
+    } else {
+      // content là nội dung file HTML hoặc JSON
+      base64Content = Buffer.from(content).toString('base64');
+    }
 
     const putResp = await fetch(contentUrl, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${config.githubToken}`,
-        'User-Agent': 'hoangphuc-admin',
-        Accept: 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(putBody),
+      body: JSON.stringify({
+        message: `Admin Update: ${path} by ${email}`,
+        content: base64Content,
+        sha: sha,
+        branch: 'main',
+      })
     });
 
-    const putText = await putResp.text();
-    const putParsed = safeJsonParse(putText);
+    if (putResp.ok) return res.status(200).json({ success: true, path: path });
+    
+    const errData = await putResp.json();
+    return res.status(500).json({ error: "GitHub API Error: " + errData.message });
 
-    if (!putResp.ok) {
-      console.error('GitHub put error', putResp.status, putText.slice(0, 500));
-      return res.status(500).json({
-        error: 'GitHub API Error',
-        status: putResp.status,
-        github: putParsed.ok ? putParsed.json : undefined,
-        bodyPreview: putParsed.ok ? undefined : putText.slice(0, 300),
-      });
-    }
-
-    return res.status(200).json({ success: true, github: putParsed.ok ? putParsed.json : undefined });
   } catch (err) {
-    console.error('save-content fatal', err);
-    return res.status(500).json({ error: err?.message || String(err) });
+    return res.status(500).json({ error: err.message });
   }
 }

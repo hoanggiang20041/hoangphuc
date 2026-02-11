@@ -1185,7 +1185,7 @@ ok
   <!-- Header Section (Cố định) -->
   <header class="header">
     <div class="container header__container">
-      <a href="/hoangphuc/index.html" class="header__logo">MC Hoàng Phúc</a>
+      <a href="/hoangphuc/index.html" class="header__logo" data-admin-editable="header.logo">MC Hoàng Phúc</a>
       <nav class="header__nav">
         <a href="/hoangphuc/index.html" class="header__nav-link header__nav-link--active">Trang Chủ</a>
         <a href="/hoangphuc/about.html" class="header__nav-link">Giới Thiệu</a>
@@ -1197,18 +1197,18 @@ ok
   <section class="intro">
     <div class="container intro__container">
       <figure class="intro__image">
-        <img src="/img/phuc3.JPG" alt="MC Hoàng Phúc ngồi mặc vest đen" />
+        <img src="/img/phuc3.JPG" alt="MC Hoàng Phúc ngồi mặc vest đen" data-admin-editable="intro.image" />
       </figure>
       <div class="intro__content">
-        <h1 class="intro__title">
+        <h1 class="intro__title" data-admin-editable="intro.title">
           MC <span>Hoàng</span> <span>Phúc</span>
         </h1>
         <div class="intro__roles">
-          <p>Chuyên Nghiệp</p>
-          <p>Trẻ Trung</p>
-          <p>Tự Tin</p>
+          <p data-admin-editable="intro.role1">Chuyên Nghiệp</p>
+          <p data-admin-editable="intro.role2">Trẻ Trung</p>
+          <p data-admin-editable="intro.role3">Tự Tin</p>
         </div>
-        <p class="intro__quote">"Mang đến năng lượng tích cực cho mọi sân khấu."</p>
+        <p class="intro__quote" data-admin-editable="intro.quote">"Mang đến năng lượng tích cực cho mọi sân khấu."</p>
       </div>
     </div>
   </section>
@@ -1216,31 +1216,31 @@ ok
   <section id="skills" class="skills">
     <div class="container skills__container">
       <div class="skills__content">
-        <h2 class="skills__title">Kỹ Năng</h2>
-        <p class="skills__subtitle">Tôi có thể làm gì</p>
+        <h2 class="skills__title" data-admin-editable="skills.title">Kỹ Năng</h2>
+        <p class="skills__subtitle" data-admin-editable="skills.subtitle">Tôi có thể làm gì</p>
         <div class="skills__grid">
           <div class="skills__item">
             <div class="skills__item-icon"><i class="fas fa-microphone"></i></div>
-            <h3 class="skills__item-title">Dẫn Chương Trình</h3>
-            <p class="skills__item-description">"Khả năng giao tiếp tốt và luôn tạo không khí tích cực.Kết nối khán giả với chương trình"</p>
+            <h3 class="skills__item-title" data-admin-editable="skills.card1.title">Dẫn Chương Trình</h3>
+            <p class="skills__item-description" data-admin-editable="skills.card1.desc">"Khả năng giao tiếp tốt và luôn tạo không khí tích cực.Kết nối khán giả với chương trình"</p>
             <button class="skills__item-button" onclick="window.location.href='/skill/dan-chuong-trinh.html'">Xem chi tiết</button>
           </div>
           <div class="skills__item">
             <div class="skills__item-icon"><i class="fas fa-video"></i></div>
-            <h3 class="skills__item-title">Host Livestream</h3>
-            <p class="skills__item-description">"Tạo không khí sôi động, tương tác với khán giả."</p>
+            <h3 class="skills__item-title" data-admin-editable="skills.card2.title">Host Livestream</h3>
+            <p class="skills__item-description" data-admin-editable="skills.card2.desc">"Tạo không khí sôi động, tương tác với khán giả."</p>
             <button class="skills__item-button" onclick="window.location.href='/skill/host-livestream.html'">Xem chi tiết</button>
           </div>
           <div class="skills__item">
             <div class="skills__item-icon"><i class="fas fa-volume-up"></i></div>
-            <h3 class="skills__item-title">Lồng Tiếng</h3>
-            <p class="skills__item-description">"Giọng nói truyền cảm, phù hợp quảng cáo và video."</p>
+            <h3 class="skills__item-title" data-admin-editable="skills.card3.title">Lồng Tiếng</h3>
+            <p class="skills__item-description" data-admin-editable="skills.card3.desc">"Giọng nói truyền cảm, phù hợp quảng cáo và video."</p>
             <button class="skills__item-button" onclick="window.location.href='/skill/voice.html'">Xem chi tiết</button>
           </div>
         </div>
       </div>
       <figure class="skills__image">
-        <img src="/img/phuc4.JPG" alt="MC Hoàng Phúc tay chống cằm" />
+        <img src="/img/phuc4.JPG" alt="MC Hoàng Phúc tay chống cằm" data-admin-editable="skills.image" />
       </figure>
     </div>
   </section>
@@ -1250,7 +1250,7 @@ ok
   <section class="contact">
     <div class="container contact__container">
         <div class="contact__form">
-            <h2 class="contact__form-title">Liên Hệ</h2>
+            <h2 class="contact__form-title" data-admin-editable="contact.form_title">Liên Hệ</h2>
             <form class="contact__form-wrapper" id="contactForm">
                 <input type="text" class="contact__form-input" name="from_name" placeholder="Họ và tên" required />
                 <input type="email" class="contact__form-input" name="email" placeholder="Email" required />
@@ -1259,10 +1259,10 @@ ok
             </form>
         </div>
         <div class="contact__info">
-            <h3 class="contact__info-title">MC Hoàng Phúc</h3>
-            <p class="contact__info-item"><span class="contact__info-highlight">MC sự kiện, tiệc cưới - Livestream - Voice</span></p>
-            <p class="contact__info-item">📞 Số điện thoại: <a href="tel:0359581896" class="contact__info-highlight">0359 581 896</a></p>
-            <p class="contact__info-item">✉️ Email: <span class="contact__info-highlight">mchoangphuc2207@gmail.com</span></p>
+            <h3 class="contact__info-title" data-admin-editable="contact.info_title">MC Hoàng Phúc</h3>
+            <p class="contact__info-item" data-admin-editable="contact.info_desc"><span class="contact__info-highlight">MC sự kiện, tiệc cưới - Livestream - Voice</span></p>
+            <p class="contact__info-item">📞 Số điện thoại: <a href="tel:0359581896" class="contact__info-highlight" data-admin-editable="contact.phone">0359 581 896</a></p>
+            <p class="contact__info-item">✉️ Email: <span class="contact__info-highlight" data-admin-editable="contact.email">mchoangphuc2207@gmail.com</span></p>
         </div>
     </div>
 </section>
@@ -1378,51 +1378,7 @@ ok
           });
   });
 </script>
-<script>
-  // Load content from CMS JSON (home.json)
-  (async function(){
-    try{
-      const res = await fetch('/admin/data/home.json', { cache: 'no-store' });
-      if(!res.ok) return;
-      const data = await res.json();
-      // Intro
-      if(data.intro){
-        const imgSrc = data.intro.image_url || data.intro.image;
-        const imgEl = document.querySelector('.intro__image img');
-        if(imgSrc && imgEl) imgEl.src = imgSrc;
-        const rolesEl = document.querySelector('.intro__roles');
-        if(Array.isArray(data.intro.roles) && rolesEl){
-          rolesEl.innerHTML = data.intro.roles.map(r=>`<p>${r}</p>`).join('');
-        }
-        const quoteEl = document.querySelector('.intro__quote');
-        if(data.intro.quote && quoteEl){ quoteEl.textContent = data.intro.quote; }
-        const titleEl = document.querySelector('.intro__title');
-        if(data.intro.title && titleEl){ titleEl.innerHTML = data.intro.title.replace(/\s+/g,' ').split(' ').map((w,i)=> i===0? w : `<span>${w}</span>`).join(' '); }
-      }
-      // Skills
-      if(data.skills){
-        const skillsTitle = document.querySelector('.skills__title');
-        if(data.skills.title && skillsTitle) skillsTitle.textContent = data.skills.title;
-        const skillsSub = document.querySelector('.skills__subtitle');
-        if(data.skills.subtitle && skillsSub) skillsSub.textContent = data.skills.subtitle;
-        const skillsImgSrc = data.skills.image_url || data.skills.image;
-        const skillsImgEl = document.querySelector('.skills__image img');
-        if(skillsImgSrc && skillsImgEl) skillsImgEl.src = skillsImgSrc;
-        const grid = document.querySelector('.skills__grid');
-        if(grid && Array.isArray(data.skills.items)){
-          grid.innerHTML = data.skills.items.map(item => `
-            <div class=\"skills__item\">
-              <div class=\"skills__item-icon\"><i class=\"${item.icon || 'fas fa-star'}\"></i></div>
-              <h3 class=\"skills__item-title\">${item.title || ''}</h3>
-              <p class=\"skills__item-description\">${item.description || ''}</p>
-              ${item.link ? `<button class=\"skills__item-button\" onclick=\"window.location.href='${item.link}'\">Xem chi tiết</button>` : ''}
-            </div>
-          `).join('');
-        }
-      }
-    }catch(e){ console.warn('Không thể tải home.json', e); }
-  })();
-</script>
+
 
   <!-- Footer (Cố định) -->
   <footer class="footer">

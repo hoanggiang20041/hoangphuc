@@ -708,7 +708,7 @@
     <!-- Header Section (Cố định) -->
     <header class="header">
         <div class="container header__container">
-            <a href="/hoangphuc/index.html" class="header__logo">MC Hoàng Phúc</a>
+            <a href="/hoangphuc/index.html" class="header__logo" data-admin-editable="header.logo">MC Hoàng Phúc</a>
             <nav class="header__nav">
                 <a href="/hoangphuc/index.html" class="header__nav-link header__nav-link--active">Trang Chủ</a>
                 <a href="/hoangphuc/about.html" class="header__nav-link">Giới Thiệu</a>
@@ -718,7 +718,7 @@
 
     <section class="events">
         <div class="container">
-            <h1 class="events__title">Các Sự Kiện Từng Dẫn</h1>
+            <h1 class="events__title" data-admin-editable="dan_chuong_trinh.title">Các Sự Kiện Từng Dẫn</h1>
             <div class="events__buttons">
                 <button class="events__button" onclick="scrollToSection('mc_hoat_nao')">MC Hoạt Náo</button>
                 <button class="events__button" onclick="scrollToSection('mc_cong_giao')">MC Công Giáo</button>
@@ -729,14 +729,13 @@
             </div>
 
             <div id="mc_hoat_nao"></div>
-            <h2 class="events__subtitle">MC Hoạt Náo Các Chương Trình Thiện Nguyện</h2>
+            <h2 class="events__subtitle" data-admin-editable="dan_chuong_trinh.s1.title">MC Hoạt Náo Các Chương Trình Thiện Nguyện</h2>
             <div class="events__slideshow">
                 <div class="events__slideshow-wrapper">
-                    <div class="events__slideshow-item"><img src="/img/DSC06831.jpg" alt="Sự kiện 1" /></div>
-                    <div class="events__slideshow-item"><img src="/img/DSC06841.jpg" alt="Sự kiện 2" /></div>
-                    <div class="events__slideshow-item"><img src="/img/DSC08283.jpg" alt="Sự kiện 3" /></div>
-                    <div class="events__slideshow-item"><img src="/img/DSC08311.jpg" alt="Sự kiện 4" /></div>
-                   
+                    <div class="events__slideshow-item"><img src="/img/DSC06831.jpg" alt="Sự kiện 1" data-admin-editable="dan_chuong_trinh.s1.img1" /></div>
+                    <div class="events__slideshow-item"><img src="/img/DSC06841.jpg" alt="Sự kiện 2" data-admin-editable="dan_chuong_trinh.s1.img2" /></div>
+                    <div class="events__slideshow-item"><img src="/img/DSC08283.jpg" alt="Sự kiện 3" data-admin-editable="dan_chuong_trinh.s1.img3" /></div>
+                    <div class="events__slideshow-item"><img src="/img/DSC08311.jpg" alt="Sự kiện 4" data-admin-editable="dan_chuong_trinh.s1.img4" /></div>
                 </div>
                 <div class="events__slideshow-nav">
                     <button class="events__slideshow-nav-button prev"><i class="fas fa-chevron-left"></i></button>
@@ -745,12 +744,12 @@
             </div>
 
             <div id="mc_cong_giao"></div>
-            <h2 class="events__subtitle">MC Công Giáo</h2>
+            <h2 class="events__subtitle" data-admin-editable="dan_chuong_trinh.s2.title">MC Công Giáo</h2>
             <div class="events__slideshow">
                 <div class="events__slideshow-wrapper">
-                    <div class="events__slideshow-item"><img src="/img/z6421152368871_ab382956c16a484bbf8d76668476d78f.jpg" alt="Sự kiện 1" /></div>
-                    <div class="events__slideshow-item"><img src="/img/z6421152376444_eb1ef4461a4eeb4b144a33dc4abd1612.jpg" alt="Sự kiện 2" /></div>
-                    <div class="events__slideshow-item"><img src="/img/z6421153537757_d02901d9724207f9278c4d45763732fa.jpg" alt="Sự kiện 3" /></div>
+                    <div class="events__slideshow-item"><img src="/img/z6421152368871_ab382956c16a484bbf8d76668476d78f.jpg" alt="Sự kiện 1" data-admin-editable="dan_chuong_trinh.s2.img1" /></div>
+                    <div class="events__slideshow-item"><img src="/img/z6421152376444_eb1ef4461a4eeb4b144a33dc4abd1612.jpg" alt="Sự kiện 2" data-admin-editable="dan_chuong_trinh.s2.img2" /></div>
+                    <div class="events__slideshow-item"><img src="/img/z6421153537757_d02901d9724207f9278c4d45763732fa.jpg" alt="Sự kiện 3" data-admin-editable="dan_chuong_trinh.s2.img3" /></div>
                 </div>
                 <div class="events__slideshow-nav">
                     <button class="events__slideshow-nav-button prev"><i class="fas fa-chevron-left"></i></button>
@@ -762,58 +761,58 @@
                 <div class="events__video-container" style="display: flex; justify-content: center; gap: 10px;">
                     <div class="events__video">
                         <iframe src="https://drive.google.com/file/d/1BQPzvbFPWRZQYrtV48D4ljup3t8UhG0A/preview"
-                            width="480" height="360" allow="autoplay; fullscreen" frameborder="0"></iframe>
+                            width="480" height="360" allow="autoplay; fullscreen" frameborder="0" data-admin-editable="dan_chuong_trinh.s2.vid1"></iframe>
                     </div>
                     <div class="events__video">
                         <iframe src="https://drive.google.com/file/d/1903VqJCsYBB-9afk-FE2wQlZhJf6Wf54/preview"
-                            width="480" height="360" allow="autoplay; fullscreen" frameborder="0"></iframe>
+                            width="480" height="360" allow="autoplay; fullscreen" frameborder="0" data-admin-editable="dan_chuong_trinh.s2.vid2"></iframe>
                     </div>
                 </div>
             </section>
 
             <div id="ghi_hinh_phim_truong"></div>
-            <h2 class="events__subtitle">GHI HÌNH PHIM TRƯỜNG</h2>
+            <h2 class="events__subtitle" data-admin-editable="dan_chuong_trinh.s3.title">GHI HÌNH PHIM TRƯỜNG</h2>
             <section>
                 <div class="events__video-container" style="display: flex; justify-content: center; gap: 10px;">
                     <div class="events__video">
                         <iframe src="https://drive.google.com/file/d/1m-MHB5aMsa9kZkouhTqDclrtNewoKJlW/preview"
-                            width="900" height="450" allow="autoplay; fullscreen" frameborder="0"></iframe>
+                            width="900" height="450" allow="autoplay; fullscreen" frameborder="0" data-admin-editable="dan_chuong_trinh.s3.vid1"></iframe>
                     </div>
                 </div>
-            </section> <!-- Thêm thẻ đóng cho section ở đây -->
+            </section>
 
             <div id="ghi_hinh_ngoai_canh"></div>
-            <h2 class="events__subtitle">GHI HÌNH NGOẠI CẢNH</h2>
+            <h2 class="events__subtitle" data-admin-editable="dan_chuong_trinh.s4.title">GHI HÌNH NGOẠI CẢNH</h2>
             <div class="events__slideshow">
                 <div class="events__slideshow-wrapper">
-                    <div class="events__slideshow-item"><img src="/img/IMG_8157 (2).JPG" alt="Sự kiện 1" /></div>
-                    <div class="events__slideshow-item"><img src="/img/IMG_8160 (1).JPG" alt="Sự kiện 2" /></div>
-                    <div class="events__slideshow-item"><img src="/img/IMG_8164 (2).JPG" alt="Sự kiện 3" /></div>
+                    <div class="events__slideshow-item"><img src="/img/IMG_8157 (2).JPG" alt="Sự kiện 1" data-admin-editable="dan_chuong_trinh.s4.img1" /></div>
+                    <div class="events__slideshow-item"><img src="/img/IMG_8160 (1).JPG" alt="Sự kiện 2" data-admin-editable="dan_chuong_trinh.s4.img2" /></div>
+                    <div class="events__slideshow-item"><img src="/img/IMG_8164 (2).JPG" alt="Sự kiện 3" data-admin-editable="dan_chuong_trinh.s4.img3" /></div>
                 </div>
                 <div class="events__slideshow-nav">
                     <button class="events__slideshow-nav-button prev"><i class="fas fa-chevron-left"></i></button>
                     <button class="events__slideshow-nav-button next"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
-        </div> <!-- Đảm bảo đóng thẻ div cho container -->
+        </div>
 
         <!-- Contact Section (Liên hệ) -->
         <section class="contact">
             <div class="container contact__container">
                 <div class="contact__form">
-                    <h2 class="contact__form-title">Liên Hệ</h2>
+                    <h2 class="contact__form-title" data-admin-editable="contact.form_title">Liên Hệ</h2>
                     <form class="contact__form-wrapper" id="contactForm">
-                        <input type="text" class="contact__form-input" name="from_name"" placeholder="Họ và tên" required />
+                        <input type="text" class="contact__form-input" name="from_name" placeholder="Họ và tên" required />
                         <input type="email" class="contact__form-input" name="email" placeholder="Email" required />
                         <textarea class="contact__form-textarea" name="message" placeholder="Nội dung" required></textarea>
                         <button type="submit" class="contact__form-button">Gửi</button>
                     </form>
                 </div>
                 <div class="contact__info">
-                    <h3 class="contact__info-title">MC Hoàng Phúc</h3>
-                    <p class="contact__info-item"><span class="contact__info-highlight">MC sự kiện, tiệc cưới - Livestream - Voice</span></p>
-                    <p class="contact__info-item">📞 Số điện thoại: <a href="tel:0359581896" class="contact__info-highlight">0359 581 896</a></p>
-                    <p class="contact__info-item">✉️ Email: <span class="contact__info-highlight">mchoangphuc2207@gmail.com</span></p>
+                    <h3 class="contact__info-title" data-admin-editable="contact.info_title">MC Hoàng Phúc</h3>
+                    <p class="contact__info-item" data-admin-editable="contact.info_desc"><span class="contact__info-highlight">MC sự kiện, tiệc cưới - Livestream - Voice</span></p>
+                    <p class="contact__info-item">📞 Số điện thoại: <a href="tel:0359581896" class="contact__info-highlight" data-admin-editable="contact.phone">0359 581 896</a></p>
+                    <p class="contact__info-item">✉️ Email: <span class="contact__info-highlight" data-admin-editable="contact.email">mchoangphuc2207@gmail.com</span></p>
                 </div>
             </div>
         </section>
@@ -843,53 +842,7 @@
             const section = document.getElementById(sectionId);
             if(section){ section.scrollIntoView({behavior:'smooth'}); }
           }
-          (async function(){
-            try{
-              const res = await fetch('/admin/data/skills/dan-chuong-trinh.json', { cache: 'no-store' });
-              if(!res.ok) throw new Error('Không tải được JSON');
-              const data = await res.json();
-              const container = document.querySelector('.events > .container');
-              if(!container) return;
-              const title = data.title || 'Các Sự Kiện Từng Dẫn';
-              const sections = Array.isArray(data.sections) ? data.sections : [];
-              // Buttons
-              const buttons = sections.filter(s=>s.id).map(s=>`<button class="events__button" onclick="scrollToSection('${s.id}')">${s.title || s.id}</button>`).join('');
-              // Build sections
-              const sectionsHtml = sections.map(section=>{
-                const sid = section.id ? ` id="${section.id}"` : '';
-                const stitle = section.title ? `<h2 class="events__subtitle">${section.title}</h2>` : '';
-                if((section.kind||'slideshow')==='slideshow'){
-                  const items = (section.items||[]).filter(i=> (i.url||i.image));
-                  const slides = items.map(i=>{
-                    const src = i.url || i.image;
-                    return `<div class="events__slideshow-item"><img src="${src}" alt="${(i.caption||'').replace(/"/g,'&quot;')}"/></div>`;
-                  }).join('');
-                  return `${sid?`<div${sid}></div>`:''}${stitle}<div class="events__slideshow"><div class="events__slideshow-wrapper">${slides}</div><div class="events__slideshow-nav"><button class="events__slideshow-nav-button prev"><i class="fas fa-chevron-left"></i></button><button class="events__slideshow-nav-button next"><i class="fas fa-chevron-right"></i></button></div></div>`;
-                } else {
-                  // videos block
-                  const vids = (section.items||[]).filter(i=> (i.url));
-                  const vhtml = vids.map(v=>{
-                    const url = v.url;
-                    if(/youtube\.com|youtu\.be/.test(url)){
-                      const vid = url.includes('youtu.be') ? url.split('/').pop().split('?')[0] : (new URL(url).searchParams.get('v'));
-                      return `<div class="events__video"><iframe src="https://www.youtube.com/embed/${vid}?rel=0" allowfullscreen loading="lazy"></iframe></div>`;
-                    } else if(/vimeo\.com/.test(url)){
-                      const parts = url.split('/'); const vid = parts[parts.length-1];
-                      return `<div class="events__video"><iframe src="https://player.vimeo.com/video/${vid}" allowfullscreen loading="lazy"></iframe></div>`;
-                    } else if(/drive\.google\.com\/file\//.test(url)){
-                      return `<div class="events__video"><iframe src="${url}" allow="autoplay; fullscreen" loading="lazy"></iframe></div>`;
-                    }
-                    return `<div class="events__video"><video src="${url}" controls playsinline></video></div>`;
-                  }).join('');
-                  return `${sid?`<div${sid}></div>`:''}${stitle}<section><div class="events__video-container">${vhtml}</div></section>`;
-                }
-              }).join('');
-              container.innerHTML = `<h1 class="events__title">${title}</h1><div class="events__buttons">${buttons}</div>${sectionsHtml}`;
-              attachSlideshowControls(container);
-              // expose scrollToSection globally
-              window.scrollToSection = scrollToSection;
-            }catch(e){ console.warn(e); }
-          })();
+
 
           document.getElementById('contactForm').addEventListener('submit', function(event) {
             event.preventDefault();

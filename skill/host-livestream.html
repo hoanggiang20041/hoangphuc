@@ -708,15 +708,15 @@
     </header>
     <section class="events">
         <div class="container">
-            <h1 class="events__title">HOST LIVESTREAM</h1>
+            <h1 class="events__title" data-admin-editable="host.title">HOST LIVESTREAM</h1>
             <div class="events__slideshow">
                 <div class="events__slideshow-wrapper">
-                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-02-26.png" alt="Sự kiện 1" /></div>
-                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-03-13.png" alt="Sự kiện 2" /></div>
-                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-04-48.png" alt="Sự kiện 3" /></div>
-                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-04-54.png" alt="Sự kiện 4" /></div>
-                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-05-26.png" alt="Sự kiện 4" /></div>
-                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-05-39.png" alt="Sự kiện 4" /></div>
+                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-02-26.png" alt="Sự kiện 1" data-admin-editable="host.slide1" /></div>
+                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-03-13.png" alt="Sự kiện 2" data-admin-editable="host.slide2" /></div>
+                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-04-48.png" alt="Sự kiện 3" data-admin-editable="host.slide3" /></div>
+                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-04-54.png" alt="Sự kiện 4" data-admin-editable="host.slide4" /></div>
+                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-05-26.png" alt="Sự kiện 5" data-admin-editable="host.slide5" /></div>
+                    <div class="events__slideshow-item"><img src="/img/vMix Capture 19 March 2025 21-05-39.png" alt="Sự kiện 6" data-admin-editable="host.slide6" /></div>
                 </div>
                 <div class="events__slideshow-nav">
                     <button class="events__slideshow-nav-button prev"><i class="fas fa-chevron-left"></i></button>
@@ -728,7 +728,7 @@
                 <div class="events__video-container" style="display: flex; justify-content: center; gap: 10px;">
                     <div class="events__video">
                         <iframe src="https://drive.google.com/file/d/1Eng_PN2fMjAKdVB4TQ4xVIcYppNLi9qf/preview"
-                            width="1000" height="500" allow="autoplay; fullscreen" frameborder="0"></iframe>
+                            width="1000" height="500" allow="autoplay; fullscreen" frameborder="0" data-admin-editable="host.video1"></iframe>
                     </div>
 
                 </div>
@@ -738,19 +738,19 @@
         <section class="contact">
             <div class="container contact__container">
                 <div class="contact__form">
-                    <h2 class="contact__form-title">Liên Hệ</h2>
+                    <h2 class="contact__form-title" data-admin-editable="contact.form_title">Liên Hệ</h2>
                     <form class="contact__form-wrapper" id="contactForm">
-                        <input type="text" class="contact__form-input" name="from_name"" placeholder="Họ và tên" required />
+                        <input type="text" class="contact__form-input" name="from_name" placeholder="Họ và tên" required />
                         <input type="email" class="contact__form-input" name="email" placeholder="Email" required />
                         <textarea class="contact__form-textarea" name="message" placeholder="Nội dung" required></textarea>
                         <button type="submit" class="contact__form-button">Gửi</button>
                     </form>
                 </div>
                 <div class="contact__info">
-                    <h3 class="contact__info-title">MC Hoàng Phúc</h3>
-                    <p class="contact__info-item"><span class="contact__info-highlight">MC sự kiện, tiệc cưới - Livestream - Voice</span></p>
-                    <p class="contact__info-item">📞 Số điện thoại: <a href="tel:0359581896" class="contact__info-highlight">0359 581 896</a></p>
-                    <p class="contact__info-item">✉️ Email: <span class="contact__info-highlight">mchoangphuc2207@gmail.com</span></p>
+                    <h3 class="contact__info-title" data-admin-editable="contact.info_title">MC Hoàng Phúc</h3>
+                    <p class="contact__info-item" data-admin-editable="contact.info_desc"><span class="contact__info-highlight">MC sự kiện, tiệc cưới - Livestream - Voice</span></p>
+                    <p class="contact__info-item">📞 Số điện thoại: <a href="tel:0359581896" class="contact__info-highlight" data-admin-editable="contact.phone">0359 581 896</a></p>
+                    <p class="contact__info-item">✉️ Email: <span class="contact__info-highlight" data-admin-editable="contact.email">mchoangphuc2207@gmail.com</span></p>
                 </div>
             </div>
         </section>
