@@ -224,11 +224,19 @@
           })
         });
         
-        const result = await response.json();
+        const responseText = await response.text();
+        let result;
+        try {
+          result = JSON.parse(responseText);
+        } catch (e) {
+          status.innerHTML = `<p class="status-msg status-error">Lỗi Server (Mã ${response.status}): Nội dung không phải JSON. <br><small>${responseText.substring(0, 200)}...</small></p>`;
+          return;
+        }
+
         if (response.ok) {
           status.innerHTML = '<p class="status-msg status-success">Đã lưu thành công! Đợi 1-2 phút để web cập nhật.</p>';
         } else {
-          status.innerHTML = `<p class="status-msg status-error">Lỗi: ${result.error}</p>`;
+          status.innerHTML = `<p class="status-msg status-error">Lỗi: ${result.error || 'Không xác định'}</p>`;
         }
       } catch (error) {
         status.innerHTML = `<p class="status-msg status-error">Lỗi kết nối: ${error.message}</p>`;
