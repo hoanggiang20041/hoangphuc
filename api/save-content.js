@@ -46,7 +46,7 @@ export default async function handler(req, res) {
   try {
     // 1) Verify Firebase token -> get email
     const authResp = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/getAccountInfo?key=${config.firebaseKey}`,
+      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${config.firebaseKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
