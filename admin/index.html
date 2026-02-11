@@ -252,13 +252,25 @@
     window.handleImgUpload = async (input, idx) => {
       if (!input.files || !input.files[0]) return;
       const file = input.files[0];
+      
+      // 1. Hiển thị preview tức thì bằng base64 local
       const reader = new FileReader();
+      reader.onload = (e) => {
+        const preview = document.getElementById(`prev-${idx}`);
+        if (preview) preview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+
+      // 2. Tiến hành upload lên GitHub
+      const uploadReader = new FileReader();
       const status = document.getElementById('save-status');
       
-      reader.onload = async (e) => {
+      uploadReader.onload = async (e) => {
         status.innerHTML = '<p class="status-msg">Đang upload ảnh lên GitHub...</p>';
         const base64 = e.target.result;
-        const filename = `img/${Date.now()}_${file.name}`;
+        // Sử dụng tên file gốc kèm timestamp để tránh trùng
+        const cleanFileName = file.name.replace(/[^a-z0-9.]/gi, '_').toLowerCase();
+        const filename = `img/${Date.now()}_${cleanFileName}`;
         
         try {
           const idToken = await auth.currentUser.getIdToken();
@@ -269,12 +281,13 @@
           });
           const result = await resp.json();
           if (result.success) {
+            // Cập nhật đường dẫn thật vào HTML Doc (dùng path tuyệt đối /img/...)
             updateImgSrc('/' + filename, idx);
-            status.innerHTML = '<p class="status-msg status-success">Upload ảnh thành công!</p>';
+            status.innerHTML = '<p class="status-msg status-success">Upload ảnh thành công! Đừng quên nhấn "Lưu toàn bộ HTML" ở dưới.</p>';
           } else { throw new Error(result.error); }
         } catch (err) { status.innerHTML = `<p class="status-error">Lỗi upload: ${err.message}</p>`; }
       };
-      reader.readAsDataURL(file);
+      uploadReader.readAsDataURL(file);
     };
 
     document.getElementById('btn-save').onclick = async () => {
