@@ -401,7 +401,6 @@
         if(response.ok) status.innerText = "Đã cập nhật GitHub thành công!"; 
         else alert("Lỗi lưu: " + (resData.error || response.statusText));
       } catch(e) { alert(e.message); }
-      } catch(e) { alert(e.message); }
     };
 
     document.querySelectorAll('.tab').forEach(tab => {
