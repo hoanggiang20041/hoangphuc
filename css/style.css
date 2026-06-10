@@ -827,7 +827,32 @@ img {
     background: rgba(5, 5, 5, 0.95);
     padding: 15px 0;
   }
-  .header__nav, .header__actions { display: none; }
+  .header__container {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+  .header__logo {
+    text-align: center;
+    width: 100%;
+  }
+  .header__nav {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    width: 100%;
+    justify-content: center;
+    padding-bottom: 5px;
+  }
+  .header__nav::-webkit-scrollbar {
+    display: none;
+  }
+  .header__nav-link {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 5px 10px;
+  }
+  .header__actions { display: none; }
   .hero__title { font-size: 3rem; }
   .hero__buttons { flex-direction: column; width: 100%; }
   .services-grid { grid-template-columns: 1fr; }
