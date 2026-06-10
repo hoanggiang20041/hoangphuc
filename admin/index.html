@@ -372,19 +372,18 @@
           div.innerHTML += `<input type="text" value="${el.getAttribute('src')}" oninput="upVal('${id}', 'src', this.value)">`;
         } else {
           const area = document.createElement('textarea');
-          area.value = el.tagName === 'TITLE' ? el.textContent : el.innerText;
-          area.oninput = e => upVal(id, 'text', e.target.value, el.tagName);
+          area.value = el.textContent;
+          area.oninput = e => upVal(id, 'text', e.target.value);
           div.appendChild(area);
         }
         target.appendChild(div);
       });
     }
 
-    window.upVal = (id, type, val, tagName = null) => {
+    window.upVal = (id, type, val) => {
       const el = htmlDoc.querySelector(`[data-admin-id="${id}"]`);
       if (type === 'text') {
-        if (tagName === 'TITLE') el.textContent = val;
-        else el.innerText = val;
+        el.textContent = val;
       }
       else { 
         el.setAttribute(type, val); 
