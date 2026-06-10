@@ -397,7 +397,10 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token: idToken, path: currentFile, content: '<!DOCTYPE html>\n' + clone.documentElement.outerHTML })
         });
-        if(response.ok) status.innerText = "Đã cập nhật GitHub thành công!"; else alert("Lỗi lưu");
+        const resData = await response.json();
+        if(response.ok) status.innerText = "Đã cập nhật GitHub thành công!"; 
+        else alert("Lỗi lưu: " + (resData.error || response.statusText));
+      } catch(e) { alert(e.message); }
       } catch(e) { alert(e.message); }
     };
 
