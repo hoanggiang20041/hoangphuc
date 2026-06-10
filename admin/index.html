@@ -284,6 +284,12 @@
         const resp = await fetch(`${baseUrl}${file}?t=${Date.now()}`);
         const html = await resp.text();
         htmlDoc = new DOMParser().parseFromString(html, 'text/html');
+        window.__templates = [];
+        htmlDoc.querySelectorAll('[data-admin-container]').forEach((con, idx) => {
+          const firstItem = con.querySelector('[data-admin-item]');
+          window.__templates[idx] = firstItem ? firstItem.cloneNode(true) : null;
+        });
+        currentFile = file;
         renderEditor();
       } catch (e) { container.innerHTML = '<p>Lỗi nạp file.</p>'; }
     }
@@ -357,7 +363,8 @@
     window.addItem = (cIdx) => {
       const con = htmlDoc.querySelectorAll('[data-admin-container]')[cIdx];
       const items = con.querySelectorAll('[data-admin-item]');
-      const template = items[items.length - 1] || items[0];
+      // Nếu còn item thì lấy item cuối làm mẫu, nếu lỡ xóa sạch thì lấy từ file gốc (đã lưu tạm)
+      const template = items.length > 0 ? items[items.length - 1] : window.__templates[cIdx];
       const newItem = template.cloneNode(true);
       newItem.querySelectorAll('[data-admin-editable]').forEach(e => {
         if(e.tagName === 'IMG') e.src = "/img/placeholder.jpg";
