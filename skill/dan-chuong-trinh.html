@@ -1,855 +1,109 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Trang web chính thức của MC Hoàng Phúc - MC chuyên nghiệp, trẻ trung, tự tin." />
-    <meta name="author" content="xAI Team" />
-    <title>MC Hoàng Phúc</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600&family=Inter:wght@400;500;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script type="text/javascript">
-      (function() {
-        emailjs.init({
-          publicKey: "JZTaxhQzbVfL6U83X",
-        });
-      })();
-    </script>
-     <style>
-        /* ==========================================================================
-       Biến toàn cục
-       ========================================================================== */
-        :root {
-            --color-primary: #D4AF37;
-            --color-primary-dark: #B08D28;
-            --color-dark-secondary: #121212;
-            --color-light: #f5f5f5;
-            --color-muted: #b5b5b5;
-            --radius-lg: 16px;
-            --shadow-sm: 0 1px 0 rgba(255,255,255,0.03), 0 8px 24px rgba(0,0,0,0.25);
-            --shadow-md: 0 1px 0 rgba(255,255,255,0.04), 0 16px 32px rgba(0,0,0,0.35);
-            --shadow-lg: 0 1px 0 rgba(255,255,255,0.06), 0 24px 48px rgba(0,0,0,0.45);
-            --transition-smooth: 0.3s ease;
-            --color-secondary: #1e90ff;
-            --color-dark: #0b0b0b;
-            --color-light: #ffffff;
-            --color-muted: #a0a0a0;
-            --color-bg-light: #2a2a2a;
-            --spacing-unit: 1rem;
-            --radius-sm: 6px;
-            --radius-md: 12px;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.2);
-            --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.25);
-            --font-main: 'Inter', sans-serif;
-            --font-accent: 'EB Garamond', serif;
-            --transition-fast: 0.2s ease;
-            --transition-slow: 0.4s ease;
-        }
-
-        /* ==========================================================================
-       Reset và base styles
-       ========================================================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px;
-        }
-
-        body {
-            font-family: var(--font-main);
-            background-color: var(--color-dark);
-            color: var(--color-light);
-            line-height: 1.6;
-            overflow-x: hidden;
-            padding-top: 60px;
-            padding-bottom: 60px;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        img, video, iframe {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        /* ==========================================================================
-       Utilities
-       ========================================================================== */
-        .container {
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            padding-left: var(--spacing-unit);
-            padding-right: var(--spacing-unit);
-        }
-
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        /* ==========================================================================
-       Header Section (Cố định)
-       ========================================================================== */
-        .header {
-            background-color: var(--color-dark);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: var(--spacing-unit) 0;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .header__container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header__logo {
-            font-family: var(--font-accent);
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--color-light);
-            text-transform: uppercase;
-        }
-
-        .header__nav {
-            display: flex;
-            gap: calc(var(--spacing-unit) * 1);
-        }
-
-        .header__nav-link {
-            font-family: var(--font-main);
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--color-light);
-            text-transform: uppercase;
-            padding: calc(var(--spacing-unit) * 0.5);
-            position: relative;
-            transition: color var(--transition-fast);
-        }
-
-        .header__nav-link--active::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background-color: var(--color-primary);
-            bottom: 0;
-            left: 0;
-        }
-
-        .header__nav-link:hover {
-            color: var(--color-primary);
-        }
-
-        /* ==========================================================================
-       Events Section (Các sự kiện từng dẫn) - Cập nhật mới
-       ========================================================================== */
-        .events {
-            padding: calc(var(--spacing-unit) * 4) 0;
-            background-color: var(--color-dark);
-        }
-
-        .events__title {
-            font-family: var(--font-accent);
-            font-size: 3rem;
-            font-weight: 600;
-            color: var(--color-light);
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: calc(var(--spacing-unit) * 2);
-        }
-
-        .events__buttons {
-            display: flex;
-            justify-content: center;
-            gap: calc(var(--spacing-unit) * 1);
-            margin-bottom: calc(var(--spacing-unit) * 2);
-            flex-wrap: wrap;
-        }
-
-        .events__button {
-            font-family: var(--font-main);
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--color-primary);
-            background-color: transparent;
-            border: 1px solid var(--color-primary);
-            padding: calc(var(--spacing-unit) * 0.5) calc(var(--spacing-unit) * 1);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: background-color var(--transition-fast), color var(--transition-fast);
-        }
-
-        .events__button:hover {
-            background-color: var(--color-primary);
-            color: var(--color-dark);
-        }
-
-        .events__subtitle {
-            font-family: var(--font-accent);
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--color-light);
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: calc(var(--spacing-unit) * 2);
-        }
-
-        .events__slideshow {
-            position: relative;
-            max-width: 1000px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        .events__slideshow-wrapper {
-            display: flex;
-            transition: transform var(--transition-slow);
-        }
-
-        .events__slideshow-item {
-            flex: 0 0 100%;
-            width: 100%;
-        }
-
-        .events__slideshow-item img {
-            width: 100%;
-            height: 600px;
-            object-fit: cover;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-md);
-        }
-
-        .events__slideshow-nav {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            transform: translateY(-50%);
-        }
-
-        .events__slideshow-nav-button {
-            background-color: rgba(0, 0, 0, 0.5);
-            color: var(--color-light);
-            border: none;
-            padding: calc(var(--spacing-unit) * 0.5);
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: background-color var(--transition-fast);
-        }
-
-        .events__slideshow-nav-button:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .events__video-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap; /* Cho phép xuống dòng trên mobile */
-            margin: calc(var(--spacing-unit) * 2) auto 0;
-            max-width: 1000px;
-        }
-
-        .events__video {
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-md);
-            overflow: hidden;
-            width: 480px; /* Chiều rộng cố định trên desktop */
-            height: 360px; /* Chiều cao cố định trên desktop */
-        }
-
-        .events__video iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* ==========================================================================
-       Story Section (Câu chuyện của tôi)
-       ========================================================================== */
-        .story {
-            padding: calc(var(--spacing-unit) * 2) 0;
-            background-color: var(--color-dark);
-        }
-
-        .story__title {
-            font-family: var(--font-accent);
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: var(--color-light);
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: calc(var(--spacing-unit) * 2);
-        }
-
-        .story__container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: calc(var(--spacing-unit) * 2);
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .story__part {
-            font-family: var(--font-main);
-            font-size: 1rem;
-            color: var(--color-muted);
-            text-align: justify;
-        }
-
-        /* ==========================================================================
-       Academy Section (Lê tốt nghiệp tại Host Academy)
-       ========================================================================== */
-        .academy {
-            padding: calc(var(--spacing-unit) * 4) 0;
-            background-color: var(--color-dark);
-        }
-
-        .academy__title {
-            font-family: var(--font-accent);
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: var(--color-light);
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: calc(var(--spacing-unit) * 2);
-        }
-
-        .academy__description {
-            font-family: var(--font-main);
-            font-size: 1.1rem;
-            color: var(--color-muted);
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto calc(var(--spacing-unit) * 2);
-        }
-
-        /* ==========================================================================
-       Contact Section (Liên hệ)
-       ========================================================================== */
-        .contact {
-            padding: calc(var(--spacing-unit) * 4) 0;
-            background-color: var(--color-dark);
-        }
-
-        .contact__title {
-            font-family: var(--font-accent);
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: var(--color-light);
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: calc(var(--spacing-unit) * 2);
-        }
-
-        .contact__container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: calc(var(--spacing-unit) * 2);
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .contact__form {
-            padding: calc(var(--spacing-unit) * 1.5);
-            background-color: var(--color-bg-light);
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .contact__form-title {
-            font-family: var(--font-accent);
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--color-light);
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: calc(var(--spacing-unit) * 1.5);
-        }
-
-        .contact__form-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: calc(var(--spacing-unit) * 1);
-        }
-
-        .contact__form-input,
-        .contact__form-textarea {
-            padding: calc(var(--spacing-unit) * 0.75);
-            background-color: var(--color-dark);
-            color: var(--color-light);
-            border: 1px solid var(--color-primary);
-            border-radius: var(--radius-sm);
-            font-family: var(--font-main);
-            font-size: 1rem;
-            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-        }
-
-        .contact__form-input:focus,
-        .contact__form-textarea:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 4px var(--color-primary);
-            outline: none;
-        }
-
-        .contact__form-textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .contact__form-button {
-            padding: calc(var(--spacing-unit) * 0.75);
-            background-color: var(--color-primary);
-            color: var(--color-dark);
-            border: none;
-            border-radius: var(--radius-sm);
-            font-family: var(--font-main);
-            font-size: 1rem;
-            font-weight: 500;
-            transition: background-color var(--transition-fast);
-        }
-
-        .contact__form-button:hover {
-            background-color: #00e0bb;
-        }
-
-        .contact__info {
-            padding: calc(var(--spacing-unit) * 1.5);
-            background-color: var(--color-bg-light);
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .contact__info-title {
-            font-family: var(--font-accent);
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--color-light);
-            text-align: center;
-            margin-bottom: calc(var(--spacing-unit) * 1);
-        }
-
-        .contact__info-item {
-            font-family: var(--font-main);
-            font-size: 1rem;
-            color: var(--color-muted);
-            text-align: center;
-            margin-bottom: calc(var(--spacing-unit) * 0.5);
-        }
-
-        .contact__info-highlight {
-            color: var(--color-primary);
-        }
-
-        /* ==========================================================================
-       Footer (Cố định)
-       ========================================================================== */
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--color-dark);
-            padding: calc(var(--spacing-unit) * 0.5) 0;
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-        }
-
-        .footer__content {
-            text-align: center;
-            font-family: var(--font-main);
-            font-size: 0.85rem;
-            color: var(--color-muted);
-        }
-
-        /* ==========================================================================
-       Responsive Design
-       ========================================================================== */
-        @media (max-width: 1024px) {
-            .events__title {
-                font-size: 2.5rem;
-            }
-
-            .story__title,
-            .academy__title,
-            .contact__title {
-                font-size: 2.2rem;
-            }
-
-            .events__subtitle {
-                font-size: 1.8rem;
-            }
-
-            .story__container {
-                grid-template-columns: 1fr;
-            }
-
-            .contact__container {
-                grid-template-columns: 1fr;
-            }
-
-            .events__video {
-                width: 100%; /* Chiều rộng đầy đủ trên tablet */
-                height: auto; /* Chiều cao tự động */
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header__container {
-                flex-direction: column;
-                gap: calc(var(--spacing-unit) * 0.5);
-            }
-
-            .header__logo {
-                font-size: 1.2rem;
-            }
-
-            .header__nav {
-                gap: calc(var(--spacing-unit) * 0.5);
-            }
-
-            .header__nav-link {
-                font-size: 0.8rem;
-                padding: calc(var(--spacing-unit) * 0.3);
-            }
-
-            .events__buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .events__button {
-                width: 80%;
-                text-align: center;
-            }
-
-            .academy__description,
-            .story__part {
-                font-size: 1rem;
-            }
-
-            .contact__form,
-            .contact__info {
-                padding: var(--spacing-unit);
-            }
-
-            .events__slideshow-item img {
-                height: 300px; /* Giảm chiều cao ảnh trên mobile */
-            }
-
-            .events__video {
-                width: 100%; /* Chiều rộng đầy đủ trên mobile */
-                height: auto; /* Chiều cao tự động */
-            }
-
-            .events__video-container {
-                flex-direction: column; /* Xếp dọc trên mobile */
-                align-items: center;
-            }
-
-            .events__video iframe {
-                width: 100%; /* Chiều rộng đầy đủ trên mobile */
-                height: 200px; /* Chiều cao nhỏ hơn trên mobile */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header__logo {
-                font-size: 1rem;
-            }
-
-            .header__nav-link {
-                font-size: 0.7rem;
-                padding: calc(var(--spacing-unit) * 0.2);
-            }
-
-            .events__title {
-                font-size: 2rem;
-            }
-
-            .events__subtitle {
-                font-size: 1.6rem;
-            }
-
-            .story__title,
-            .academy__title,
-            .contact__title {
-                font-size: 1.8rem;
-            }
-
-            .events__button {
-                font-size: 0.9rem;
-            }
-
-            .contact__form-input,
-            .contact__form-textarea {
-                font-size: 0.9rem;
-            }
-
-            .contact__info-title {
-                font-size: 1.4rem;
-            }
-
-            .events__slideshow-item img {
-                height: 200px; /* Giảm chiều cao ảnh trên mobile nhỏ */
-            }
-
-            .events__video iframe {
-                height: 150px; /* Chiều cao nhỏ hơn trên mobile nhỏ */
-            }
-        }
-
-        /* ==========================================================================
-       Accessibility Enhancements
-       ========================================================================== */
-        .header__nav-link:focus,
-        .events__button:focus,
-        .contact__form-button:focus,
-        .events__slideshow-nav-button:focus {
-            outline: 2px solid var(--color-primary);
-            outline-offset: 2px;
-        }
-
-        .contact__form-input:focus,
-        .contact__form-textarea:focus {
-            outline: 2px solid var(--color-primary);
-            outline-offset: 2px;
-        }
-
-        /* ==========================================================================
-       Animation
-       ========================================================================== */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slide {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(0); }
-            31.25% { transform: translateX(-100%); }
-            56.25% { transform: translateX(-100%); }
-            62.5% { transform: translateX(-200%); }
-            87.5% { transform: translateX(-200%); }
-            93.75% { transform: translateX(-300%); }
-            100% { transform: translateX(-300%); }
-        }
-
-        .story__part,
-        .academy__description,
-        .contact__form,
-        .contact__info {
-            animation: fadeIn 0.6s ease forwards;
-        }
-
-        .events__slideshow-wrapper {
-            animation: slide 20s infinite;
-        }
-
-    /* Luxury overrides */
-    .header{background-color: var(--color-dark);backdrop-filter: blur(8px);border-bottom:1px solid rgba(212,175,55,0.12);}
-    .header__logo{color:var(--color-primary);letter-spacing:1px}
-    .header__nav-link{letter-spacing:.5px}
-    .header__nav-link::before{content:'';position:absolute;left:0;bottom:0;height:2px;width:0;background:linear-gradient(90deg,var(--color-primary),transparent);transition:width var(--transition-smooth)}
-    .header__nav-link:hover::before,.header__nav-link--active::before{width:100%}
-
-    .events__title,.events__subtitle,.story__title,.academy__title,.contact__title{letter-spacing:.5px}
-    .events__title,.story__title,.academy__title,.contact__title{position:relative}
-    .events__title::after,.story__title::after,.academy__title::after,.contact__title::after{content:'';display:block;width:64px;height:2px;background-color:var(--color-primary);margin:12px auto 0;border-radius:2px}
-
-    .events__button{border:2px solid var(--color-primary);letter-spacing:.5px}
-    .events__button:hover{background:linear-gradient(135deg,var(--color-primary),var(--color-primary-dark));color:var(--color-dark);transform:translateY(-1px)}
-
-    .events__slideshow-item img,.events__video{border-radius:var(--radius-lg);box-shadow:var(--shadow-lg)}
-    .contact__form,.contact__info{background:linear-gradient(135deg,var(--color-dark-secondary),rgba(26,31,46,0.8));border:1px solid rgba(212,175,55,0.12)}
-    .contact__form-input,.contact__form-textarea{border:2px solid rgba(212,175,55,0.2)}
-    .contact__form-input:focus,.contact__form-textarea:focus{border-color:var(--color-primary);box-shadow:0 0 16px rgba(212,175,55,0.2)}
-
-    @media (max-width:768px){.events__title{font-size:clamp(1.6rem,6vw,2.2rem)}.events__subtitle{font-size:clamp(1.2rem,4.8vw,1.6rem)}}
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dẫn Chương Trình - MC Phúc Trương</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
 </head>
 
 <body>
-    <!-- Header Section (Cố định) -->
-    <header class="header">
-        <div class="container header__container">
-            <a href="/hoangphuc/index.html" class="header__logo" data-admin-editable="header.logo">MC Hoàng Phúc</a>
-            <nav class="header__nav">
-                <a href="/hoangphuc/index.html" class="header__nav-link header__nav-link--active">Trang Chủ</a>
-                <a href="/hoangphuc/about.html" class="header__nav-link">Giới Thiệu</a>
-            </nav>
+  <!-- Noise Overlay -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="header scrolled" id="header">
+    <div class="container header__container">
+      <a href="/index.html" class="header__logo">MC Phúc Trương<span>.</span></a>
+      <nav class="header__nav">
+        <a href="/index.html" class="header__nav-link">Trang Chủ</a>
+        <a href="/hoangphuc/about.html" class="header__nav-link">Giới Thiệu</a>
+      </nav>
+      <div class="header__actions">
+        <a href="/index.html#contact" class="phone-btn">Liên Hệ Ngay</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top: 150px; min-height: calc(100vh - 100px); display: flex; align-items: center;">
+    <div class="container" data-aos="fade-up" style="text-align: center;">
+      <div class="service-icon" style="color:var(--color-primary); font-size: 4rem;"><i class="fas fa-microphone-alt"></i></div>
+      <h1 class="section-title" style="margin-top: 20px; color: var(--color-primary);" data-admin-editable="Tiêu đề Kỹ năng">Dẫn Chương Trình</h1>
+      <p style="max-width: 800px; margin: 20px auto; color: #ddd; font-size: 1.2rem; line-height: 1.8;" data-admin-editable="Nội dung giới thiệu">
+        Với kỹ năng giao tiếp xuất sắc và khả năng điều hướng chương trình linh hoạt, MC Phúc Trương tự tin mang đến không khí tích cực và kết nối sâu sắc giữa sân khấu và khán giả. Từng sự kiện, từ hội nghị trang trọng đến những buổi tiệc ấm cúng, đều được dẫn dắt một cách chuyên nghiệp và tinh tế nhất.
+      </p>
+      <a href="/index.html#contact" class="btn btn-primary" style="display:inline-block; margin-top: 30px;" data-admin-editable="Nút liên hệ">Đặt Lịch Ngay</a>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <h2 class="section-title">Gallery</h2>
+      </div>
+      
+      <!-- Sự Kiện 1 -->
+      <div class="event-section" data-aos="fade-up">
+        <h3 class="event-title" data-admin-editable="Tên Sự Kiện 1">01. Chung Kết Cuộc Thi Sinh Viên Tài Năng</h3>
+        <div class="gallery-auto" data-admin-container="Thư Viện Ảnh Sự Kiện 1">
+          <div data-admin-item><a href="/img/1.jpg" data-fancybox="gallery"><img src="/img/1.jpg" alt="Sự kiện 1" data-admin-editable="Ảnh sự kiện"></a></div>
+          <div data-admin-item><a href="/img/2.jpg" data-fancybox="gallery"><img src="/img/2.jpg" alt="Sự kiện 1" data-admin-editable="Ảnh sự kiện"></a></div>
+          <div data-admin-item><a href="/img/3.jpg" data-fancybox="gallery"><img src="/img/3.jpg" alt="Sự kiện 1" data-admin-editable="Ảnh sự kiện"></a></div>
+          <div data-admin-item><a href="/img/4.jpg" data-fancybox="gallery"><img src="/img/4.jpg" alt="Sự kiện 1" data-admin-editable="Ảnh sự kiện"></a></div>
+          <div data-admin-item><a href="/img/5.jpg" data-fancybox="gallery"><img src="/img/5.jpg" alt="Sự kiện 1" data-admin-editable="Ảnh sự kiện"></a></div>
+          <div data-admin-item><a href="/img/6.jpg" data-fancybox="gallery"><img src="/img/6.jpg" alt="Sự kiện 1" data-admin-editable="Ảnh sự kiện"></a></div>
+          <div data-admin-item><a href="/img/7.jpg" data-fancybox="gallery"><img src="/img/7.jpg" alt="Sự kiện 1" data-admin-editable="Ảnh sự kiện"></a></div>
         </div>
-    </header>
+      </div>
 
-    <section class="events">
-        <div class="container">
-            <h1 class="events__title" data-admin-editable="dan_chuong_trinh.title">Các Sự Kiện Từng Dẫn</h1>
-            <div class="events__buttons">
-                <button class="events__button" onclick="scrollToSection('mc_hoat_nao')">MC Hoạt Náo</button>
-                <button class="events__button" onclick="scrollToSection('mc_cong_giao')">MC Công Giáo</button>
-                <button class="events__button" onclick="scrollToSection('ghi_hinh_phim_truong')">Ghi Hình Phim
-                    Trường</button>
-                <button class="events__button" onclick="scrollToSection('ghi_hinh_ngoai_canh')">Ghi Hình Ngoại
-                    Cảnh</button>
-            </div>
-
-            <div id="mc_hoat_nao"></div>
-            <h2 class="events__subtitle" data-admin-editable="dan_chuong_trinh.s1.title">MC Hoạt Náo Các Chương Trình Thiện Nguyện</h2>
-            <div class="events__slideshow">
-                <div class="events__slideshow-wrapper">
-                    <div class="events__slideshow-item"><img src="/img/DSC06831.jpg" alt="Sự kiện 1" data-admin-editable="dan_chuong_trinh.s1.img1" /></div>
-                    <div class="events__slideshow-item"><img src="/img/DSC06841.jpg" alt="Sự kiện 2" data-admin-editable="dan_chuong_trinh.s1.img2" /></div>
-                    <div class="events__slideshow-item"><img src="/img/DSC08283.jpg" alt="Sự kiện 3" data-admin-editable="dan_chuong_trinh.s1.img3" /></div>
-                    <div class="events__slideshow-item"><img src="/img/DSC08311.jpg" alt="Sự kiện 4" data-admin-editable="dan_chuong_trinh.s1.img4" /></div>
-                </div>
-                <div class="events__slideshow-nav">
-                    <button class="events__slideshow-nav-button prev"><i class="fas fa-chevron-left"></i></button>
-                    <button class="events__slideshow-nav-button next"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-
-            <div id="mc_cong_giao"></div>
-            <h2 class="events__subtitle" data-admin-editable="dan_chuong_trinh.s2.title">MC Công Giáo</h2>
-            <div class="events__slideshow">
-                <div class="events__slideshow-wrapper">
-                    <div class="events__slideshow-item"><img src="/img/z6421152368871_ab382956c16a484bbf8d76668476d78f.jpg" alt="Sự kiện 1" data-admin-editable="dan_chuong_trinh.s2.img1" /></div>
-                    <div class="events__slideshow-item"><img src="/img/z6421152376444_eb1ef4461a4eeb4b144a33dc4abd1612.jpg" alt="Sự kiện 2" data-admin-editable="dan_chuong_trinh.s2.img2" /></div>
-                    <div class="events__slideshow-item"><img src="/img/z6421153537757_d02901d9724207f9278c4d45763732fa.jpg" alt="Sự kiện 3" data-admin-editable="dan_chuong_trinh.s2.img3" /></div>
-                </div>
-                <div class="events__slideshow-nav">
-                    <button class="events__slideshow-nav-button prev"><i class="fas fa-chevron-left"></i></button>
-                    <button class="events__slideshow-nav-button next"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-
-            <section>
-                <div class="events__video-container" style="display: flex; justify-content: center; gap: 10px;">
-                    <div class="events__video">
-                        <iframe src="https://drive.google.com/file/d/1BQPzvbFPWRZQYrtV48D4ljup3t8UhG0A/preview"
-                            width="480" height="360" allow="autoplay; fullscreen" frameborder="0" data-admin-editable="dan_chuong_trinh.s2.vid1"></iframe>
-                    </div>
-                    <div class="events__video">
-                        <iframe src="https://drive.google.com/file/d/1903VqJCsYBB-9afk-FE2wQlZhJf6Wf54/preview"
-                            width="480" height="360" allow="autoplay; fullscreen" frameborder="0" data-admin-editable="dan_chuong_trinh.s2.vid2"></iframe>
-                    </div>
-                </div>
-            </section>
-
-            <div id="ghi_hinh_phim_truong"></div>
-            <h2 class="events__subtitle" data-admin-editable="dan_chuong_trinh.s3.title">GHI HÌNH PHIM TRƯỜNG</h2>
-            <section>
-                <div class="events__video-container" style="display: flex; justify-content: center; gap: 10px;">
-                    <div class="events__video">
-                        <iframe src="https://drive.google.com/file/d/1m-MHB5aMsa9kZkouhTqDclrtNewoKJlW/preview"
-                            width="900" height="450" allow="autoplay; fullscreen" frameborder="0" data-admin-editable="dan_chuong_trinh.s3.vid1"></iframe>
-                    </div>
-                </div>
-            </section>
-
-            <div id="ghi_hinh_ngoai_canh"></div>
-            <h2 class="events__subtitle" data-admin-editable="dan_chuong_trinh.s4.title">GHI HÌNH NGOẠI CẢNH</h2>
-            <div class="events__slideshow">
-                <div class="events__slideshow-wrapper">
-                    <div class="events__slideshow-item"><img src="/img/IMG_8157 (2).JPG" alt="Sự kiện 1" data-admin-editable="dan_chuong_trinh.s4.img1" /></div>
-                    <div class="events__slideshow-item"><img src="/img/IMG_8160 (1).JPG" alt="Sự kiện 2" data-admin-editable="dan_chuong_trinh.s4.img2" /></div>
-                    <div class="events__slideshow-item"><img src="/img/IMG_8164 (2).JPG" alt="Sự kiện 3" data-admin-editable="dan_chuong_trinh.s4.img3" /></div>
-                </div>
-                <div class="events__slideshow-nav">
-                    <button class="events__slideshow-nav-button prev"><i class="fas fa-chevron-left"></i></button>
-                    <button class="events__slideshow-nav-button next"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
+      <!-- Sự Kiện 2 -->
+      <div class="event-section" data-aos="fade-up">
+        <h3 class="event-title" data-admin-editable="Tên Sự Kiện 2">02. Hội Nghị Khách Hàng VIP</h3>
+        <div class="gallery-auto" data-admin-container="Thư Viện Ảnh Sự Kiện 2">
+          <div data-admin-item><a href="/img/DSC06831.jpg" data-fancybox="gallery"><img src="/img/DSC06831.jpg" alt="Sự kiện 2" data-admin-editable="Ảnh sự kiện"></a></div>
+          <div data-admin-item><a href="/img/DSC06841.jpg" data-fancybox="gallery"><img src="/img/DSC06841.jpg" alt="Sự kiện 2" data-admin-editable="Ảnh sự kiện"></a></div>
+          <div data-admin-item><a href="/img/phuc1.jpg" data-fancybox="gallery"><img src="/img/phuc1.jpg" alt="Sự kiện 2" data-admin-editable="Ảnh sự kiện"></a></div>
+          <div data-admin-item><a href="/img/IMG_8035.JPG" data-fancybox="gallery"><img src="/img/IMG_8035.JPG" alt="Sự kiện 2" data-admin-editable="Ảnh sự kiện"></a></div>
+          <div data-admin-item><a href="/img/IMG_8033.JPG" data-fancybox="gallery"><img src="/img/IMG_8033.JPG" alt="Sự kiện 2" data-admin-editable="Ảnh sự kiện"></a></div>
+          <div data-admin-item><a href="/img/IMG_8160 (1).JPG" data-fancybox="gallery"><img src="/img/IMG_8160 (1).JPG" alt="Sự kiện 2" data-admin-editable="Ảnh sự kiện"></a></div>
         </div>
+      </div>
 
-        <!-- Contact Section (Liên hệ) -->
-        <section class="contact">
-            <div class="container contact__container">
-                <div class="contact__form">
-                    <h2 class="contact__form-title" data-admin-editable="contact.form_title">Liên Hệ</h2>
-                    <form class="contact__form-wrapper" id="contactForm">
-                        <input type="text" class="contact__form-input" name="from_name" placeholder="Họ và tên" required />
-                        <input type="email" class="contact__form-input" name="email" placeholder="Email" required />
-                        <textarea class="contact__form-textarea" name="message" placeholder="Nội dung" required></textarea>
-                        <button type="submit" class="contact__form-button">Gửi</button>
-                    </form>
-                </div>
-                <div class="contact__info">
-                    <h3 class="contact__info-title" data-admin-editable="contact.info_title">MC Hoàng Phúc</h3>
-                    <p class="contact__info-item" data-admin-editable="contact.info_desc"><span class="contact__info-highlight">MC sự kiện, tiệc cưới - Livestream - Voice</span></p>
-                    <p class="contact__info-item">📞 Số điện thoại: <a href="tel:0359581896" class="contact__info-highlight" data-admin-editable="contact.phone">0359 581 896</a></p>
-                    <p class="contact__info-item">✉️ Email: <span class="contact__info-highlight" data-admin-editable="contact.email">mchoangphuc2207@gmail.com</span></p>
-                </div>
-            </div>
-        </section>
+      <!-- Video Dẫn Mẫu -->
+      <div class="event-section" data-aos="fade-up">
+        <h3 class="event-title" data-admin-editable="Tên phần Video">03. Video Dẫn Mẫu Tiêu Biểu</h3>
+        <div class="video-grid" data-admin-container="Danh sách Video">
+          <div class="video-wrapper" data-admin-item>
+            <!-- Thay id Youtube vào phần src bên dưới -->
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video dẫn mẫu 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen data-admin-editable="Link Video"></iframe>
+          </div>
+          <div class="video-wrapper" data-admin-item>
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video dẫn mẫu 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen data-admin-editable="Link Video"></iframe>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
 
-        <!-- Footer (Cố định) -->
-        <footer class="footer">
-            <div class="footer__content">© 2025 MC Hoàng Phúc. All rights reserved.</div>
-        </footer>
+  <!-- Footer -->
+  <footer class="footer" style="position: relative; width: 100%;">
+    <div class="container">
+      <div class="footer-logo">Phúc Trương<span>.</span></div>
+      <div class="footer-text">© 2026 MC Phúc Trương. Kiến tạo đẳng cấp sự kiện.</div>
+    </div>
+  </footer>
 
-        <!-- JavaScript: Build content from CMS JSON and Slideshow logic -->
-        <script>
-          function attachSlideshowControls(root=document){
-            const wrappers = root.querySelectorAll('.events__slideshow-wrapper');
-            wrappers.forEach(wrapper => {
-              const items = wrapper.querySelectorAll('.events__slideshow-item');
-              const totalItems = items.length;
-              let currentIndex = 0;
-              function updateSlide(){ wrapper.style.animation='none'; wrapper.style.transform = `translateX(-${currentIndex * 100}%)`; }
-              const prev = wrapper.parentElement.querySelector('.prev');
-              const next = wrapper.parentElement.querySelector('.next');
-              if(prev) prev.addEventListener('click', ()=>{ currentIndex=(currentIndex-1+totalItems)%totalItems; updateSlide(); });
-              if(next) next.addEventListener('click', ()=>{ currentIndex=(currentIndex+1)%totalItems; updateSlide(); });
-              setInterval(()=>{ currentIndex=(currentIndex+1)%totalItems; updateSlide(); }, 5000);
-            });
-          }
-          function scrollToSection(sectionId){
-            const section = document.getElementById(sectionId);
-            if(section){ section.scrollIntoView({behavior:'smooth'}); }
-          }
-
-
-          document.getElementById('contactForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            emailjs.sendForm('service_6zj04n6', 'template_8mr9qj7', this)
-              .then(function(){ alert('Gửi thành công!'); }, function(error){ alert('Gửi thất bại: ' + JSON.stringify(error)); });
-          });
-        </script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+<script>Fancybox.bind("[data-fancybox]", {});</script>
 </body>
-
 </html>

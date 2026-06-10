@@ -3,937 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Trang web chính thức của MC Hoàng Phúc - chuyên nghiệp, trẻ trung, tự tin." />
-  <meta name="author" content="xAI Team" />
-  <title>MC Hoàng Phúc</title>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>Giới Thiệu - MC Phúc Trương</title>
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function() {
-      emailjs.init({
-        publicKey: "JZTaxhQzbVfL6U83X",
-      });
-    })();
-  </script>
-  <style>
-    /* ==========================================================================
-       Biến toàn cục
-       ========================================================================== */
-    :root {
-      --color-primary: #D4AF37;
-      --color-secondary: #1e90ff;
-      --color-dark: #1e1e1e;
-      --color-light: #ffffff;
-      --color-muted: #a0a0a0;
-      --color-bg-light: #2a2a2a;
-      --spacing-unit: 1rem;
-      --radius-sm: 6px;
-      --radius-md: 12px;
-      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
-      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.2);
-      --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.25);
-      --font-main: 'Inter', sans-serif;
-      --font-accent: 'EB Garamond', serif;
-      --transition-fast: 0.2s ease;
-      --transition-slow: 0.4s ease;
-    }
-
-    /* ==========================================================================
-       Reset và base styles
-       ========================================================================== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
-    }
-
-    body {
-      font-family: var(--font-main);
-      background-color: var(--color-dark);
-      color: var(--color-light);
-      line-height: 1.6;
-      overflow-x: hidden;
-      padding-top: 60px;
-      padding-bottom: 60px;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    img, video, iframe {
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    /* ==========================================================================
-       Utilities
-       ========================================================================== */
-    .container {
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-left: var(--spacing-unit);
-      padding-right: var(--spacing-unit);
-    }
-
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-
-    .text-center {
-      text-align: center;
-    }
-
-    /* ==========================================================================
-       Header Section (Cố định)
-       ========================================================================== */
-    .header {
-      background-color: var(--color-dark);
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      padding: var(--spacing-unit) 0;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .header__container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .header__logo {
-      font-family: var(--font-accent);
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--color-light);
-      text-transform: uppercase;
-    }
-
-    .header__nav {
-      display: flex;
-      gap: calc(var(--spacing-unit) * 1);
-    }
-
-    .header__nav-link {
-      font-family: var(--font-main);
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--color-light);
-      text-transform: uppercase;
-      padding: calc(var(--spacing-unit) * 0.5);
-      position: relative;
-      transition: color var(--transition-fast);
-    }
-
-    .header__nav-link--active::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      background-color: var(--color-primary);
-      bottom: 0;
-      left: 0;
-    }
-
-    .header__nav-link:hover {
-      color: var(--color-primary);
-    }
-
-    /* ==========================================================================
-       Intro Section (Giới thiệu về tôi) - Cập nhật mới
-       ========================================================================== */
-    .intro {
-      padding: calc(var(--spacing-unit) * 4) 0;
-      background-color: var(--color-dark);
-    }
-
-    .intro__title {
-      font-family: var(--font-accent);
-      font-size: 3rem;
-      font-weight: 600;
-      color: var(--color-light);
-      text-transform: uppercase;
-      text-align: center;
-      margin-bottom: calc(var(--spacing-unit) * 1);
-    }
-
-    .intro__quote {
-      font-family: var(--font-accent);
-      font-size: 1.2rem;
-      font-style: italic;
-      color: var(--color-muted);
-      text-align: center;
-      margin-bottom: calc(var(--spacing-unit) * 2);
-    }
-
-    .intro__container {
-      display: flex;
-      align-items: center;
-      gap: calc(var(--spacing-unit) * 2);
-      margin-top: calc(var(--spacing-unit) * 2);
-    }
-
-    .intro__image {
-      width: 40%;
-      flex-shrink: 0;
-    }
-
-    .intro__image img {
-      width: 100%;
-      height: auto;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-md);
-    }
-
-    .intro__content {
-      width: 60%;
-      display: flex;
-      flex-direction: column;
-      gap: calc(var(--spacing-unit) * 1);
-    }
-
-    .intro__description {
-      font-family: var(--font-main);
-      font-size: 1.1rem;
-      color: var(--color-muted);
-    }
-
-    .intro__gallery {
-      display: flex;
-      gap: calc(var(--spacing-unit) * 1);
-    }
-
-    .intro__gallery img {
-      width: 50%;
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .intro__contact-table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: var(--color-bg-light);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-    }
-
-    .intro__contact-table td {
-      padding: calc(var(--spacing-unit) * 0.75);
-      font-family: var(--font-main);
-      font-size: 1rem;
-      color: var(--color-light);
-      border-bottom: 1px solid var(--color-muted);
-    }
-
-    .intro__contact-table td:first-child {
-      font-weight: 500;
-      color: var(--color-primary);
-      width: 30%;
-    }
-
-    .intro__contact-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    /* ==========================================================================
-       Story Section (Câu chuyện của tôi)
-       ========================================================================== */
-    .story {
-      padding: calc(var(--spacing-unit) * 2) 0;
-      background-color: var(--color-dark);
-    }
-
-    .story__title {
-      font-family: var(--font-accent);
-      font-size: 2.5rem;
-      font-weight: 600;
-      color: var(--color-light);
-      text-transform: uppercase;
-      text-align: center;
-      margin-bottom: calc(var(--spacing-unit) * 2);
-    }
-
-    .story__container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: calc(var(--spacing-unit) * 2);
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .story__part {
-      font-family: var(--font-main);
-      font-size: 1rem;
-      color: var(--color-muted);
-      text-align: justify;
-    }
-
-    /* ==========================================================================
-       Academy Section (Lê tốt nghiệp tại Host Academy)
-       ========================================================================== */
-    .academy {
-      padding: calc(var(--spacing-unit) * 4) 0;
-      background-color: var(--color-dark);
-    }
-
-    .academy__title {
-      font-family: var(--font-accent);
-      font-size: 2.5rem;
-      font-weight: 600;
-      color: var(--color-light);
-      text-transform: uppercase;
-      text-align: center;
-      margin-bottom: calc(var(--spacing-unit) * 1);
-    }
-
-    .academy__description {
-      font-family: var(--font-main);
-      font-size: 1.1rem;
-      color: var(--color-muted);
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto calc(var(--spacing-unit) * 2);
-    }
-
-    /* ==========================================================================
-       Slideshow Section (Ảnh sự kiện)
-       ========================================================================== */
-    .slideshow {
-      padding: calc(var(--spacing-unit) * 2) 0;
-      background-color: var(--color-dark);
-    }
-
-    .slideshow__container {
-      position: relative;
-      max-width: 1000px;
-      margin: 0 auto;
-      overflow: hidden;
-    }
-
-    .slideshow__wrapper {
-      display: flex;
-      transition: transform var(--transition-slow);
-    }
-
-    .slideshow__item {
-      flex: 0 0 100%;
-      width: 100%;
-    }
-
-    .slideshow__item img {
-      width: 100%;
-      height: 400px;
-      object-fit: cover;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-md);
-    }
-
-    .slideshow__nav {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      transform: translateY(-50%);
-    }
-
-    .slideshow__nav-button {
-      background-color: rgba(0, 0, 0, 0.5);
-      color: var(--color-light);
-      border: none;
-      padding: calc(var(--spacing-unit) * 0.5);
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: background-color var(--transition-fast);
-    }
-
-    .slideshow__nav-button:hover {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-
-    /* ==========================================================================
-       Contact Section (Liên hệ)
-       ========================================================================== */
-    .contact {
-      padding: calc(var(--spacing-unit) * 4) 0;
-      background-color: var(--color-dark);
-    }
-
-    .contact__title {
-      font-family: var(--font-accent);
-      font-size: 2.5rem;
-      font-weight: 600;
-      color: var(--color-light);
-      text-transform: uppercase;
-      text-align: center;
-      margin-bottom: calc(var(--spacing-unit) * 2);
-    }
-
-    .contact__container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: calc(var(--spacing-unit) * 2);
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .contact__form {
-      padding: calc(var(--spacing-unit) * 1.5);
-      background-color: var(--color-bg-light);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .contact__form-title {
-      font-family: var(--font-accent);
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--color-light);
-      text-transform: uppercase;
-      text-align: center;
-      margin-bottom: calc(var(--spacing-unit) * 1.5);
-    }
-
-    .contact__form-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: calc(var(--spacing-unit) * 1);
-    }
-
-    .contact__form-input,
-    .contact__form-textarea {
-      padding: calc(var(--spacing-unit) * 0.75);
-      background-color: var(--color-dark);
-      color: var(--color-light);
-      border: 1px solid var(--color-primary);
-      border-radius: var(--radius-sm);
-      font-family: var(--font-main);
-      font-size: 1rem;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-    }
-
-    .contact__form-input:focus,
-    .contact__form-textarea:focus {
-      border-color: var(--color-primary);
-      box-shadow: 0 0 4px var(--color-primary);
-      outline: none;
-    }
-
-    .contact__form-textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-
-    .contact__form-button {
-      padding: calc(var(--spacing-unit) * 0.75);
-      background-color: var(--color-primary);
-      color: var(--color-dark);
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: var(--font-main);
-      font-size: 1rem;
-      font-weight: 500;
-      transition: background-color var(--transition-fast);
-    }
-
-    .contact__form-button:hover {
-      background-color: #00e0bb;
-    }
-
-    .contact__info {
-      padding: calc(var(--spacing-unit) * 1.5);
-      background-color: var(--color-bg-light);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .contact__info-title {
-      font-family: var(--font-accent);
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--color-light);
-      text-align: center;
-      margin-bottom: calc(var(--spacing-unit) * 1);
-    }
-
-    .contact__info-item {
-      font-family: var(--font-main);
-      font-size: 1rem;
-      color: var(--color-muted);
-      text-align: center;
-      margin-bottom: calc(var(--spacing-unit) * 0.5);
-    }
-
-    .contact__info-highlight {
-      color: var(--color-primary);
-    }
-
-    /* ==========================================================================
-       Footer (Cố định)
-       ========================================================================== */
-    .footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background-color: var(--color-dark);
-      padding: calc(var(--spacing-unit) * 0.5) 0;
-      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
-      z-index: 1000;
-    }
-
-    .footer__content {
-      text-align: center;
-      font-family: var(--font-main);
-      font-size: 0.85rem;
-      color: var(--color-muted);
-    }
-
-    /* ==========================================================================
-       Responsive Design
-       ========================================================================== */
-    @media (max-width: 1024px) {
-      .intro__title,
-      .events__title {
-        font-size: 2.5rem;
-      }
-
-      .story__title,
-      .academy__title,
-      .contact__title {
-        font-size: 2.2rem;
-      }
-
-      .intro__container {
-        flex-direction: column;
-      }
-
-      .intro__image,
-      .intro__content {
-        width: 100%;
-      }
-
-      .story__container {
-        grid-template-columns: 1fr;
-      }
-
-      .contact__container {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .header__container {
-        flex-direction: column;
-        gap: calc(var(--spacing-unit) * 0.5);
-      }
-
-      .header__logo {
-        font-size: 1.2rem;
-      }
-
-      .header__nav {
-        gap: calc(var(--spacing-unit) * 0.5);
-      }
-
-      .header__nav-link {
-        font-size: 0.8rem;
-        padding: calc(var(--spacing-unit) * 0.3);
-      }
-
-      .intro__gallery {
-        flex-direction: column;
-      }
-
-      .intro__gallery img {
-        width: 100%;
-      }
-
-      .slideshow__item img {
-        height: 300px;
-      }
-
-      .academy__description,
-      .story__part {
-        font-size: 1rem;
-      }
-
-      .contact__form,
-      .contact__info {
-        padding: var(--spacing-unit);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .header__logo {
-        font-size: 1rem;
-      }
-
-      .header__nav-link {
-        font-size: 0.7rem;
-        padding: calc(var(--spacing-unit) * 0.2);
-      }
-
-      .intro__title,
-      .events__title {
-        font-size: 2rem;
-      }
-
-      .intro__quote {
-        font-size: 1rem;
-      }
-
-      .story__title,
-      .academy__title,
-      .contact__title {
-        font-size: 1.8rem;
-      }
-
-      .intro__description {
-        font-size: 0.95rem;
-      }
-
-      .intro__contact-table td {
-        font-size: 0.9rem;
-      }
-
-      .slideshow__item img {
-        height: 200px;
-      }
-
-      .contact__form-input,
-      .contact__form-textarea {
-        font-size: 0.9rem;
-      }
-
-      .contact__info-title {
-        font-size: 1.4rem;
-      }
-    }
-
-    /* ==========================================================================
-       Accessibility Enhancements
-       ========================================================================== */
-    .header__nav-link:focus,
-    .contact__form-button:focus,
-    .slideshow__nav-button:focus {
-      outline: 2px solid var(--color-primary);
-      outline-offset: 2px;
-    }
-
-    .contact__form-input:focus,
-    .contact__form-textarea:focus {
-      outline: 2px solid var(--color-primary);
-      outline-offset: 2px;
-    }
-
-    /* ==========================================================================
-       Animation
-       ========================================================================== */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes slide {
-      0% { transform: translateX(0); }
-      12.5% { transform: translateX(0); }
-      15.62% { transform: translateX(-100%); }
-      28.12% { transform: translateX(-100%); }
-      31.25% { transform: translateX(-200%); }
-      43.75% { transform: translateX(-200%); }
-      46.87% { transform: translateX(-300%); }
-      59.37% { transform: translateX(-300%); }
-      62.5% { transform: translateX(-400%); }
-      75% { transform: translateX(-400%); }
-      78.12% { transform: translateX(-500%); }
-      90.62% { transform: translateX(-500%); }
-      93.75% { transform: translateX(-600%); }
-      100% { transform: translateX(-600%); }
-    }
-
-    .intro__content,
-    .story__part,
-    .academy__description,
-    .contact__form,
-    .contact__info {
-      animation: fadeIn 0.6s ease forwards;
-    }
-
-    .slideshow__wrapper {
-      animation: slide 40s infinite;
-    }
-  </style>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
 </head>
 
 <body>
-  <!-- Header Section (Cố định) -->
-  <header class="header">
+  <!-- Noise Overlay -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Header (Background tối vì không có ảnh nền hero) -->
+  <header class="header scrolled" id="header">
     <div class="container header__container">
-      <a href="/hoangphuc/index.html" class="header__logo" data-admin-editable="header.logo">MC Hoàng Phúc</a>
+      <a href="/index.html" class="header__logo">MC Phúc Trương<span>.</span></a>
       <nav class="header__nav">
-        <a href="/hoangphuc/index.html" class="header__nav-link header__nav-link--active">Trang Chủ</a>
-        <a href="/hoangphuc/about.html" class="header__nav-link">Giới Thiệu</a>
+        <a href="/index.html" class="header__nav-link">Trang Chủ</a>
+        <a href="/hoangphuc/about.html" class="header__nav-link header__nav-link--active">Giới Thiệu</a>
       </nav>
+      <div class="header__actions">
+        <a href="/index.html#contact" class="phone-btn">Liên Hệ Ngay</a>
+      </div>
     </div>
   </header>
 
-  <!-- Intro Section (Giới thiệu về tôi) -->
-  <section class="intro">
+  <!-- About Header Title -->
+  <section class="section" style="padding-bottom: 60px; padding-top: 150px;">
+    <div class="container" data-aos="fade-up">
+      <h1 class="section-title" style="text-align: center; color: var(--color-primary);">Giới Thiệu Về Tôi</h1>
+      <p class="section-subtitle" style="text-align: center; margin-top: 16px;">"Từng sân khấu là một hành trình, từng câu nói là một dấu ấn."</p>
+    </div>
+  </section>
+
+  <!-- About Content -->
+  <section class="section" style="padding-top: 0;">
     <div class="container">
-      <h1 class="intro__title" data-admin-editable="about.intro.title">Giới Thiệu Về Tôi</h1>
-      <p class="intro__quote" data-admin-editable="about.intro.quote">"Từng sân khấu là một hành trình, từng câu nói là một dấu ấn."</p>
-      <div class="intro__container">
-        <figure class="intro__image">
-          <img src="/img/phuc1.jpg" alt="MC Hoàng Phúc" data-admin-editable="about.intro.image" />
-        </figure>
-        <div class="intro__content">
-          <p class="intro__description" data-admin-editable="about.intro.desc">
-            Đây là website giới thiệu về hành trình MC của tôi. Hy vọng có cơ hội được hợp tác với quý vị!
+      <div class="about-grid">
+        <div class="about-img" data-aos="fade-right">
+          <a href="/img/phuc1.jpg" data-fancybox="gallery"><img src="/img/phuc1.jpg" alt="MC Phúc Trương" data-admin-editable="Ảnh chân dung"></a>
+        </div>
+        <div class="about-text" data-aos="fade-left">
+          <h2 data-admin-editable="Tên đầy đủ">Trương Hoàng Phúc</h2>
+          <p data-admin-editable="Đoạn văn 1">
+            Xin chào! Tôi là Phúc Trương. Hành trình đến với nghề MC của tôi bắt nguồn từ niềm đam mê kết nối và truyền cảm hứng. 
+            Mỗi lần đứng trước đám đông là một cơ hội để tôi mang lại năng lượng tích cực, sự chuyên nghiệp và cảm xúc chân thật nhất cho khán giả.
           </p>
-          <div class="intro__gallery">
-            <img src="/img/IMG_8035.JPG" alt="Ảnh sự kiện 1" data-admin-editable="about.intro.gallery1" />
-            <img src="/img/IMG_8033.JPG" alt="Ảnh sự kiện 2" data-admin-editable="about.intro.gallery2" />
+          <p data-admin-editable="Đoạn văn 2">
+            Tôi tự hào là học viên xuất sắc của Host Academy (Khóa Nâng Cao 07), nơi trang bị cho tôi kỹ năng ứng biến linh hoạt và phong thái tự tin. Rất hân hạnh được đồng hành cùng quý vị.
+          </p>
+          
+          <div class="stats-grid" data-admin-container="Thông số nổi bật">
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="100" data-admin-item>
+              <h3 data-admin-editable="Số liệu">5+</h3>
+              <p data-admin-editable="Mô tả">Năm Kinh Nghiệm</p>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="200" data-admin-item>
+              <h3 data-admin-editable="Số liệu">500+</h3>
+              <p data-admin-editable="Mô tả">Sự Kiện Thành Công</p>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="300" data-admin-item>
+              <h3 data-admin-editable="Số liệu">100%</h3>
+              <p data-admin-editable="Mô tả">Đam Mê</p>
+            </div>
           </div>
-          <table class="intro__contact-table">
-            <tr>
-              <td>Họ và tên</td>
-              <td data-admin-editable="about.info.name">Trương Hoàng Phúc</td>
-            </tr>
-            <tr>
-              <td>Số điện thoại</td>
-              <td data-admin-editable="about.info.phone">0359 581 896</td>
-            </tr>
-            <tr>
-              <td>Chiều cao</td>
-              <td data-admin-editable="about.info.height">1m75</td>
-            </tr>
-            <tr>
-              <td>Khu vực</td>
-              <td data-admin-editable="about.info.region">MC miền Nam</td>
-            </tr>
-            <tr>
-              <td>Email</td>
-              <td data-admin-editable="about.info.email">mchoangphuc2207@gmail.com</td>
-            </tr>
-          </table>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Story Section (Câu chuyện của tôi) -->
-  <section class="story">
+  <!-- Gallery Section -->
+  <section class="section">
     <div class="container">
-      <h2 class="story__title" data-admin-editable="about.story.title">Câu Chuyện Của Tôi</h2>
-      <div class="story__container">
-        <p class="story__part" data-admin-editable="about.story.part1">
-          Tôi là Hoàng Phúc, một người mới bắt đầu trở thành MC. Hành trình của tôi bắt đầu từ niềm đam mê dẫn chương trình, khi tôi nhận ra mình yêu thích việc giao tiếp và kết nối với mọi người. Sau khi quyết định theo đuổi ước mơ này, tôi tham gia các khóa học giao tiếp và thực hành dẫn dắt những sự kiện nhỏ.
-        </p>
-        <p class="story__part" data-admin-editable="about.story.part2">
-          Mỗi lần đứng trước đám đông, tôi cảm nhận được sự hồi hộp và phấn khích. Những trải nghiệm này không chỉ giúp tôi rèn luyện kỹ năng mà còn nuôi dưỡng niềm tự tin. Với lòng kiên trì và đam mê, tôi hy vọng sẽ ngày càng phát triển và trở thành một MC chuyên nghiệp trong tương lai.
-        </p>
+      <div class="section-header" data-aos="fade-up">
+        <h2 class="section-title" style="color: #000;">Thư Viện Ảnh</h2>
+      </div>
+      
+      <div class="gallery-auto" data-admin-container="Thư Viện Ảnh Kỷ Niệm">
+        <div data-admin-item><a href="/img/1.jpg" data-fancybox="gallery"><img src="/img/1.jpg" alt="Sự kiện 1" style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-md);" data-aos="zoom-in" data-aos-delay="100" data-admin-editable="Ảnh Thư Viện" /></a></div>
+        <div data-admin-item><a href="/img/2.jpg" data-fancybox="gallery"><img src="/img/2.jpg" alt="Sự kiện 2" style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-md);" data-aos="zoom-in" data-aos-delay="200" data-admin-editable="Ảnh Thư Viện" /></a></div>
+        <div data-admin-item><a href="/img/3.jpg" data-fancybox="gallery"><img src="/img/3.jpg" alt="Sự kiện 3" style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-md);" data-aos="zoom-in" data-aos-delay="300" data-admin-editable="Ảnh Thư Viện" /></a></div>
+        <div data-admin-item><a href="/img/4.jpg" data-fancybox="gallery"><img src="/img/4.jpg" alt="Sự kiện 4" style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-md);" data-aos="zoom-in" data-aos-delay="400" data-admin-editable="Ảnh Thư Viện" /></a></div>
+        <div data-admin-item><a href="/img/5.jpg" data-fancybox="gallery"><img src="/img/5.jpg" alt="Sự kiện 5" style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-md);" data-aos="zoom-in" data-aos-delay="500" data-admin-editable="Ảnh Thư Viện" /></a></div>
+        <div data-admin-item><a href="/img/6.jpg" data-fancybox="gallery"><img src="/img/6.jpg" alt="Sự kiện 6" style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-md);" data-aos="zoom-in" data-aos-delay="600" data-admin-editable="Ảnh Thư Viện" /></a></div>
+        <div data-admin-item><a href="/img/7.jpg" data-fancybox="gallery"><img src="/img/7.jpg" alt="Sự kiện 7" style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-md);" data-aos="zoom-in" data-aos-delay="700" data-admin-editable="Ảnh Thư Viện" /></a></div>
+        <div data-admin-item><a href="/img/8.jpg" data-fancybox="gallery"><img src="/img/8.jpg" alt="Sự kiện 8" style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-md);" data-aos="zoom-in" data-aos-delay="800" data-admin-editable="Ảnh Thư Viện" /></a></div>
       </div>
     </div>
   </section>
 
-  <!-- Academy Section (Lê tốt nghiệp tại Host Academy) -->
-  <section class="academy">
-    <div class="container">
-      <h2 class="academy__title" data-admin-editable="about.academy.title1">Lễ Tốt Nghiệp Tại Host Academy - Học Viện Đào Tạo Kỹ Năng Nói</h2>
-      <h2 class="academy__title" data-admin-editable="about.academy.title2">Khóa Nâng Cao 07</h2>
-      <p class="academy__description" data-admin-editable="about.academy.desc">
-        Tôi tự hào là học viên của Host Academy, nơi đã trang bị cho tôi những kỹ năng dẫn chương trình và khả năng ứng biến linh hoạt. 
-        Mỗi lần đứng trên sân khấu, tôi cảm thấy hồi hộp nhưng cũng rất phấn khích. Với đam mê và quyết tâm, tôi hy vọng sẽ tiếp tục phát triển và vươn xa hơn trong lĩnh vực MC.
-      </p>
-    </div>
-  </section>
-
-  <!-- Slideshow Section (Ảnh sự kiện) -->
-  <section class="slideshow">
-    <div class="container slideshow__container">
-      <div class="slideshow__wrapper">
-        <div class="slideshow__item"><img src="/img/1.jpg" alt="Sự kiện 1" data-admin-editable="about.slide1" /></div>
-        <div class="slideshow__item"><img src="/img/2.jpg" alt="Sự kiện 2" data-admin-editable="about.slide2" /></div>
-        <div class="slideshow__item"><img src="/img/3.jpg" alt="Sự kiện 3" data-admin-editable="about.slide3" /></div>
-        <div class="slideshow__item"><img src="/img/4.jpg" alt="Sự kiện 4" data-admin-editable="about.slide4" /></div>
-        <div class="slideshow__item"><img src="/img/5.jpg" alt="Sự kiện 5" data-admin-editable="about.slide5" /></div>
-        <div class="slideshow__item"><img src="/img/6.jpg" alt="Sự kiện 7" data-admin-editable="about.slide6" /></div>
-        <div class="slideshow__item"><img src="/img/7.jpg" alt="Sự kiện 7" data-admin-editable="about.slide7" /></div>
-        <div class="slideshow__item"><img src="/img/8.jpg" alt="Sự kiện 8" data-admin-editable="about.slide8" /></div>
-      </div>
-      <div class="slideshow__nav">
-        <button class="slideshow__nav-button prev"><i class="fas fa-chevron-left"></i></button>
-        <button class="slideshow__nav-button next"><i class="fas fa-chevron-right"></i></button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section (Liên hệ) -->
-  <section id="contact" class="contact">
-    <div class="container contact__container">
-      <div class="contact__form">
-        <h2 class="contact__form-title" data-admin-editable="contact.form_title">Liên Hệ</h2>
-        <form class="contact__form-wrapper" id="contactForm">
-          <input type="text" class="contact__form-input" name="from_name" placeholder="Họ và tên" required />
-          <input type="email" class="contact__form-input" name="email" placeholder="Email" required />
-          <textarea class="contact__form-textarea" name="message" placeholder="Nội dung" required></textarea>
-          <button type="submit" class="contact__form-button">Gửi</button>
-        </form>
-      </div>
-      <div class="contact__info">
-        <h3 class="contact__info-title" data-admin-editable="contact.info_title">MC Hoàng Phúc</h3>
-        <p class="contact__info-item" data-admin-editable="contact.info_desc"><span class="contact__info-highlight">MC sự kiện, tiệc cưới - Livestream - Voice</span></p>
-        <p class="contact__info-item">📞 Số điện thoại: <a href="tel:0359581896" class="contact__info-highlight" data-admin-editable="contact.phone">0359 581 896</a></p>
-        <p class="contact__info-item">✉️ Email: <span class="contact__info-highlight" data-admin-editable="contact.email">mchoangphuc2207@gmail.com</span></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer (Cố định) -->
+  <!-- Footer -->
   <footer class="footer">
-    <div class="footer__content">© 2025 MC Hoàng Phúc. All rights reserved.</div>
+    <div class="container">
+      <div class="footer-logo">Phúc Trương<span>.</span></div>
+      <div class="footer-text">© 2026 MC Phúc Trương. Kiến tạo đẳng cấp sự kiện.</div>
+    </div>
   </footer>
 
-  <!-- JavaScript cho Slideshow và EmailJS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    const wrapper = document.querySelector('.slideshow__wrapper');
-    const items = document.querySelectorAll('.slideshow__item');
-    const totalItems = items.length;
-    let currentIndex = 0;
-
-    function updateSlide() {
-      wrapper.style.animation = 'none'; // Tắt animation CSS khi click
-      wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-    }
-
-    document.querySelector('.slideshow__nav-button.prev').addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-      updateSlide();
-    });
-
-    document.querySelector('.slideshow__nav-button.next').addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % totalItems;
-      updateSlide();
-    });
-
-    // Tự động chạy slideshow
-    setInterval(() => {
-      currentIndex = (currentIndex + 1) % totalItems;
-      updateSlide();
-    }, 5000);
-
-    document.getElementById('contactForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      emailjs.sendForm('service_6zj04n6', 'template_8mr9qj7', this)
-        .then(function() {
-          alert('Gửi thành công!');
-        }, function(error) {
-          alert('Gửi thất bại: ' + JSON.stringify(error));
-        });
-    });
+    AOS.init({ duration: 1000, once: true });
   </script>
-<script>
-  // Load content from CMS JSON (about.json) including images and linked media
-  (async function(){
-    try{
-      const res = await fetch('/admin/data/about.json', { cache: 'no-store' });
-      if(!res.ok) return;
-      const data = await res.json();
-      if(data.intro){
-        const t = data.intro;
-        const titleEl = document.querySelector('.intro__title');
-        if(t.title && titleEl) titleEl.textContent = t.title;
-        const quoteEl = document.querySelector('.intro__quote');
-        if(t.quote && quoteEl) quoteEl.textContent = '"' + t.quote.replace(/^"|"$/g,'') + '"';
-        const mainImgEl = document.querySelector('.intro__image img');
-        const mainSrc = t.main_image_url || t.main_image;
-        if(mainImgEl && mainSrc) mainImgEl.src = mainSrc;
-        const galleryImgs = document.querySelectorAll('.intro__gallery img');
-        if(galleryImgs[0]) galleryImgs[0].src = (t.gallery_image_1_url || t.gallery_image_1 || galleryImgs[0].src);
-        if(galleryImgs[1]) galleryImgs[1].src = (t.gallery_image_2_url || t.gallery_image_2 || galleryImgs[1].src);
-        const tbl = document.querySelector('.intro__contact-table');
-        if(tbl && t.contact_info){
-          const c = t.contact_info;
-          tbl.innerHTML = `
-            <tr><td>Họ và tên</td><td>${c.name || ''}</td></tr>
-            <tr><td>Số điện thoại</td><td>${c.phone || ''}</td></tr>
-            <tr><td>Chiều cao</td><td>${c.height || ''}</td></tr>
-            <tr><td>Khu vực</td><td>${c.region || ''}</td></tr>
-            <tr><td>Email</td><td>${c.email || ''}</td></tr>
-          `;
-        }
-      }
-      if(data.story){
-        const s = data.story;
-        const title = document.querySelector('.story__title');
-        if(s.title && title) title.textContent = s.title;
-        const parts = document.querySelectorAll('.story__part');
-        if(parts[0] && s.part_1) parts[0].textContent = s.part_1;
-        if(parts[1] && s.part_2) parts[1].textContent = s.part_2;
-      }
-      if(data.academy){
-        const a = data.academy;
-        const titles = document.querySelectorAll('.academy__title');
-        if(titles[0] && a.title) titles[0].textContent = a.title;
-        if(titles[1] && a.course) titles[1].textContent = a.course;
-        const desc = document.querySelector('.academy__description');
-        if(desc && a.description) desc.textContent = a.description;
-      }
-      // Build slideshow from JSON list (supports image or video URLs)
-      if(Array.isArray(data.slideshow)){
-        const wrap = document.querySelector('.slideshow__wrapper');
-        if(wrap){
-          const itemsHtml = data.slideshow.map(item => {
-            const type = (item.type || 'image').toLowerCase();
-            const url = item.url || '';
-            const caption = item.caption ? ` aria-label="${item.caption.replace(/\"/g,'\\\"')}"` : '';
-            if(type === 'video'){
-              if(/youtube\.com|youtu\.be/.test(url)){
-                // Build YouTube embed URL
-                let videoId = url.includes('youtu.be') ? url.split('/').pop().split('?')[0] : new URL(url).searchParams.get('v');
-                const embed = `https://www.youtube.com/embed/${videoId}?rel=0&showinfo=0`;
-                return `<div class="slideshow__item"><iframe${caption} src="${embed}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
-              } else if(/vimeo\.com/.test(url)) {
-                const parts = url.split('/');
-                const vid = parts[parts.length - 1];
-                const embed = `https://player.vimeo.com/video/${vid}`;
-                return `<div class="slideshow__item"><iframe${caption} src="${embed}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
-              } else {
-                return `<div class="slideshow__item"><video${caption} src="${url}" controls playsinline></video></div>`;
-              }
-            }
-            // default image
-            return `<div class="slideshow__item"><img${caption} src="${url}" alt="" /></div>`;
-          }).join('');
-          wrap.innerHTML = itemsHtml || wrap.innerHTML;
-        }
-      }
-    }catch(e){ console.warn('Không thể tải about.json', e); }
-  })();
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+<script>Fancybox.bind("[data-fancybox]", {});</script>
 </body>
 </html>
