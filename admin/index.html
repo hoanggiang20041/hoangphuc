@@ -203,6 +203,7 @@
         <button class="tab" data-file="skill/dan-chuong-trinh.html">Dẫn Chương Trình</button>
         <button class="tab" data-file="skill/host-livestream.html">Host Livestream</button>
         <button class="tab" data-file="skill/voice.html">Voice</button>
+        <button class="tab" data-file="MESSAGES">Hộp thư KH</button>
         <button class="tab" data-file="LOGS">Nhật ký vi phạm</button>
       </div>
 
@@ -278,6 +279,35 @@
         return;
       }
 
+      if (file === 'MESSAGES') {
+        saveArea.classList.add('hidden');
+        try {
+          const resp = await fetch(`https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/admin/data/messages.json?t=${Date.now()}`);
+          const messages = await resp.json();
+          container.innerHTML = "<h3>Hộp Thư Khách Hàng</h3>";
+          if (messages.length === 0) {
+            container.innerHTML += "<p>Chưa có tin nhắn nào.</p>";
+          } else {
+            messages.forEach((msg, idx) => {
+              const div = document.createElement('div');
+              div.className = 'log-item';
+              div.style.flexDirection = 'column';
+              div.style.alignItems = 'flex-start';
+              div.innerHTML = `
+                <div style="width: 100%; display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <strong style="color:var(--gold); font-size:1.1rem;">#${messages.length - idx}: ${msg.from_name}</strong>
+                  <span style="font-size:0.8rem; color:#aaa;">${msg.time}</span>
+                </div>
+                <div style="font-size:0.9rem; margin-bottom: 4px;">📞 SĐT: <b>${msg.phone || 'Không có'}</b> | ✉️ Email: <b>${msg.email}</b></div>
+                <div style="background:#111; padding:10px; border-radius:5px; width:100%; font-style:italic;">"${msg.message}"</div>
+              `;
+              container.appendChild(div);
+            });
+          }
+        } catch(e) { container.innerHTML = "<p>Chưa có tin nhắn nào.</p>"; }
+        return;
+      }
+
       try {
         const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
         const baseUrl = isLocal ? '/' : 'https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/';
@@ -336,22 +366,31 @@
         div.innerHTML = `<label>${el.getAttribute('data-admin-editable')}</label>`;
         if (el.tagName === 'IMG') {
           div.innerHTML += `<img src="${el.src}" class="img-preview" id="p-${id}"><input type="file" onchange="handleUp(this, '${id}')"><input type="text" value="${el.getAttribute('src')}" oninput="upVal('${id}', 'src', this.value)">`;
+        } else if (el.tagName === 'LINK') {
+          div.innerHTML += `<img src="${el.href}" class="img-preview" id="p-${id}" style="width:50px;height:50px;object-fit:contain"><input type="file" onchange="handleUp(this, '${id}')"><input type="text" value="${el.getAttribute('href')}" oninput="upVal('${id}', 'href', this.value)">`;
         } else if (el.tagName === 'IFRAME') {
           div.innerHTML += `<input type="text" value="${el.getAttribute('src')}" oninput="upVal('${id}', 'src', this.value)">`;
         } else {
           const area = document.createElement('textarea');
-          area.value = el.innerText;
-          area.oninput = e => upVal(id, 'text', e.target.value);
+          area.value = el.tagName === 'TITLE' ? el.textContent : el.innerText;
+          area.oninput = e => upVal(id, 'text', e.target.value, el.tagName);
           div.appendChild(area);
         }
         target.appendChild(div);
       });
     }
 
-    window.upVal = (id, type, val) => {
+    window.upVal = (id, type, val, tagName = null) => {
       const el = htmlDoc.querySelector(`[data-admin-id="${id}"]`);
-      if (type === 'text') el.innerText = val;
-      else { el.setAttribute(type, val); const p = document.getElementById(`p-${id}`); if(p) p.src = val; }
+      if (type === 'text') {
+        if (tagName === 'TITLE') el.textContent = val;
+        else el.innerText = val;
+      }
+      else { 
+        el.setAttribute(type, val); 
+        const p = document.getElementById(`p-${id}`); 
+        if(p) p.src = val; 
+      }
     };
 
     window.removeItem = (cIdx, iIdx) => {
