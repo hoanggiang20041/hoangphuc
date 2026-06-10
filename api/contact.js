@@ -84,14 +84,15 @@ export default async function handler(req, res) {
         auth: { user: emailUser, pass: emailPass }
       });
 
-      let emailAvatarUrl = 'https://hoanggiang20041.github.io/hoangphuc/img/phuc1.jpg';
+      let emailAvatarUrl = `https://raw.githubusercontent.com/${githubRepo}/main/img/phuc1.jpg`;
       try {
-        const htmlResp = await fetch(`https://raw.githubusercontent.com/${githubRepo}/main/index.html`);
+        const htmlResp = await fetch(`https://raw.githubusercontent.com/${githubRepo}/main/index.html?t=${Date.now()}`);
         if (htmlResp.ok) {
           const htmlText = await htmlResp.text();
           const match = htmlText.match(/id="email-avatar"\s+src="([^"]+)"/);
           if (match && match[1]) {
-            emailAvatarUrl = `https://hoanggiang20041.github.io/hoangphuc${match[1]}`;
+            const rawPath = match[1].replace(/^\//, ''); // Bỏ dấu / ở đầu
+            emailAvatarUrl = `https://raw.githubusercontent.com/${githubRepo}/main/${rawPath}`;
           }
         }
       } catch (e) {}
