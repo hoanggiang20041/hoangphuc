@@ -1,130 +1,176 @@
 <!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Trang web chính thức của MC Hoàng Phúc - chuyên nghiệp, trẻ trung, tự tin." />
-  <title>MC Hoàng Phúc - Master of Ceremony</title>
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Trang web chính thức của MC Phúc Trương - chuyên nghiệp, đẳng cấp và lan toả cảm xúc.">
+  <title>MC Phúc Trương - Kiến Tạo Đẳng Cấp Sự Kiện</title>
   
-  <!-- Font Awesome & Custom CSS -->
+  <!-- Font Awesome, AOS & Custom CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
   <link rel="stylesheet" href="/css/style.css">
-  
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function() {
-      emailjs.init({ publicKey: "JZTaxhQzbVfL6U83X" });
-    })();
-  </script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
 </head>
 
 <body>
-  <!-- Header Section -->
+  <!-- Noise Overlay (Chất liệu Taste Skill) -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Splash Screen (Màn hình chờ Cinematic) -->
+  <div class="splash" id="splash">
+    <div class="splash__content">
+      <div class="splash__title" data-admin-editable="Tên Loading">MC PHÚC TRƯƠNG</div>
+      <div class="splash__loader">
+        <div class="splash__loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header (SaintCons Style) -->
   <header class="header" id="header">
     <div class="container header__container">
-      <a href="/index.html" class="header__logo" data-admin-editable="header.logo">MC Hoàng Phúc</a>
+      <a href="/index.html" class="header__logo" data-admin-editable="Tên Logo">MC Phúc Trương<span>.</span></a>
+      
       <nav class="header__nav">
         <a href="/index.html" class="header__nav-link header__nav-link--active">Trang Chủ</a>
         <a href="/hoangphuc/about.html" class="header__nav-link">Giới Thiệu</a>
+        <a href="#services" class="header__nav-link">Dịch Vụ</a>
+        <a href="#contact" class="header__nav-link">Liên Hệ</a>
       </nav>
+      
+      <div class="header__actions">
+        <a href="tel:0359581896" class="phone-btn">
+          <i class="fas fa-phone-alt"></i> 0359.581.896
+        </a>
+      </div>
     </div>
   </header>
 
-  <!-- Hero/Intro Section -->
-  <section class="intro">
-    <div class="container intro__container">
-      <div class="intro__content">
-        <div class="intro__greeting" data-admin-editable="intro.greeting">Xin chào, tôi là</div>
-        <h1 class="intro__title" data-admin-editable="intro.title">
-          MC Hoàng Phúc
-        </h1>
-        <p class="intro__quote" data-admin-editable="intro.quote">
-          "Mang đến năng lượng tích cực cho mọi sân khấu. Từng câu nói là một dấu ấn, từng chương trình là một hành trình cảm xúc."
-        </p>
-        <div class="intro__roles" data-admin-container="Danh sách Vai trò">
-          <p data-admin-item data-admin-editable="intro.role1">Chuyên Nghiệp</p>
-          <p data-admin-item data-admin-editable="intro.role2">Trẻ Trung</p>
-          <p data-admin-item data-admin-editable="intro.role3">Tự Tin</p>
-          <p data-admin-item data-admin-editable="intro.role4">Linh Hoạt</p>
-        </div>
+  <!-- Fullscreen Cinematic Hero Banner -->
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__overlay"></div>
+    
+    <div class="hero__content" data-aos="fade-up" data-aos-duration="1200">
+      <p class="hero__subtitle" data-aos="fade-up" data-aos-delay="200" data-admin-editable="Tiêu đề phụ">The Professional Master of Ceremonies</p>
+      <h1 class="hero__title" data-aos="fade-up" data-aos-delay="400" data-admin-editable="Tên MC">MC Phúc Trương</h1>
+      <div class="hero__divider" data-aos="scale-in" data-aos-delay="600"></div>
+      <h2 class="hero__heading" data-aos="zoom-in" data-aos-delay="400">
+        <span data-admin-editable="Từ khóa">Kiến Tạo</span> <span class="gold" data-admin-editable="Slogan Vàng">Đẳng Cấp Sự Kiện</span>
+      </h2>
+      <p class="hero__desc" data-aos="fade-up" data-aos-delay="600" data-admin-editable="Đoạn mô tả ngắn">
+        Người dẫn dắt chương trình chuyên nghiệp. Khẳng định vị thế qua từng sự kiện, từng lời nói, mang lại trải nghiệm hoàn hảo cho khán giả.
+      </p>
+      
+      <div class="hero__buttons" data-aos="fade-up" data-aos-delay="800">
+        <button class="btn btn-primary" onclick="document.getElementById('contact').scrollIntoView();">Nhận Tư Vấn</button>
+        <button class="btn btn-outline" onclick="document.getElementById('services').scrollIntoView();">Khám Phá Dịch Vụ</button>
       </div>
-      <figure class="intro__image">
-        <img src="/img/phuc3.JPG" alt="MC Hoàng Phúc ngồi mặc vest đen" data-admin-editable="intro.image" />
-      </figure>
     </div>
   </section>
 
-  <!-- Skills Section -->
-  <section id="skills" class="skills">
+  <!-- Services / Skills Section -->
+  <section id="services" class="section">
     <div class="container">
-      <h2 class="section-title" data-admin-editable="skills.title">Kỹ Năng</h2>
-      <p class="section-subtitle" data-admin-editable="skills.subtitle">Tôi có thể làm gì</p>
+      <div class="section-header" data-aos="fade-up">
+        <h2 class="section-title">Lĩnh Vực Dịch Vụ</h2>
+      </div>
       
-      <div class="skills__grid" data-admin-container="Danh sách Kỹ năng">
-        <!-- Card 1 -->
-        <div class="skills__item" data-admin-item>
-          <div class="skills__item-icon"><i class="fas fa-microphone"></i></div>
-          <h3 class="skills__item-title" data-admin-editable="skills.card1.title">Dẫn Chương Trình</h3>
-          <p class="skills__item-description" data-admin-editable="skills.card1.desc">
-            Khả năng giao tiếp tốt và luôn tạo không khí tích cực. Kết nối khán giả với chương trình một cách tự nhiên.
-          </p>
-          <a href="/skill/dan-chuong-trinh.html" class="skills__item-button">Xem chi tiết</a>
+      <div class="services-grid" data-admin-container="Dịch Vụ">
+        <!-- Service 1 -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="100" data-admin-item="">
+          <div class="service-icon"><i class="fas fa-microphone-alt"></i></div>
+          <h3 class="service-title" data-admin-editable="Tên Dịch Vụ">Dẫn Chương Trình</h3>
+          <p class="service-desc" data-admin-editable="Mô tả">Điều hướng sự kiện hội nghị, tiệc cưới một cách chuyên nghiệp, duyên dáng và tràn đầy năng lượng tích cực.</p>
+          <a href="/skill/dan-chuong-trinh.html" class="service-link">Chi Tiết <i class="fas fa-arrow-right"></i></a>
         </div>
         
-        <!-- Card 2 -->
-        <div class="skills__item" data-admin-item>
-          <div class="skills__item-icon"><i class="fas fa-video"></i></div>
-          <h3 class="skills__item-title" data-admin-editable="skills.card2.title">Host Livestream</h3>
-          <p class="skills__item-description" data-admin-editable="skills.card2.desc">
-            Tạo không khí sôi động, tương tác với khán giả trên nền tảng số một cách chuyên nghiệp và duyên dáng.
-          </p>
-          <a href="/skill/host-livestream.html" class="skills__item-button">Xem chi tiết</a>
+        <!-- Service 2 -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="300" data-admin-item="">
+          <div class="service-icon"><i class="fas fa-video"></i></div>
+          <h3 class="service-title" data-admin-editable="Tên Dịch Vụ">Host Livestream</h3>
+          <p class="service-desc" data-admin-editable="Mô tả">Tương tác trực tuyến nhạy bén, giữ chân khán giả và bùng nổ doanh số cho các phiên mega-live.</p>
+          <a href="/skill/host-livestream.html" class="service-link">Chi Tiết <i class="fas fa-arrow-right"></i></a>
         </div>
         
-        <!-- Card 3 -->
-        <div class="skills__item" data-admin-item>
-          <div class="skills__item-icon"><i class="fas fa-volume-up"></i></div>
-          <h3 class="skills__item-title" data-admin-editable="skills.card3.title">Lồng Tiếng</h3>
-          <p class="skills__item-description" data-admin-editable="skills.card3.desc">
-            Sở hữu chất giọng truyền cảm, ấm áp, phù hợp cho các dự án quảng cáo, video doanh nghiệp và sự kiện.
-          </p>
-          <a href="/skill/voice.html" class="skills__item-button">Xem chi tiết</a>
+        <!-- Service 3 -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="500" data-admin-item="">
+          <div class="service-icon"><i class="fas fa-headphones-alt"></i></div>
+          <h3 class="service-title" data-admin-editable="Tên Dịch Vụ">Voice Talent</h3>
+          <p class="service-desc" data-admin-editable="Mô tả">Sở hữu chất giọng nam trầm ấm truyền cảm, lồng tiếng quảng cáo, TVC, và sách nói chuyên nghiệp.</p>
+          <a href="/skill/voice.html" class="service-link">Chi Tiết <i class="fas fa-arrow-right"></i></a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <h2 class="section-title">Thư Viện Sự Kiện</h2>
+      </div>
+      <div class="gallery-auto" data-aos="fade-up" data-admin-container="Thư Viện Ảnh Trang Chủ">
+        
+        
+        
+        
+        
+        
       </div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <div class="container contact__container">
-      <div class="contact__form">
-        <h2 class="contact__form-title" data-admin-editable="contact.form_title">Gửi Tin Nhắn</h2>
-        <form id="contactForm">
-          <input type="text" class="contact__form-input" name="from_name" placeholder="Họ và tên của bạn" required />
-          <input type="email" class="contact__form-input" name="email" placeholder="Địa chỉ Email" required />
-          <textarea class="contact__form-textarea" name="message" placeholder="Bạn muốn nhắn gửi điều gì?" required></textarea>
-          <button type="submit" class="contact__form-button">Gửi Ngay</button>
-        </form>
-      </div>
-      
-      <div class="contact__info">
-        <h2 class="contact__form-title" data-admin-editable="contact.info_title">Thông Tin Liên Hệ</h2>
-        <div class="contact__info-item">
-          <div class="contact__info-icon"><i class="fas fa-user-tie"></i></div>
-          <div data-admin-editable="contact.info_desc">MC sự kiện, tiệc cưới - Livestream - Voice</div>
+  <section id="contact" class="section" style="padding-top: 0;">
+    <div class="container" data-aos="fade-up">
+      <div class="contact-wrap">
+        <!-- Contact Info -->
+        <div class="contact-info" data-aos="fade-right" data-aos-delay="200">
+          <h2 class="contact-info__title">Liên Hệ<br>Với Chúng Tôi</h2>
+          
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <h4>Văn Phòng</h4>
+              <p>Thành phố Hồ Chí Minh, Việt Nam</p>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <i class="fas fa-envelope"></i>
+            <div>
+              <h4>Email</h4>
+              <p>mchoangphuc2207@gmail.com</p>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <i class="fas fa-phone-alt"></i>
+            <div>
+              <h4>Hotline</h4>
+              <p>0359 581 896</p>
+            </div>
+          </div>
         </div>
-        <div class="contact__info-item">
-          <div class="contact__info-icon"><i class="fas fa-phone-alt"></i></div>
-          <div><a href="tel:0359581896" data-admin-editable="contact.phone">0359 581 896</a></div>
-        </div>
-        <div class="contact__info-item">
-          <div class="contact__info-icon"><i class="fas fa-envelope"></i></div>
-          <div data-admin-editable="contact.email">mchoangphuc2207@gmail.com</div>
-        </div>
-        <div class="contact__info-item">
-          <div class="contact__info-icon"><i class="fas fa-map-marker-alt"></i></div>
-          <div>TP. Hồ Chí Minh, Việt Nam</div>
+        
+        <!-- Contact Form -->
+        <div class="contact-form" data-aos="fade-left" data-aos-delay="400">
+          <form id="contactForm">
+            <div class="form-group">
+              <input type="text" class="form-control" name="from_name" placeholder="Họ và Tên *" required="">
+            </div>
+            <div class="form-group">
+              <input type="email" class="form-control" name="email" placeholder="Email *" required="">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="phone" placeholder="Số điện thoại">
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" name="message" placeholder="Nội dung yêu cầu tư vấn *" rows="4" required=""></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Gửi Yêu Cầu</button>
+          </form>
         </div>
       </div>
     </div>
@@ -133,42 +179,59 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      © 2026 MC Hoàng Phúc. All rights reserved. Designed with style.
+      <div class="footer-logo">Phúc Trương<span>.</span></div>
+      <div class="footer-text">© 2026 MC Phúc Trương. Kiến tạo đẳng cấp sự kiện.</div>
     </div>
   </footer>
 
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-    // Header Scroll Effect
-    window.addEventListener('scroll', () => {
-      const header = document.getElementById('header');
-      if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
+    // Ẩn Splash Screen sau 2.5s
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const splash = document.getElementById('splash');
+        if (splash) splash.classList.add('splash--hide');
+      }, 2500);
     });
 
-    // Contact Form
-    document.getElementById('contactForm').addEventListener('submit', function(event) {
-      event.preventDefault();
+    // Initialize AOS Animation
+    AOS.init({
+      duration: 1000,
+      once: true,
+      offset: 100
+    });
+
+    // Sticky Header
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
+    });
+
+    // EmailJS
+    emailjs.init({ publicKey: "JZTaxhQzbVfL6U83X" });
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
       const btn = this.querySelector('button');
-      const originalText = btn.textContent;
-      btn.textContent = 'Đang gửi...';
-      
+      btn.textContent = 'ĐANG GỬI...';
       emailjs.sendForm('service_6zj04n6', 'template_8mr9qj7', this)
         .then(() => {
-          alert('Gửi thành công!');
+          alert('Gửi thành công! Chúng tôi sẽ liên hệ lại sớm nhất.');
           this.reset();
-          btn.textContent = originalText;
-        })
-        .catch((error) => {
+          btn.textContent = 'GỬI YÊU CẦU';
+        }).catch(() => {
           alert('Gửi thất bại. Vui lòng thử lại.');
-          console.error(error);
-          btn.textContent = originalText;
+          btn.textContent = 'GỬI YÊU CẦU';
         });
     });
   </script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-<script>Fancybox.bind("[data-fancybox]", {});</script>
-</body>
-</html>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+  <script>
+    Fancybox.bind("[data-fancybox]", {});
+  </script>
+
+
+</body></html>
