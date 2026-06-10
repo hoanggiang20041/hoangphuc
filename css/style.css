@@ -853,7 +853,9 @@ img {
     padding: 5px 10px;
   }
   .header__actions { display: none; }
-  .hero__title { font-size: 3rem; }
+  .hero__title { font-size: 2.2rem; }
+  .splash__title { font-size: 1.8rem; letter-spacing: 2px; }
+  .header__logo { font-size: 1.4rem; }
   .hero__buttons { flex-direction: column; width: 100%; }
   .services-grid { grid-template-columns: 1fr; }
   .container { padding: 0 20px; }
