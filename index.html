@@ -248,4 +248,13 @@
   </script>
 
 
-</body></html>
+  <script>
+    document.querySelectorAll('.gallery-auto').forEach(gal => {
+      if (gal.children.length === 0) {
+        const sec = gal.closest('.section');
+        if (sec) sec.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
