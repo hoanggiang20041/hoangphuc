@@ -84,6 +84,18 @@ export default async function handler(req, res) {
         auth: { user: emailUser, pass: emailPass }
       });
 
+      let emailAvatarUrl = 'https://hoanggiang20041.github.io/hoangphuc/img/phuc1.jpg';
+      try {
+        const htmlResp = await fetch(`https://raw.githubusercontent.com/${githubRepo}/main/index.html`);
+        if (htmlResp.ok) {
+          const htmlText = await htmlResp.text();
+          const match = htmlText.match(/id="email-avatar"\s+src="([^"]+)"/);
+          if (match && match[1]) {
+            emailAvatarUrl = `https://hoanggiang20041.github.io/hoangphuc${match[1]}`;
+          }
+        }
+      } catch (e) {}
+
       const mailOptions = {
         from: `"MC Phúc Trương" <${emailUser}>`,
         to: email,
@@ -91,7 +103,7 @@ export default async function handler(req, res) {
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
             <div style="text-align: center; margin-bottom: 20px;">
-              <img src="https://hoanggiang20041.github.io/hoangphuc/img/phuc1.jpg" alt="MC Phúc Trương" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #bf953f;">
+              <img src="${emailAvatarUrl}" alt="MC Phúc Trương" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #bf953f;">
             </div>
             <h2 style="color: #bf953f; text-align: center;">Chào ${from_name},</h2>
             <p>Rất cảm ơn bạn đã quan tâm và để lại lời nhắn cho <strong>MC Phúc Trương</strong>.</p>
