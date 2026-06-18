@@ -178,8 +178,19 @@
 
     onAuthStateChanged(auth, (user) => {
       if (user && ADMIN_EMAILS.includes(user.email)) {
-        // Nếu đã login Firebase nhưng chưa qua OTP (khi reload trang), thì Firebase tự động nhận diện user.
-        // Ta cần bắt user này nhập OTP lại.
+        // Kiểm tra xem session OTP còn hạn không (7 ngày)
+        const sessionExpiry = localStorage.getItem('admin_session_expiry');
+        if (sessionExpiry && Date.now() < parseInt(sessionExpiry)) {
+            pendingUser = user;
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('sidebar').classList.remove('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+            document.getElementById('auth-status').innerText = pendingUser.email;
+            loadPage(currentFile);
+            return;
+        }
+
+        // Nếu hết hạn hoặc chưa có, bắt nhập mã OTP
         document.getElementById('step-1').classList.add('hidden');
         document.getElementById('step-2').classList.remove('hidden');
         document.getElementById('login-msg').innerText = "Đang gửi mã bảo mật đến Email...";
@@ -248,16 +259,18 @@
         return;
       }
 
-      btn.innerText = "Đang kiểm tra...";
+      btn.innerText = "Đang xác minh...";
       try {
-        const resp = await fetch('https://hoangphuc-56rg.vercel.app/api/verify-otp', {
+        const res = await fetch('https://hoangphuc-56rg.vercel.app/api/verify-otp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: pendingUser.email, code: otp, hash: expectedOtpHash })
         });
-        const data = await resp.json();
+        const data = await res.json();
+        
         if(data.success) {
           // XÁC MINH THÀNH CÔNG!
+          localStorage.setItem('admin_session_expiry', Date.now() + 1000 * 60 * 60 * 24 * 7); // Lưu 7 ngày
           document.getElementById('view-login').classList.add('hidden');
           document.getElementById('sidebar').classList.remove('hidden');
           document.getElementById('main-content').classList.remove('hidden');
@@ -268,12 +281,13 @@
           msg.innerText = "Mã xác minh không đúng hoặc đã hết hạn!";
         }
       } catch (err) {
-        msg.innerText = "Lỗi kết nối máy chủ!";
+        msg.innerText = "Lỗi kết nối khi xác minh mã.";
       }
       btn.innerText = "XÁC NHẬN MÃ";
     };
 
     document.getElementById('btn-logout').onclick = () => {
+      localStorage.removeItem('admin_session_expiry');
       signOut(auth);
       location.reload();
     };
