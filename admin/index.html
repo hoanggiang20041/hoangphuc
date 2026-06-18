@@ -710,9 +710,19 @@
       if(!template) { alert("Không tìm thấy mẫu để copy"); return; }
       const newItem = template.cloneNode(true);
       newItem.querySelectorAll('[data-admin-editable]').forEach(e => {
-        if(e.tagName === 'IMG') e.src = "/img/placeholder.jpg";
-        else if(e.tagName === 'IFRAME') e.src = "";
-        else e.innerText = "Nội dung mới";
+        if(e.tagName === 'IMG') {
+           e.setAttribute('src', '/img/placeholder.jpg');
+           e.src = "/img/placeholder.jpg";
+           const aEl = e.closest('a');
+           if(aEl) aEl.setAttribute('href', '/img/placeholder.jpg');
+        }
+        else if(e.tagName === 'IFRAME') {
+           e.setAttribute('src', '');
+           e.src = "";
+        }
+        else {
+           e.innerText = "Nội dung mới";
+        }
       });
       con.appendChild(newItem);
       renderEditor();
@@ -784,6 +794,8 @@
           if(imgEl) {
              imgEl.src = res;
              imgEl.setAttribute('src', res);
+             const aEl = imgEl.closest('a');
+             if(aEl) aEl.setAttribute('href', res);
           }
           con.appendChild(newItem);
         }
@@ -799,25 +811,35 @@
         reader.onload = async e => {
           const originalB64 = e.target.result;
           
-          if(file.type.startsWith('image/') && file.type !== 'image/svg+xml' && file.type !== 'image/gif') {
+          const isImage = file.type.startsWith('image/') || file.name.match(/\.(jpg|jpeg|png|webp|avif)$/i);
+          const isSvgOrGif = file.type === 'image/svg+xml' || file.type === 'image/gif' || file.name.match(/\.(svg|gif)$/i);
+
+          if(isImage && !isSvgOrGif) {
             const img = new Image();
             img.onload = async () => {
-              const canvas = document.createElement('canvas');
-              let width = img.width;
-              let height = img.height;
-              const max_size = 1920;
-              if (width > height) {
-                if (width > max_size) { height *= max_size / width; width = max_size; }
-              } else {
-                if (height > max_size) { width *= max_size / height; height = max_size; }
+              try {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                const max_size = 1920;
+                if (width > height) {
+                  if (width > max_size) { height *= max_size / width; width = max_size; }
+                } else {
+                  if (height > max_size) { width *= max_size / height; height = max_size; }
+                }
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                const b64 = canvas.toDataURL('image/webp', 0.8);
+                await doUpload(file.name.replace(/\.[^/.]+$/, "") + ".webp", b64);
+              } catch(err) {
+                await doUpload(file.name, originalB64);
               }
-              canvas.width = width;
-              canvas.height = height;
-              const ctx = canvas.getContext('2d');
-              ctx.drawImage(img, 0, 0, width, height);
-              
-              const b64 = canvas.toDataURL('image/webp', 0.8);
-              await doUpload(file.name.replace(/\.[^/.]+$/, "") + ".webp", b64);
+            };
+            img.onerror = async () => {
+               await doUpload(file.name, originalB64);
             };
             img.src = originalB64;
           } else {
