@@ -177,7 +177,7 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    let currentFile = "index.html";
+    let currentFile = localStorage.getItem('admin_current_file') || "index.html";
     let htmlDoc = null;
 
     function showNotif(msg, isError=false) {
@@ -201,6 +201,11 @@
             document.getElementById('sidebar').classList.remove('hidden');
             document.getElementById('main-content').classList.remove('hidden');
             document.getElementById('auth-status').innerText = pendingUser.email;
+            
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            const activeNav = document.querySelector(`.nav-item[data-file="${currentFile}"]`);
+            if(activeNav) activeNav.classList.add('active');
+
             loadPage(currentFile);
             return;
         }
@@ -312,6 +317,7 @@
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         item.classList.add('active');
         currentFile = item.getAttribute('data-file');
+        localStorage.setItem('admin_current_file', currentFile);
         loadPage(currentFile);
       };
     });
@@ -567,15 +573,28 @@
          });
       }
 
-      if(window.__sectionTemplateData) {
-        const btnAddSec = document.createElement('button');
-        btnAddSec.className = 'btn btn-gold';
-        btnAddSec.style.width = '100%';
-        btnAddSec.style.padding = '15px';
-        btnAddSec.style.fontSize = '16px';
-        btnAddSec.innerHTML = `<i class="fas fa-folder-plus"></i> THÊM DANH SÁCH / SỰ KIỆN MỚI`;
-        btnAddSec.onclick = addSection;
-        container.appendChild(btnAddSec);
+      if(window.__sectionTemplates) {
+         if(window.__sectionTemplates.img) {
+            const btnImg = document.createElement('button');
+            btnImg.className = 'btn btn-gold';
+            btnImg.style.width = '100%';
+            btnImg.style.padding = '15px';
+            btnImg.style.marginBottom = '10px';
+            btnImg.style.fontSize = '16px';
+            btnImg.innerHTML = `<i class="fas fa-images"></i> THÊM DANH SÁCH ẢNH MỚI`;
+            btnImg.onclick = () => addSection('img');
+            container.appendChild(btnImg);
+         }
+         if(window.__sectionTemplates.video) {
+            const btnVid = document.createElement('button');
+            btnVid.className = 'btn btn-outline';
+            btnVid.style.width = '100%';
+            btnVid.style.padding = '15px';
+            btnVid.style.fontSize = '16px';
+            btnVid.innerHTML = `<i class="fas fa-video"></i> THÊM DANH SÁCH VIDEO MỚI`;
+            btnVid.onclick = () => addSection('video');
+            container.appendChild(btnVid);
+         }
       }
     }
 
