@@ -610,6 +610,8 @@
           let displaySrc = el.getAttribute('src');
           if(window.__imagePreviews && window.__imagePreviews[displaySrc]) {
              displaySrc = window.__imagePreviews[displaySrc];
+          } else if (displaySrc && displaySrc.startsWith('/img/')) {
+             displaySrc = `https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main${displaySrc}?t=${Date.now()}`;
           }
           div.innerHTML += `
             <div class="drop-zone" id="dz-${id}" 
@@ -617,7 +619,7 @@
                  ondragleave="this.classList.remove('dragover');" 
                  ondrop="event.preventDefault(); this.classList.remove('dragover'); handleDrop(event, '${id}')"
                  onclick="document.getElementById('file-${id}').click()">
-              <img src="${displaySrc}" class="img-preview" id="p-${id}">
+              <img src="${displaySrc}" class="img-preview" id="p-${id}" onerror="this.onerror=null; setTimeout(() => { this.src='${displaySrc}&r='+Date.now(); }, 2000);">
               <div class="drop-text"><i class="fas fa-cloud-upload-alt"></i> Click/Kéo thả ảnh tải lên</div>
               <input type="file" accept="image/*" id="file-${id}" onchange="handleUp(this, '${id}')" style="display:none;">
             </div>`;
@@ -676,7 +678,13 @@
         el.setAttribute(type, val); 
         const p = document.getElementById(`p-${id}`); 
         if(p) {
-           p.src = (window.__imagePreviews && window.__imagePreviews[val]) ? window.__imagePreviews[val] : val;
+           if(window.__imagePreviews && window.__imagePreviews[val]) {
+              p.src = window.__imagePreviews[val];
+           } else if (val && val.startsWith('/img/')) {
+              p.src = `https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main${val}?t=${Date.now()}`;
+           } else {
+              p.src = val;
+           }
         } 
       }
     };
