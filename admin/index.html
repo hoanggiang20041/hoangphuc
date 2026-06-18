@@ -766,7 +766,7 @@
     };
 
     window.handleBulkUp = async (input, cIdx) => {
-      const files = input.files;
+      const files = Array.from(input.files);
       if(!files.length) return;
       const con = htmlDoc.querySelectorAll('[data-admin-container]')[cIdx];
       const items = con.querySelectorAll('[data-admin-item]');
