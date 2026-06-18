@@ -74,6 +74,21 @@
     
     .hidden { display: none !important; }
     
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #28a745;
+      color: #fff;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      pointer-events: none;
+    }
     .notification.show { transform: translateY(0); opacity: 1; }
     
     /* Compact Image View */
@@ -372,21 +387,20 @@
         
         // Save templates for cloning
         window.__itemTemplates = [];
-        window.__sectionTemplates = [];
         htmlDoc.querySelectorAll('[data-admin-container]').forEach((con, idx) => {
           const firstItem = con.querySelector('[data-admin-item]');
           window.__itemTemplates[idx] = firstItem ? firstItem.cloneNode(true) : null;
         });
-        const sectionEl = htmlDoc.querySelector('[data-admin-section]');
-        if(sectionEl) {
-          window.__sectionTemplateData = {
-            parent: sectionEl.parentElement,
-            template: sectionEl.cloneNode(true)
-          };
-        } else {
-          window.__sectionTemplateData = null;
-        }
 
+        window.__sectionTemplates = { img: null, video: null };
+        const sectionNodes = htmlDoc.querySelectorAll('[data-admin-section]');
+        sectionNodes.forEach(sec => {
+           if(!window.__sectionTemplates.img && sec.querySelector('img')) window.__sectionTemplates.img = sec.cloneNode(true);
+           if(!window.__sectionTemplates.video && sec.querySelector('iframe')) window.__sectionTemplates.video = sec.cloneNode(true);
+        });
+        if(!window.__sectionTemplates.img && sectionNodes.length > 0) window.__sectionTemplates.img = sectionNodes[0].cloneNode(true);
+        if(!window.__sectionTemplates.video && sectionNodes.length > 0) window.__sectionTemplates.video = sectionNodes[0].cloneNode(true);
+        
         renderEditor();
       } catch (e) { container.innerHTML = '<p style="color:red;">Lỗi nạp file: '+e.message+'</p>'; }
     }
@@ -656,11 +670,19 @@
 
     window.removeSection = (cIdx) => {
       if(!confirm("Bạn có chắc muốn xóa toàn bộ danh sách này không?")) return;
-      const con = htmlDoc.querySelectorAll('[data-admin-container]')[cIdx];
-      const sec = con.closest('[data-admin-section]');
-      if(sec) sec.remove();
+      const targetCon = htmlDoc.querySelector(`[data-admin-id="sec-${cIdx}"]`);
+      if(!targetCon) {
+         const container = htmlDoc.querySelector(`[data-admin-id="con-name-${cIdx}"]`);
+         if(container) {
+             const sec = container.closest('[data-admin-section]');
+             if(sec) sec.remove();
+         }
+      } else {
+         const sec = targetCon.closest('[data-admin-section]');
+         if(sec) sec.remove();
+      }
       renderEditor();
-    }
+    };
 
     window.addItem = (cIdx) => {
       const con = htmlDoc.querySelectorAll('[data-admin-container]')[cIdx];
@@ -677,9 +699,9 @@
       renderEditor();
     };
 
-    window.addSection = () => {
-      if(!window.__sectionTemplateData) return;
-      const { parent, template } = window.__sectionTemplateData;
+    window.addSection = (type) => {
+      if(!window.__sectionTemplates || !window.__sectionTemplates[type]) return;
+      const template = window.__sectionTemplates[type];
       const newSec = template.cloneNode(true);
       
       const con = newSec.querySelector('[data-admin-container]');
@@ -687,7 +709,7 @@
       
       const titleEl = newSec.querySelector('[data-admin-editable]');
       if(titleEl && !titleEl.closest('[data-admin-container]')) {
-         titleEl.textContent = "Danh Sách Mới";
+         titleEl.textContent = type === 'img' ? "Danh Sách Ảnh Mới" : "Danh Sách Video Mới";
       }
 
       const allSections = htmlDoc.querySelectorAll('[data-admin-section]');
