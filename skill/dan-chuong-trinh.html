@@ -144,7 +144,7 @@
       const unified = document.getElementById('unified-gallery');
       if(!filters || !unified) return;
       
-      let filterHtml = '<button class="filter-btn active" data-filter="*">Tất cả</button>';
+      let filterHtml = '';
       let unifiedHtml = '';
       
       const sections = document.querySelectorAll('#admin-data-source .event-section');
@@ -155,7 +155,7 @@
         const title = rawTitle.replace(/^\d+\.\s*/, '');
         const filterClass = 'filter-' + idx;
         
-        filterHtml += `<button class="filter-btn" data-filter=".${filterClass}">${title}</button>`;
+        filterHtml += `<button class="filter-btn ${idx === 0 ? 'active' : ''}" data-filter=".${filterClass}">${title}</button>`;
         
         const items = sec.querySelectorAll('[data-admin-item]');
         items.forEach(item => {
@@ -164,6 +164,10 @@
           clone.className = `unified-item ${filterClass}`;
           // Gỡ bỏ AOS để tránh lỗi tính toán sai vị trí khi ẩn hiện
           clone.removeAttribute('data-aos');
+          // Hide items that are not in the first category initially
+          if (idx !== 0) {
+            clone.style.display = 'none';
+          }
           unifiedHtml += clone.outerHTML;
         });
       });
@@ -181,7 +185,7 @@
           const filter = btn.getAttribute('data-filter');
           
           allItems.forEach(item => {
-            if (filter === '*' || item.classList.contains(filter.substring(1))) {
+            if (item.classList.contains(filter.substring(1))) {
               item.style.display = 'block';
             } else {
               item.style.display = 'none';

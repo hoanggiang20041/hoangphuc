@@ -146,6 +146,9 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+    window.addEventListener('dragover', e => e.preventDefault());
+    window.addEventListener('drop', e => e.preventDefault());
+
     const ADMIN_EMAILS = ["giang10012004@gmail.com", "mchoangphuc2207@gmail.com"];
     const firebaseConfig = {
       apiKey: "AIzaSyAIGdCJzDHVi0xhsz-y_FWhmk1b2InEFks",
@@ -541,25 +544,34 @@
         const div = document.createElement('div');
         div.style.marginBottom = "15px";
         div.innerHTML = `<label>${el.getAttribute('data-admin-editable')}</label>`;
+        
         if (el.tagName === 'IMG') {
+          let displaySrc = el.getAttribute('src');
+          if(window.__imagePreviews && window.__imagePreviews[displaySrc]) {
+             displaySrc = window.__imagePreviews[displaySrc];
+          }
           div.innerHTML += `
             <div class="drop-zone" id="dz-${id}" 
                  ondragover="event.preventDefault(); this.classList.add('dragover');" 
                  ondragleave="this.classList.remove('dragover');" 
                  ondrop="event.preventDefault(); this.classList.remove('dragover'); handleDrop(event, '${id}')"
                  onclick="document.getElementById('file-${id}').click()">
-              <img src="${el.src}" class="img-preview" id="p-${id}">
+              <img src="${displaySrc}" class="img-preview" id="p-${id}">
               <div class="drop-text"><i class="fas fa-cloud-upload-alt"></i> Click/Kéo thả ảnh tải lên</div>
               <input type="file" id="file-${id}" onchange="handleUp(this, '${id}')" style="display:none;">
             </div>`;
         } else if (el.tagName === 'LINK') {
+          let displaySrc = el.getAttribute('href');
+          if(window.__imagePreviews && window.__imagePreviews[displaySrc]) {
+             displaySrc = window.__imagePreviews[displaySrc];
+          }
           div.innerHTML += `
             <div class="drop-zone" id="dz-${id}" 
                  ondragover="event.preventDefault(); this.classList.add('dragover');" 
                  ondragleave="this.classList.remove('dragover');" 
                  ondrop="event.preventDefault(); this.classList.remove('dragover'); handleDrop(event, '${id}')"
                  onclick="document.getElementById('file-${id}').click()">
-              <img src="${el.getAttribute('href')}" class="img-preview" id="p-${id}" style="width:50px;height:50px;object-fit:contain">
+              <img src="${displaySrc}" class="img-preview" id="p-${id}" style="width:50px;height:50px;object-fit:contain">
               <div class="drop-text"><i class="fas fa-cloud-upload-alt"></i> Click/Kéo thả ảnh tải lên</div>
               <input type="file" id="file-${id}" onchange="handleUp(this, '${id}')" style="display:none;">
             </div>`;
@@ -602,7 +614,9 @@
       else { 
         el.setAttribute(type, val); 
         const p = document.getElementById(`p-${id}`); 
-        if(p) p.src = val; 
+        if(p) {
+           p.src = (window.__imagePreviews && window.__imagePreviews[val]) ? window.__imagePreviews[val] : val;
+        } 
       }
     };
 
@@ -701,6 +715,8 @@
       renderEditor();
     };
 
+    window.__imagePreviews = window.__imagePreviews || {};
+
     async function uploadFileToAPI(file) {
       return new Promise((resolve) => {
         const reader = new FileReader();
@@ -708,10 +724,13 @@
           try {
             const idToken = await auth.currentUser.getIdToken();
             const filename = `img/${Date.now()}_${file.name.replace(/[^a-z0-9.]/gi, '_')}`;
+            const b64 = e.target.result;
+            window.__imagePreviews['/' + filename] = b64;
+
             const resp = await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ token: idToken, path: filename, content: e.target.result, isImage: true })
+              body: JSON.stringify({ token: idToken, path: filename, content: b64, isImage: true })
             });
             const res = await resp.json();
             if(res.success) resolve('/'+filename);
