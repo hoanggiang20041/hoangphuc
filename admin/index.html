@@ -74,8 +74,14 @@
     
     .hidden { display: none !important; }
     
-    .notification { position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 15px 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transform: translateY(100px); opacity: 0; transition: 0.3s; z-index: 9999; }
     .notification.show { transform: translateY(0); opacity: 1; }
+    
+    /* Compact Image View */
+    .compact-box { position: relative; cursor: grab; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #ddd; }
+    .compact-box .drop-zone { padding: 0; border: none; margin: 0; border-radius: 0; background: transparent; cursor: pointer; }
+    .compact-box .drop-zone:hover { opacity: 0.8; }
+    .compact-box .drop-text, .compact-box label { display: none; }
+    .compact-box img.img-preview { width: 100%; height: 120px !important; object-fit: cover !important; margin: 0; border-radius: 0; }
   </style>
 </head>
 <body>
@@ -113,6 +119,7 @@
       <div class="nav-item" data-file="skill/host-livestream.html"><i class="fas fa-video"></i> Host Livestream</div>
       <div class="nav-item" data-file="skill/voice.html"><i class="fas fa-headphones"></i> Voice</div>
       <div class="nav-item" data-file="MESSAGES"><i class="fas fa-envelope"></i> Hộp thư KH</div>
+      <div class="nav-item" data-file="SETTINGS"><i class="fas fa-cog"></i> Cài Đặt Chung</div>
     </div>
     <div class="sidebar-footer">
       <div id="auth-status" style="font-size: 12px; margin-bottom: 10px; opacity: 0.7; word-break: break-all;"></div>
@@ -304,6 +311,40 @@
         return;
       }
 
+      if (file === 'SETTINGS') {
+         document.getElementById('topbar-title').innerText = 'Cài Đặt Web Toàn Cục';
+         container.innerHTML = "Đang tải cấu hình...";
+         try {
+            const resp = await fetch('https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/index.html?t='+Date.now());
+            const html = await resp.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const linkIcon = doc.querySelector('link[rel="icon"]');
+            const currentFavicon = linkIcon ? linkIcon.getAttribute('href') : '/img/phuc.png';
+            window.__globalFavicon = currentFavicon;
+
+            container.innerHTML = `
+              <div class="card">
+                <div class="group-header"><h4>CÀI ĐẶT TOÀN CỤC</h4></div>
+                <div style="margin-bottom:15px;">
+                  <label>Logo Trình Duyệt (Favicon - Áp dụng toàn trang)</label>
+                  <div class="drop-zone" id="dz-global-favicon" 
+                       ondragover="event.preventDefault(); this.classList.add('dragover');" 
+                       ondragleave="this.classList.remove('dragover');" 
+                       ondrop="event.preventDefault(); this.classList.remove('dragover'); handleDrop(event, 'global-favicon')"
+                       onclick="document.getElementById('file-global-favicon').click()">
+                    <img src="${currentFavicon}" class="img-preview" id="p-global-favicon" style="width:50px;height:50px;object-fit:contain">
+                    <div class="drop-text"><i class="fas fa-cloud-upload-alt"></i> Click/Kéo thả ảnh tải lên</div>
+                    <input type="file" id="file-global-favicon" onchange="handleUp(this, 'global-favicon')" style="display:none;">
+                  </div>
+                </div>
+              </div>
+            `;
+         } catch(e) {
+            container.innerHTML = "Lỗi tải cấu hình: " + e.message;
+         }
+         return;
+      }
+
       try {
         const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
         const baseUrl = isLocal ? '/' : 'https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/';
@@ -362,35 +403,67 @@
             }
         }
 
+        // Check if template has an image, and if it only has images (compact mode)
+        const template = window.__itemTemplates[cIdx];
+        const hasImage = template && template.querySelector('img');
+        const hasText = template && Array.from(template.querySelectorAll('[data-admin-editable]')).some(el => el.tagName !== 'IMG' && el.tagName !== 'LINK');
+        const isCompact = hasImage && !hasText;
+
+        const bulkUploadHTML = hasImage ? `
+          <div class="bulk-upload-zone" id="bulk-${cIdx}" onclick="document.getElementById('bulk-file-${cIdx}').click()">
+            <i class="fas fa-images" style="font-size:24px; color:var(--gold); margin-bottom:5px; display:block;"></i>
+            <strong>Tải lên hàng loạt</strong> (Chọn nhiều ảnh cùng lúc)
+            <input type="file" multiple id="bulk-file-${cIdx}" style="display:none;" onchange="handleBulkUp(this, ${cIdx})">
+          </div>` : '';
+
         group.innerHTML = `
           <div class="group-header">
-            <h4>${titleText}</h4>
+            <h4><input type="text" value="${titleText}" oninput="upVal('con-name-${cIdx}', 'text', this.value)" style="border:none; border-bottom:1px dashed #ccc; font-weight:bold; font-size:16px; color:#111; background:transparent; width:300px;"></h4>
             <div>
               <button class="btn btn-primary btn-sm" onclick="addItem(${cIdx})"><i class="fas fa-plus"></i> Thêm mục</button>
               ${parentSec ? `<button class="btn btn-danger btn-sm" onclick="removeSection(${cIdx})"><i class="fas fa-trash"></i> Xóa DS</button>` : ''}
             </div>
           </div>
-          ${secTitleEditor}
-          <div class="bulk-upload-zone" id="bulk-${cIdx}" onclick="document.getElementById('bulk-file-${cIdx}').click()">
-            <i class="fas fa-images" style="font-size:24px; color:var(--gold); margin-bottom:5px; display:block;"></i>
-            <strong>Tải lên hàng loạt</strong> (Chọn nhiều ảnh cùng lúc)
-            <input type="file" multiple id="bulk-file-${cIdx}" style="display:none;" onchange="handleBulkUp(this, ${cIdx})">
+          <div style="display:flex; gap:15px; margin-bottom:15px;">
+            <div style="flex:1;">
+              ${secTitleEditor}
+            </div>
+            <div style="flex:1;">
+              <label>Bố cục hiển thị (Layout)</label>
+              <select style="width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit;" onchange="upVal('con-layout-${cIdx}', 'text', this.value)">
+                <option value="gallery-auto" ${con.classList.contains('gallery-auto') ? 'selected' : ''}>Tự động (Lưới linh hoạt)</option>
+                <option value="grid-2" ${con.classList.contains('grid-2') ? 'selected' : ''}>Lưới 2 Cột</option>
+                <option value="grid-3" ${con.classList.contains('grid-3') ? 'selected' : ''}>Lưới 3 Cột</option>
+                <option value="grid-4" ${con.classList.contains('grid-4') ? 'selected' : ''}>Lưới 4 Cột</option>
+              </select>
+            </div>
           </div>
-          <div class="sortable-list" id="sortable-${cIdx}"></div>
+          ${bulkUploadHTML}
+          <div class="sortable-list" id="sortable-${cIdx}" style="${isCompact ? 'display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:15px;' : ''}"></div>
         `;
         
         const sortableList = group.querySelector(`#sortable-${cIdx}`);
         con.querySelectorAll('[data-admin-item]').forEach((item, iIdx) => {
           const box = document.createElement('div');
-          box.className = 'item-box';
-          box.setAttribute('data-id', iIdx); // for sortable
-          box.innerHTML = `
-            <div class="item-header">
-              <div><i class="fas fa-grip-vertical item-drag-handle"></i> <strong>Mục #${iIdx+1}</strong></div>
-              <button class="btn btn-danger btn-sm" onclick="removeItem(${cIdx}, ${iIdx})"><i class="fas fa-trash"></i></button>
-            </div>
-          `;
-          renderFields(item, box, `c${cIdx}-i${iIdx}`);
+          
+          if(isCompact) {
+             box.className = 'compact-box item-drag-handle';
+             box.setAttribute('data-id', iIdx);
+             box.innerHTML = `
+               <button class="btn btn-danger btn-sm" onclick="removeItem(${cIdx}, ${iIdx})" style="position:absolute; top:5px; right:5px; padding:4px 8px; z-index:10;"><i class="fas fa-trash"></i></button>
+             `;
+             renderFields(item, box, `c${cIdx}-i${iIdx}`);
+          } else {
+             box.className = 'item-box';
+             box.setAttribute('data-id', iIdx); // for sortable
+             box.innerHTML = `
+               <div class="item-header">
+                 <div><i class="fas fa-grip-vertical item-drag-handle"></i> <strong>Mục #${iIdx+1}</strong></div>
+                 <button class="btn btn-danger btn-sm" onclick="removeItem(${cIdx}, ${iIdx})"><i class="fas fa-trash"></i></button>
+               </div>
+             `;
+             renderFields(item, box, `c${cIdx}-i${iIdx}`);
+          }
           sortableList.appendChild(box);
         });
 
@@ -470,7 +543,28 @@
     }
 
     window.upVal = (id, type, val) => {
+      if(id === 'global-favicon') {
+         window.__globalFavicon = val;
+         const p = document.getElementById(`p-global-favicon`); 
+         if(p) p.src = val; 
+         return;
+      }
+      if(id.startsWith('con-name-')) {
+         const cIdx = id.split('-')[2];
+         htmlDoc.querySelectorAll('[data-admin-container]')[cIdx].setAttribute('data-admin-container', val);
+         return;
+      }
+      if(id.startsWith('con-layout-')) {
+         const cIdx = id.split('-')[2];
+         const con = htmlDoc.querySelectorAll('[data-admin-container]')[cIdx];
+         // Xóa class layout cũ
+         con.classList.remove('gallery-auto', 'grid-2', 'grid-3', 'grid-4');
+         // Thêm class mới
+         con.classList.add(val);
+         return;
+      }
       const el = htmlDoc.querySelector(`[data-admin-id="${id}"]`);
+      if(!el) return;
       if (type === 'text') el.textContent = val;
       else { 
         el.setAttribute(type, val); 
@@ -611,6 +705,31 @@
 
     document.getElementById('btn-save-global').onclick = async () => {
       const btn = document.getElementById('btn-save-global');
+      if (currentFile === 'SETTINGS') {
+         btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang lưu toàn bộ trang...`;
+         try {
+           const idToken = await auth.currentUser.getIdToken();
+           const filesToUpdate = ['index.html', 'hoangphuc/about.html', 'skill/dan-chuong-trinh.html', 'skill/host-livestream.html', 'skill/voice.html'];
+           for(const f of filesToUpdate) {
+              const r = await fetch(`https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/${f}?t=${Date.now()}`);
+              const h = await r.text();
+              const d = new DOMParser().parseFromString(h, 'text/html');
+              const icon = d.querySelector('link[rel="icon"]');
+              if(icon) {
+                 icon.setAttribute('href', window.__globalFavicon);
+                 await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
+                   method: 'POST',
+                   headers: { 'Content-Type': 'application/json' },
+                   body: JSON.stringify({ token: idToken, path: f, content: '<!DOCTYPE html>\n' + d.documentElement.outerHTML })
+                 });
+              }
+           }
+           showNotif("Đã cập nhật Favicon cho tất cả trang!");
+         } catch(e) { alert(e.message); }
+         btn.innerHTML = `<i class="fas fa-save"></i> LƯU THAY ĐỔI`;
+         return;
+      }
+
       btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang lưu...`;
       const clone = htmlDoc.cloneNode(true);
       clone.querySelectorAll('[data-admin-id]').forEach(e => e.removeAttribute('data-admin-id'));

@@ -922,3 +922,11 @@ img.hero__bg {
   .video-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr; }
 }
+ 
+ / *   C u s t o m   G r i d   L a y o u t s   * /  
+ . g r i d - 2   {   d i s p l a y :   g r i d ;   g r i d - t e m p l a t e - c o l u m n s :   r e p e a t ( 2 ,   1 f r ) ;   g a p :   1 5 p x ;   }  
+ . g r i d - 3   {   d i s p l a y :   g r i d ;   g r i d - t e m p l a t e - c o l u m n s :   r e p e a t ( 3 ,   1 f r ) ;   g a p :   1 5 p x ;   }  
+ . g r i d - 4   {   d i s p l a y :   g r i d ;   g r i d - t e m p l a t e - c o l u m n s :   r e p e a t ( 4 ,   1 f r ) ;   g a p :   1 5 p x ;   }  
+ @ m e d i a   ( m a x - w i d t h :   7 6 8 p x )   {   . g r i d - 3 ,   . g r i d - 4   {   g r i d - t e m p l a t e - c o l u m n s :   r e p e a t ( 2 ,   1 f r ) ;   }   }  
+ @ m e d i a   ( m a x - w i d t h :   4 8 0 p x )   {   . g r i d - 2 ,   . g r i d - 3 ,   . g r i d - 4   {   g r i d - t e m p l a t e - c o l u m n s :   1 f r ;   }   }  
+ 
