@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel | MC Hoàng Phúc</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     :root { --bg: #0b0b0b; --fg: #f5f5f5; --gold: #D4AF37; --card: #161616; --border: rgba(212,175,55,0.2); --danger: #ff4d4d; }
     body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; font-size: 14px; user-select: none; overflow-x: hidden; }
@@ -79,6 +80,40 @@
     .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #333; }
     .log-item { padding: 12px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
     .log-link { color: var(--gold); text-decoration: underline; font-size: 0.8rem; font-weight: 600; }
+    
+    /* --- DROP ZONE UI --- */
+    .drop-zone {
+      border: 2px dashed #444;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      background: rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--gold);
+      background: rgba(212,175,55,0.08);
+      transform: translateY(-2px);
+    }
+    .drop-text {
+      color: #999;
+      font-size: 0.9rem;
+      pointer-events: none;
+      font-weight: 500;
+    }
+    .drop-zone .img-preview {
+      margin: 0 auto 15px auto;
+      border: 2px solid #333;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      max-height: 200px;
+    }
   </style>
   <script>
     // --- ADVANCED SECURITY: IP & GLOBAL BLOCKING ---
@@ -365,11 +400,31 @@
         div.className = 'editable-group';
         div.innerHTML = `<label>${el.getAttribute('data-admin-editable')}</label>`;
         if (el.tagName === 'IMG') {
-          div.innerHTML += `<img src="${el.src}" class="img-preview" id="p-${id}"><input type="file" onchange="handleUp(this, '${id}')"><input type="text" value="${el.getAttribute('src')}" oninput="upVal('${id}', 'src', this.value)">`;
+          div.innerHTML += `
+            <div class="drop-zone" id="dz-${id}" 
+                 ondragover="event.preventDefault(); this.classList.add('dragover');" 
+                 ondragleave="this.classList.remove('dragover');" 
+                 ondrop="event.preventDefault(); this.classList.remove('dragover'); handleDrop(event, '${id}')"
+                 onclick="document.getElementById('file-${id}').click()">
+              <img src="${el.src}" class="img-preview" id="p-${id}">
+              <div class="drop-text"><i class="fas fa-cloud-upload-alt" style="font-size:24px; margin-bottom:8px; display:block; color:var(--gold);"></i>Kéo thả ảnh vào đây hoặc Click để tải lên</div>
+              <input type="file" id="file-${id}" onchange="handleUp(this, '${id}')" style="display:none;">
+            </div>
+            <input type="text" value="${el.getAttribute('src')}" placeholder="Hoặc dán link ảnh vào đây..." oninput="upVal('${id}', 'src', this.value)">`;
         } else if (el.tagName === 'LINK') {
-          div.innerHTML += `<img src="${el.href}" class="img-preview" id="p-${id}" style="width:50px;height:50px;object-fit:contain"><input type="file" onchange="handleUp(this, '${id}')"><input type="text" value="${el.getAttribute('href')}" oninput="upVal('${id}', 'href', this.value)">`;
+          div.innerHTML += `
+            <div class="drop-zone" id="dz-${id}" 
+                 ondragover="event.preventDefault(); this.classList.add('dragover');" 
+                 ondragleave="this.classList.remove('dragover');" 
+                 ondrop="event.preventDefault(); this.classList.remove('dragover'); handleDrop(event, '${id}')"
+                 onclick="document.getElementById('file-${id}').click()">
+              <img src="${el.href}" class="img-preview" id="p-${id}" style="width:50px;height:50px;object-fit:contain">
+              <div class="drop-text"><i class="fas fa-cloud-upload-alt" style="font-size:24px; margin-bottom:8px; display:block; color:var(--gold);"></i>Kéo thả ảnh/icon vào đây hoặc Click để tải lên</div>
+              <input type="file" id="file-${id}" onchange="handleUp(this, '${id}')" style="display:none;">
+            </div>
+            <input type="text" value="${el.getAttribute('href')}" placeholder="Hoặc dán link vào đây..." oninput="upVal('${id}', 'href', this.value)">`;
         } else if (el.tagName === 'IFRAME') {
-          div.innerHTML += `<input type="text" value="${el.getAttribute('src')}" oninput="upVal('${id}', 'src', this.value)">`;
+          div.innerHTML += `<input type="text" value="${el.getAttribute('src')}" placeholder="Dán link (VD: Youtube embed) vào đây..." oninput="upVal('${id}', 'src', this.value)">`;
         } else {
           const area = document.createElement('textarea');
           area.value = el.textContent;
@@ -413,19 +468,43 @@
       renderEditor();
     };
 
-    window.handleUp = async (input, id) => {
+    window.handleDrop = (event, id) => {
+      const file = event.dataTransfer.files[0];
+      if(file) processFile(file, id);
+    };
+
+    window.handleUp = (input, id) => {
       const file = input.files[0];
+      if(file) processFile(file, id);
+    };
+
+    const processFile = async (file, id) => {
+      const dropText = document.querySelector(`#dz-${id} .drop-text`);
+      const originalHtml = dropText ? dropText.innerHTML : '';
+      if(dropText) dropText.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:24px; margin-bottom:8px; display:block; color:var(--gold);"></i>Đang tải lên...';
+      
       const reader = new FileReader();
       reader.onload = async e => {
-        const idToken = await auth.currentUser.getIdToken();
-        const filename = `img/${Date.now()}_${file.name.replace(/[^a-z0-9.]/gi, '_')}`;
-        const resp = await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: idToken, path: filename, content: e.target.result, isImage: true })
-        });
-        const res = await resp.json();
-        if(res.success) upVal(id, 'src', '/'+filename);
+        try {
+          const idToken = await auth.currentUser.getIdToken();
+          const filename = `img/${Date.now()}_${file.name.replace(/[^a-z0-9.]/gi, '_')}`;
+          const resp = await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: idToken, path: filename, content: e.target.result, isImage: true })
+          });
+          const res = await resp.json();
+          if(res.success) {
+            upVal(id, 'src', '/'+filename);
+            upVal(id, 'href', '/'+filename);
+          } else {
+            alert("Lỗi tải lên: " + (res.error || ''));
+          }
+        } catch(err) {
+          alert("Lỗi kết nối khi tải ảnh.");
+        } finally {
+          if(dropText) dropText.innerHTML = originalHtml;
+        }
       };
       reader.readAsDataURL(file);
     };
