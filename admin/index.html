@@ -386,6 +386,10 @@
         container.appendChild(card);
       }
 
+      const sectionsWrapper = document.createElement('div');
+      sectionsWrapper.id = 'sections-wrapper';
+      container.appendChild(sectionsWrapper);
+
       htmlDoc.querySelectorAll('[data-admin-container]').forEach((con, cIdx) => {
         const group = document.createElement('div');
         group.className = 'container-group';
@@ -418,7 +422,10 @@
 
         group.innerHTML = `
           <div class="group-header">
-            <h4><input type="text" value="${titleText}" oninput="upVal('con-name-${cIdx}', 'text', this.value)" style="border:none; border-bottom:1px dashed #ccc; font-weight:bold; font-size:16px; color:#111; background:transparent; width:300px;"></h4>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <i class="fas fa-arrows-alt section-drag-handle" style="cursor:grab; color:#aaa;" title="Kéo thả để đổi vị trí danh sách"></i>
+              <h4><input type="text" value="${titleText}" oninput="upVal('con-name-${cIdx}', 'text', this.value)" style="border:none; border-bottom:1px dashed #ccc; font-weight:bold; font-size:16px; color:#111; background:transparent; width:300px;"></h4>
+            </div>
             <div>
               <button class="btn btn-primary btn-sm" onclick="addItem(${cIdx})"><i class="fas fa-plus"></i> Thêm mục</button>
               ${parentSec ? `<button class="btn btn-danger btn-sm" onclick="removeSection(${cIdx})"><i class="fas fa-trash"></i> Xóa DS</button>` : ''}
@@ -467,9 +474,9 @@
           sortableList.appendChild(box);
         });
 
-        container.appendChild(group);
+        sectionsWrapper.appendChild(group);
 
-        // Init SortableJS
+        // Init SortableJS cho List ảnh bên trong Container
         if(typeof Sortable !== 'undefined') {
           new Sortable(sortableList, {
             animation: 150,
@@ -488,6 +495,32 @@
           });
         }
       });
+
+      // Init SortableJS cho toàn bộ các Section
+      if(typeof Sortable !== 'undefined') {
+         new Sortable(sectionsWrapper, {
+           animation: 150,
+           handle: '.section-drag-handle',
+           onEnd: function (evt) {
+              const allCons = Array.from(htmlDoc.querySelectorAll('[data-admin-container]'));
+              const movedCon = allCons[evt.oldIndex];
+              const targetCon = allCons[evt.newIndex];
+              
+              const movedNode = movedCon.closest('[data-admin-section]') || movedCon;
+              const targetNode = targetCon.closest('[data-admin-section]') || targetCon;
+              
+              const parentNode = movedNode.parentNode;
+              
+              if(evt.newIndex > evt.oldIndex) {
+                 parentNode.insertBefore(movedNode, targetNode.nextSibling);
+              } else {
+                 parentNode.insertBefore(movedNode, targetNode);
+              }
+              
+              renderEditor();
+           }
+         });
+      }
 
       if(window.__sectionTemplateData) {
         const btnAddSec = document.createElement('button');
