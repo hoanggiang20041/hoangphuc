@@ -6,252 +6,134 @@
   <title>Admin Panel | MC Hoàng Phúc</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
   <style>
-    :root { --bg: #0b0b0b; --fg: #f5f5f5; --gold: #D4AF37; --card: #161616; --border: rgba(212,175,55,0.2); --danger: #ff4d4d; }
-    body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; font-size: 14px; user-select: none; overflow-x: hidden; }
+    :root { --bg: #f8f9fa; --fg: #333; --gold: #D4AF37; --card: #ffffff; --border: #e0e0e0; --danger: #ff4d4d; --sidebar: #111; --sidebar-fg: #fff; --primary: #0056b3; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; font-size: 14px; overflow-x: hidden; display: flex; height: 100vh; }
     
-    /* --- VIVID BLOCKED UI (FULL SCREEN) --- */
-    #blocked-screen { 
-      position: fixed; inset: 0; background: radial-gradient(circle at center, #1a0000 0%, #000 100%); 
-      z-index: 999999; display: none; align-items: center; justify-content: center; text-align: center; 
-      padding: 2rem; flex-direction: column; overflow: hidden; 
-    }
-    .blocked-content { max-width: 700px; position: relative; }
+    /* Login Screen */
+    #view-login { position: fixed; inset: 0; background: url('https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/img/1781677022232_profile_MC.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    #view-login::before { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); }
+    .login-box { position: relative; background: rgba(20, 20, 20, 0.85); padding: 3rem; border-radius: 16px; width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); text-align: center; border: 1px solid rgba(212,175,55,0.3); backdrop-filter: blur(10px); z-index: 1; }
+    .login-box h2 { margin-top: 0; color: var(--gold); letter-spacing: 2px; font-weight: 700; }
+    .login-box input { width: 100%; padding: 14px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; box-sizing: border-box; background: rgba(255,255,255,0.05); color: #fff; font-size: 15px; outline: none; transition: 0.3s; }
+    .login-box input:focus { border-color: var(--gold); background: rgba(255,255,255,0.1); }
+    .login-box button { width: 100%; padding: 14px; background: linear-gradient(135deg, #D4AF37, #AA8A2E); color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+    .login-box button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212,175,55,0.4); }
     
-    .blocked-icon { 
-      font-size: 120px; color: var(--danger); margin-bottom: 1rem; 
-      animation: glitch-icon 0.4s infinite alternate, pulse-danger 2s infinite; 
-      text-shadow: 0 0 20px rgba(255, 77, 77, 0.5);
-    }
+    /* Sidebar */
+    .sidebar { width: 260px; background: var(--sidebar); color: var(--sidebar-fg); display: flex; flex-direction: column; transition: 0.3s; flex-shrink: 0; }
+    .sidebar-header { padding: 20px; border-bottom: 1px solid #333; text-align: center; }
+    .sidebar-header h2 { margin: 0; font-size: 18px; color: var(--gold); letter-spacing: 1px; }
+    .sidebar-nav { flex: 1; padding: 20px 0; overflow-y: auto; }
+    .nav-item { padding: 12px 20px; display: block; color: #aaa; text-decoration: none; cursor: pointer; transition: 0.2s; border-left: 3px solid transparent; }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+    .nav-item.active { background: rgba(212,175,55,0.1); color: var(--gold); border-left-color: var(--gold); }
+    .nav-item i { margin-right: 10px; width: 20px; text-align: center; }
     
-    .blocked-title { 
-      font-size: clamp(28px, 6vw, 52px); font-weight: 900; color: #fff; margin-bottom: 1rem; 
-      text-transform: uppercase; letter-spacing: 6px; 
-      animation: text-glitch 3s infinite;
-    }
+    .sidebar-footer { padding: 20px; border-top: 1px solid #333; }
     
-    .blocked-desc { font-size: 18px; color: #aaa; margin-bottom: 2.5rem; line-height: 1.6; }
+    /* Main Content */
+    .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .topbar { height: 60px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
+    .topbar-title { font-weight: 600; font-size: 18px; }
+    .topbar-actions { display: flex; gap: 10px; align-items: center; }
     
-    .blocked-ip-box { 
-      background: rgba(255, 77, 77, 0.05); padding: 20px 40px; border-radius: 16px; 
-      border: 2px solid var(--danger); box-shadow: 0 0 40px rgba(255, 77, 77, 0.15); 
-      margin-bottom: 2.5rem; display: inline-block;
-    }
-    .blocked-ip-label { font-size: 12px; color: var(--danger); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; font-weight: 700; }
-    .blocked-ip-value { font-family: 'JetBrains Mono', monospace; color: #fff; font-size: 32px; font-weight: 800; letter-spacing: 1px; }
+    .editor-wrapper { flex: 1; overflow-y: auto; padding: 30px; background: var(--bg); }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 25px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     
-    .blocked-warning { color: #ff4d4d; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; animation: blink 1s step-end infinite; }
+    /* Inputs */
+    input[type="text"], input[type="email"], input[type="password"], textarea { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 15px; font-family: inherit; box-sizing: border-box; background: #fff; color: #333; }
+    label { display: block; margin-bottom: 6px; font-size: 13px; color: #555; font-weight: 600; }
     
-    @keyframes glitch-icon {
-      0% { transform: translate(0); text-shadow: 2px 2px #ff0000; }
-      25% { transform: translate(-2px, 2px); }
-      50% { transform: translate(2px, -2px); text-shadow: -2px -2px #00ffff; }
-      75% { transform: translate(-2px, -2px); }
-      100% { transform: translate(0); }
-    }
-    @keyframes pulse-danger { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-    @keyframes text-glitch {
-      0%, 100% { transform: none; opacity: 1; }
-      7% { transform: skew(-0.5deg, -0.9deg); opacity: 0.75; }
-      10% { transform: none; opacity: 1; }
-      27% { transform: none; opacity: 1; }
-      30% { transform: skew(0.8deg, -0.1deg); opacity: 0.75; }
-      35% { transform: none; opacity: 1; }
-    }
-
-    /* --- REGULAR ADMIN UI --- */
-    .header { padding: 1rem 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(11,11,11,0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
-    .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
-    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
-    .tab { padding: 0.6rem 1.2rem; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--fg); cursor: pointer; white-space: nowrap; transition: 0.2s; }
-    .tab.active { background: var(--gold); color: #000; border-color: var(--gold); }
-    input, textarea, select { width: 100%; padding: 0.8rem; background: #000; border: 1px solid var(--border); border-radius: 6px; color: #fff; margin-bottom: 1rem; box-sizing: border-box; font-family: inherit; }
-    label { display: block; margin-bottom: 0.4rem; font-size: 0.85rem; color: #aaa; font-weight: 500; }
-    .btn { padding: 0.7rem 1.2rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+    /* Buttons */
+    .btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+    .btn-primary { background: var(--primary); color: #fff; }
     .btn-gold { background: var(--gold); color: #000; }
-    .btn-outline { background: transparent; border: 1px solid var(--border); color: #fff; }
-    .btn-danger { background: rgba(244, 67, 54, 0.15); color: var(--danger); border: 1px solid var(--danger); }
-    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
-    .hidden { display: none; }
-    .img-preview { max-width: 200px; max-height: 150px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #333; display: block; object-fit: cover; }
-    .container-group { border: 2px solid #D4AF37; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; background: rgba(212,175,55,0.05); }
-    .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #333; }
-    .log-item { padding: 12px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
-    .log-link { color: var(--gold); text-decoration: underline; font-size: 0.8rem; font-weight: 600; }
+    .btn-outline { background: transparent; border: 1px solid #ccc; color: #333; }
+    .btn-danger { background: #ffe6e6; color: var(--danger); }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
     
-    /* --- DROP ZONE UI --- */
-    .drop-zone {
-      border: 2px dashed #444;
-      border-radius: 8px;
-      padding: 20px;
-      text-align: center;
-      background: rgba(0,0,0,0.3);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-bottom: 10px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .drop-zone:hover, .drop-zone.dragover {
-      border-color: var(--gold);
-      background: rgba(212,175,55,0.08);
-      transform: translateY(-2px);
-    }
-    .drop-text {
-      color: #999;
-      font-size: 0.9rem;
-      pointer-events: none;
-      font-weight: 500;
-    }
-    .drop-zone .img-preview {
-      margin: 0 auto 15px auto;
-      border: 2px solid #333;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-      max-height: 200px;
-    }
+    /* Container Group */
+    .container-group { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 30px; background: #fdfdfd; }
+    .group-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--gold); padding-bottom: 10px; }
+    .group-header h4 { margin: 0; color: #111; font-size: 16px; }
+    
+    .item-box { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); cursor: grab; }
+    .item-box:active { cursor: grabbing; }
+    .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px dashed #ddd; padding-bottom: 10px; }
+    .item-drag-handle { color: #aaa; cursor: grab; margin-right: 10px; }
+    
+    /* Drop Zone */
+    .drop-zone { border: 2px dashed #bbb; border-radius: 8px; padding: 20px; text-align: center; background: #fafafa; cursor: pointer; transition: 0.2s; margin-bottom: 10px; }
+    .drop-zone:hover, .drop-zone.dragover { border-color: var(--primary); background: #f0f7ff; }
+    .drop-zone img { max-height: 150px; border-radius: 6px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    
+    /* Bulk Upload */
+    .bulk-upload-zone { border: 2px dashed var(--gold); background: rgba(212,175,55,0.05); padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; cursor: pointer; }
+    
+    .hidden { display: none !important; }
+    
+    .notification { position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 15px 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transform: translateY(100px); opacity: 0; transition: 0.3s; z-index: 9999; }
+    .notification.show { transform: translateY(0); opacity: 1; }
   </style>
-  <script>
-    // --- ADVANCED SECURITY: IP & GLOBAL BLOCKING ---
-    (async function initSecurity() {
-      const showBlockedPage = (ip) => {
-        document.body.innerHTML = `
-          <div id="blocked-screen" style="display: flex;">
-            <div class="blocked-content">
-              <div class="blocked-icon">BANNED</div>
-              <h1 class="blocked-title">HỆ THỐNG ĐÃ KHÓA</h1>
-              <p class="blocked-desc">Bạn đã vi phạm chính sách bảo mật của MC Hoàng Phúc khi cố tình sử dụng công cụ DevTools hoặc Source Code. Quyền truy cập của bạn đã bị tước bỏ vĩnh viễn.</p>
-              <div class="blocked-ip-box">
-                <div class="blocked-ip-label">Địa chỉ IP vi phạm bị phong tỏa</div>
-                <div class="blocked-ip-value">${ip}</div>
-              </div>
-              <p class="blocked-warning">Vị trí địa lý và thiết bị của bạn đã được báo cáo cho Quản trị viên.</p>
-            </div>
-          </div>
-        `;
-        window.stop();
-      };
-
-      try {
-        // 1. Check local session storage first (Instant block)
-        if (localStorage.getItem('admin_blocked') === 'true') {
-          showBlockedPage("PHÁT HIỆN QUA THIẾT BỊ");
-          return;
-        }
-
-        // 2. Fetch current user IP from API
-        const ipResp = await fetch('https://hoangphuc-56rg.vercel.app/api/save-log');
-        const { ip } = await ipResp.json();
-
-        // 3. Check against Global Blacklist from GitHub logs.json
-        const logsUrl = `https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/admin/logs.json?t=${Date.now()}`;
-        const logsResp = await fetch(logsUrl);
-        if (logsResp.ok) {
-          const logs = await logsResp.json();
-          const isBlacklisted = logs.some(log => log.ip === ip && log.blocked === true);
-          if (isBlacklisted) {
-            localStorage.setItem('admin_blocked', 'true'); // Sync to local
-            showBlockedPage(ip);
-            return;
-          }
-        }
-
-        // 4. Set up live monitors
-        let violations = 0;
-        const report = async (reason) => {
-          violations++;
-          console.clear();
-          console.log("%cSTOP!", "color:red; font-size:50px; font-weight:bold;");
-          
-          if (violations >= 3) {
-            localStorage.setItem('admin_blocked', 'true');
-          }
-
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-              const mapUrl = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-              await fetch('https://hoangphuc-56rg.vercel.app/api/save-log', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                  event: reason, 
-                  location: mapUrl, 
-                  ua: navigator.userAgent,
-                  isFatal: violations >= 2 
-                })
-              });
-              if (violations >= 2) location.reload();
-            }, () => {
-              if (violations >= 2) location.reload();
-            });
-          }
-        };
-
-        // Chặn phím tắt
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-          if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || (e.ctrlKey && e.keyCode === 85)) {
-            e.preventDefault();
-            report("Phím tắt DevTools");
-          }
-        });
-
-        // Debugger Trap
-        setInterval(() => {
-          const start = performance.now();
-          debugger;
-          if (performance.now() - start > 100) report("Debugger Monitor");
-        }, 1500);
-
-      } catch (e) { console.warn("Security check bypassed due to error."); }
-    })();
-  </script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
 </head>
 <body>
-  <div class="header">
-    <div style="font-weight: 600;">MC HOÀNG PHÚ <span style="color: var(--gold); margin-left: 0.5rem; font-size: 0.8rem;">SECURE ADMIN</span></div>
-    <div id="auth-status"></div>
-  </div>
 
-  <div class="container">
-    <!-- Login View -->
-    <div id="view-login" class="card">
-      <h2>Quản trị viên</h2>
-      <label>Email Admin</label>
-      <input type="email" id="admin-email" placeholder="admin@gmail.com">
-      <label>Mật khẩu</label>
-      <input type="password" id="admin-password">
-      <button class="btn btn-gold" id="btn-login-pw">Đăng nhập ngay</button>
-      <div id="login-msg"></div>
-    </div>
-
-    <!-- Dashboard View -->
-    <div id="view-admin" class="hidden">
-      <div class="tabs" id="tab-list">
-        <button class="tab active" data-file="index.html">Trang Chủ</button>
-        <button class="tab" data-file="hoangphuc/about.html">Giới Thiệu</button>
-        <button class="tab" data-file="skill/dan-chuong-trinh.html">Dẫn Chương Trình</button>
-        <button class="tab" data-file="skill/host-livestream.html">Host Livestream</button>
-        <button class="tab" data-file="skill/voice.html">Voice</button>
-        <button class="tab" data-file="MESSAGES">Hộp thư KH</button>
-        <button class="tab" data-file="LOGS">Nhật ký vi phạm</button>
+  <!-- Login Screen -->
+  <div id="view-login">
+    <div class="login-box">
+      <div id="step-1">
+        <h2>MC HOÀNG PHÚC</h2>
+        <p style="color:#aaa; margin-bottom: 25px;">Hệ thống quản trị nội dung</p>
+        <input type="email" id="admin-email" placeholder="Email quản trị viên">
+        <input type="password" id="admin-password" placeholder="Mật khẩu bảo mật">
+        <button id="btn-login-pw">ĐĂNG NHẬP</button>
       </div>
-
-      <div class="card">
-        <div id="editor-container"></div>
-        <div id="save-area" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: space-between; border-top: 1px solid #333; padding-top: 1.5rem;">
-          <button class="btn btn-gold" id="btn-save">Lưu toàn bộ HTML</button>
-          <button class="btn btn-outline" onclick="location.reload()">Tải lại trang</button>
-        </div>
-        <div id="save-status"></div>
+      <div id="step-2" class="hidden">
+        <h2>XÁC MINH 2 BƯỚC</h2>
+        <p style="color:#aaa; margin-bottom: 25px; font-size:13px; line-height:1.5;">Một mã số bảo mật vừa được gửi đến Email của bạn. Vui lòng kiểm tra hộp thư (và thư mục Spam) để lấy mã.</p>
+        <input type="text" id="admin-otp" placeholder="Nhập mã 6 chữ số" maxlength="6" style="text-align:center; font-size:20px; letter-spacing:8px; font-weight:bold;">
+        <button id="btn-verify-otp">XÁC NHẬN MÃ</button>
+        <p style="margin-top:15px; font-size:12px;"><a href="#" onclick="location.reload()" style="color:var(--gold); text-decoration:none;">Quay lại</a></p>
       </div>
+      <div id="login-msg" style="color:var(--danger); margin-top:15px; font-size:13px; font-weight:bold;"></div>
     </div>
   </div>
+
+  <!-- Admin UI -->
+  <div class="sidebar hidden" id="sidebar">
+    <div class="sidebar-header">
+      <h2>ADMIN PANEL</h2>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-item active" data-file="index.html"><i class="fas fa-home"></i> Trang Chủ</div>
+      <div class="nav-item" data-file="hoangphuc/about.html"><i class="fas fa-user"></i> Giới Thiệu</div>
+      <div class="nav-item" data-file="skill/dan-chuong-trinh.html"><i class="fas fa-microphone"></i> Dẫn Chương Trình</div>
+      <div class="nav-item" data-file="skill/host-livestream.html"><i class="fas fa-video"></i> Host Livestream</div>
+      <div class="nav-item" data-file="skill/voice.html"><i class="fas fa-headphones"></i> Voice</div>
+      <div class="nav-item" data-file="MESSAGES"><i class="fas fa-envelope"></i> Hộp thư KH</div>
+    </div>
+    <div class="sidebar-footer">
+      <div id="auth-status" style="font-size: 12px; margin-bottom: 10px; opacity: 0.7; word-break: break-all;"></div>
+      <button class="btn btn-outline" id="btn-logout" style="width: 100%; border-color:#555; color:#ccc;">Đăng xuất</button>
+    </div>
+  </div>
+
+  <div class="main-content hidden" id="main-content">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Đang tải...</div>
+      <div class="topbar-actions">
+        <button class="btn btn-outline" onclick="location.reload()"><i class="fas fa-sync-alt"></i> Làm mới</button>
+        <button class="btn btn-gold" id="btn-save-global"><i class="fas fa-save"></i> LƯU THAY ĐỔI</button>
+      </div>
+    </div>
+    <div class="editor-wrapper" id="editor-container">
+      <!-- Nội dung editor sẽ được JS render vào đây -->
+    </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -272,73 +154,152 @@
     let currentFile = "index.html";
     let htmlDoc = null;
 
+    function showNotif(msg, isError=false) {
+      const el = document.getElementById('notification');
+      el.innerText = msg;
+      el.style.background = isError ? '#ff4d4d' : '#28a745';
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    let expectedOtpHash = null;
+    let pendingUser = null;
+
     onAuthStateChanged(auth, (user) => {
       if (user && ADMIN_EMAILS.includes(user.email)) {
-        document.getElementById('view-login').classList.add('hidden');
-        document.getElementById('view-admin').classList.remove('hidden');
-        document.getElementById('auth-status').innerHTML = `<span style="font-size:0.8rem;margin-right:1rem;">${user.email}</span><button class="btn btn-outline btn-sm" id="btn-logout">Thoát</button>`;
-        document.getElementById('btn-logout').onclick = () => signOut(auth);
-        loadPage(currentFile);
+        // Nếu đã login Firebase nhưng chưa qua OTP (khi reload trang), thì Firebase tự động nhận diện user.
+        // Ta cần bắt user này nhập OTP lại.
+        document.getElementById('step-1').classList.add('hidden');
+        document.getElementById('step-2').classList.remove('hidden');
+        document.getElementById('login-msg').innerText = "Đang gửi mã bảo mật đến Email...";
+        
+        // Gọi API gửi mã
+        fetch('https://hoangphuc-56rg.vercel.app/api/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: user.email })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if(data.success) {
+            expectedOtpHash = data.hash;
+            pendingUser = user;
+            document.getElementById('login-msg').style.color = '#28a745';
+            document.getElementById('login-msg').innerText = "Đã gửi mã! Vui lòng kiểm tra Email.";
+            setTimeout(() => document.getElementById('login-msg').innerText = "", 5000);
+          } else {
+            document.getElementById('login-msg').style.color = 'var(--danger)';
+            document.getElementById('login-msg').innerText = "Lỗi gửi mã: " + data.error;
+            signOut(auth);
+          }
+        })
+        .catch(err => {
+          document.getElementById('login-msg').style.color = 'var(--danger)';
+          document.getElementById('login-msg').innerText = "Lỗi kết nối khi gửi OTP";
+          signOut(auth);
+        });
+
       } else {
         if(user) signOut(auth);
         document.getElementById('view-login').classList.remove('hidden');
-        document.getElementById('view-admin').classList.add('hidden');
+        document.getElementById('sidebar').classList.add('hidden');
+        document.getElementById('main-content').classList.add('hidden');
+        document.getElementById('step-1').classList.remove('hidden');
+        document.getElementById('step-2').classList.add('hidden');
+        expectedOtpHash = null;
+        pendingUser = null;
       }
     });
 
     document.getElementById('btn-login-pw').onclick = async () => {
       const e = document.getElementById('admin-email').value;
       const p = document.getElementById('admin-password').value;
-      try { await signInWithEmailAndPassword(auth, e, p); } catch (err) { alert("Sai thông tin!"); }
+      const btn = document.getElementById('btn-login-pw');
+      btn.innerText = "Đang xử lý...";
+      try { 
+        await signInWithEmailAndPassword(auth, e, p); 
+        // onAuthStateChanged sẽ tự động bắt event này và show form OTP
+      } catch (err) { 
+        document.getElementById('login-msg').style.color = 'var(--danger)';
+        document.getElementById('login-msg').innerText = "Sai thông tin hoặc tài khoản không tồn tại!"; 
+      }
+      btn.innerText = "ĐĂNG NHẬP";
     };
 
-    async function loadPage(file) {
-      const container = document.getElementById('editor-container');
-      const saveArea = document.getElementById('save-area');
-      container.innerHTML = '<p>Đang tải dữ liệu...</p>';
-      saveArea.classList.remove('hidden');
-
-      if (file === 'LOGS') {
-        saveArea.classList.add('hidden');
-        try {
-          const resp = await fetch(`https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/admin/logs.json?t=${Date.now()}`);
-          const logs = await resp.json();
-          container.innerHTML = "<h3>Nhật ký vi phạm bảo mật</h3>";
-          logs.reverse().forEach(log => {
-            const div = document.createElement('div');
-            div.className = 'log-item';
-            div.innerHTML = `<div><b>${log.time}</b>: ${log.event} <br><span style="color:red;font-family:monospace">[IP: ${log.ip}]</span></div><a class="log-link" href="${log.location}" target="_blank">Google Maps</a>`;
-            container.appendChild(div);
-          });
-        } catch(e) { container.innerHTML = "<p>Chưa có nhật ký vi phạm.</p>"; }
+    document.getElementById('btn-verify-otp').onclick = async () => {
+      const otp = document.getElementById('admin-otp').value.trim();
+      const btn = document.getElementById('btn-verify-otp');
+      const msg = document.getElementById('login-msg');
+      msg.style.color = 'var(--danger)';
+      
+      if(otp.length !== 6) {
+        msg.innerText = "Vui lòng nhập đủ 6 số!";
         return;
       }
 
+      btn.innerText = "Đang kiểm tra...";
+      try {
+        const resp = await fetch('https://hoangphuc-56rg.vercel.app/api/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: pendingUser.email, code: otp, hash: expectedOtpHash })
+        });
+        const data = await resp.json();
+        if(data.success) {
+          // XÁC MINH THÀNH CÔNG!
+          document.getElementById('view-login').classList.add('hidden');
+          document.getElementById('sidebar').classList.remove('hidden');
+          document.getElementById('main-content').classList.remove('hidden');
+          document.getElementById('auth-status').innerText = pendingUser.email;
+          loadPage(currentFile);
+          msg.innerText = "";
+        } else {
+          msg.innerText = "Mã xác minh không đúng hoặc đã hết hạn!";
+        }
+      } catch (err) {
+        msg.innerText = "Lỗi kết nối máy chủ!";
+      }
+      btn.innerText = "XÁC NHẬN MÃ";
+    };
+
+    document.getElementById('btn-logout').onclick = () => {
+      signOut(auth);
+      location.reload();
+    };
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.onclick = () => {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        currentFile = item.getAttribute('data-file');
+        loadPage(currentFile);
+      };
+    });
+
+    async function loadPage(file) {
+      document.getElementById('topbar-title').innerText = file === 'MESSAGES' ? 'Hộp Thư' : 'Chỉnh sửa: ' + file;
+      const container = document.getElementById('editor-container');
+      container.innerHTML = '<div style="text-align:center; padding: 50px;"><i class="fas fa-circle-notch fa-spin fa-3x" style="color:#ccc;"></i><p>Đang tải dữ liệu...</p></div>';
+      document.getElementById('btn-save-global').style.display = file === 'MESSAGES' ? 'none' : 'block';
+
       if (file === 'MESSAGES') {
-        saveArea.classList.add('hidden');
         try {
           const resp = await fetch(`https://raw.githubusercontent.com/hoanggiang20041/hoangphuc/main/admin/data/messages.json?t=${Date.now()}`);
           const messages = await resp.json();
-          container.innerHTML = "<h3>Hộp Thư Khách Hàng</h3>";
-          if (messages.length === 0) {
-            container.innerHTML += "<p>Chưa có tin nhắn nào.</p>";
-          } else {
-            messages.forEach((msg, idx) => {
-              const div = document.createElement('div');
-              div.className = 'log-item';
-              div.style.flexDirection = 'column';
-              div.style.alignItems = 'flex-start';
-              div.innerHTML = `
-                <div style="width: 100%; display: flex; justify-content: space-between; margin-bottom: 8px;">
-                  <strong style="color:var(--gold); font-size:1.1rem;">#${messages.length - idx}: ${msg.from_name}</strong>
-                  <span style="font-size:0.8rem; color:#aaa;">${msg.time}</span>
+          container.innerHTML = "";
+          if (messages.length === 0) container.innerHTML = "<p>Chưa có tin nhắn nào.</p>";
+          messages.forEach((msg, idx) => {
+            container.innerHTML += `
+              <div class="card">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                  <h4 style="margin:0; color:var(--primary);">#${messages.length - idx}: ${msg.from_name}</h4>
+                  <span style="color:#888; font-size:12px;">${msg.time}</span>
                 </div>
-                <div style="font-size:0.9rem; margin-bottom: 4px;">📞 SĐT: <b>${msg.phone || 'Không có'}</b> | ✉️ Email: <b>${msg.email}</b></div>
-                <div style="background:#111; padding:10px; border-radius:5px; width:100%; font-style:italic;">"${msg.message}"</div>
-              `;
-              container.appendChild(div);
-            });
-          }
+                <p><strong>SĐT:</strong> ${msg.phone || 'N/A'} | <strong>Email:</strong> ${msg.email}</p>
+                <div style="background:#f9f9f9; padding:15px; border-radius:6px; border-left:4px solid var(--primary); font-style:italic;">"${msg.message}"</div>
+              </div>
+            `;
+          });
         } catch(e) { container.innerHTML = "<p>Chưa có tin nhắn nào.</p>"; }
         return;
       }
@@ -349,46 +310,121 @@
         const resp = await fetch(`${baseUrl}${file}?t=${Date.now()}`);
         const html = await resp.text();
         htmlDoc = new DOMParser().parseFromString(html, 'text/html');
-        window.__templates = [];
+        
+        // Save templates for cloning
+        window.__itemTemplates = [];
+        window.__sectionTemplates = [];
         htmlDoc.querySelectorAll('[data-admin-container]').forEach((con, idx) => {
           const firstItem = con.querySelector('[data-admin-item]');
-          window.__templates[idx] = firstItem ? firstItem.cloneNode(true) : null;
+          window.__itemTemplates[idx] = firstItem ? firstItem.cloneNode(true) : null;
         });
-        currentFile = file;
+        const sectionEl = htmlDoc.querySelector('[data-admin-section]');
+        if(sectionEl) {
+          window.__sectionTemplateData = {
+            parent: sectionEl.parentElement,
+            template: sectionEl.cloneNode(true)
+          };
+        } else {
+          window.__sectionTemplateData = null;
+        }
+
         renderEditor();
-      } catch (e) { container.innerHTML = '<p>Lỗi nạp file.</p>'; }
+      } catch (e) { container.innerHTML = '<p style="color:red;">Lỗi nạp file: '+e.message+'</p>'; }
     }
 
     function renderEditor() {
       const container = document.getElementById('editor-container');
-      container.innerHTML = `<h3>Sửa file: ${currentFile}</h3>`;
+      container.innerHTML = "";
       
+      const loners = Array.from(htmlDoc.querySelectorAll('[data-admin-editable]')).filter(el => !el.closest('[data-admin-container]'));
+      if (loners.length > 0) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<div class="group-header"><h4>THÔNG TIN CHUNG CỦA TRANG</h4></div>`;
+        renderFields(htmlDoc, card, 'loner', loners);
+        container.appendChild(card);
+      }
+
       htmlDoc.querySelectorAll('[data-admin-container]').forEach((con, cIdx) => {
         const group = document.createElement('div');
         group.className = 'container-group';
-        group.innerHTML = `<h4 style="color:var(--gold)">DANH SÁCH: ${con.getAttribute('data-admin-container')}</h4>`;
+        const titleText = con.getAttribute('data-admin-container') || 'Danh Sách';
         
+        // Find if there is a section title editable nearby (like event-title)
+        const parentSec = con.closest('[data-admin-section]');
+        let secTitleEditor = '';
+        if(parentSec) {
+            const secTitleEl = parentSec.querySelector('[data-admin-editable]');
+            if(secTitleEl && !secTitleEl.closest('[data-admin-container]')) {
+                const sid = `sec-${cIdx}`;
+                secTitleEl.setAttribute('data-admin-id', sid);
+                secTitleEditor = `<div style="margin-bottom:15px;"><label>Tên Danh Sách/Sự Kiện</label><input type="text" value="${secTitleEl.textContent}" oninput="upVal('${sid}', 'text', this.value)"></div>`;
+            }
+        }
+
+        group.innerHTML = `
+          <div class="group-header">
+            <h4>${titleText}</h4>
+            <div>
+              <button class="btn btn-primary btn-sm" onclick="addItem(${cIdx})"><i class="fas fa-plus"></i> Thêm mục</button>
+              ${parentSec ? `<button class="btn btn-danger btn-sm" onclick="removeSection(${cIdx})"><i class="fas fa-trash"></i> Xóa DS</button>` : ''}
+            </div>
+          </div>
+          ${secTitleEditor}
+          <div class="bulk-upload-zone" id="bulk-${cIdx}" onclick="document.getElementById('bulk-file-${cIdx}').click()">
+            <i class="fas fa-images" style="font-size:24px; color:var(--gold); margin-bottom:5px; display:block;"></i>
+            <strong>Tải lên hàng loạt</strong> (Chọn nhiều ảnh cùng lúc)
+            <input type="file" multiple id="bulk-file-${cIdx}" style="display:none;" onchange="handleBulkUp(this, ${cIdx})">
+          </div>
+          <div class="sortable-list" id="sortable-${cIdx}"></div>
+        `;
+        
+        const sortableList = group.querySelector(`#sortable-${cIdx}`);
         con.querySelectorAll('[data-admin-item]').forEach((item, iIdx) => {
           const box = document.createElement('div');
           box.className = 'item-box';
-          box.innerHTML = `<div class="item-header"><strong>Mục #${iIdx+1}</strong> <button class="btn btn-danger btn-sm" onclick="removeItem(${cIdx}, ${iIdx})">Xóa</button></div>`;
+          box.setAttribute('data-id', iIdx); // for sortable
+          box.innerHTML = `
+            <div class="item-header">
+              <div><i class="fas fa-grip-vertical item-drag-handle"></i> <strong>Mục #${iIdx+1}</strong></div>
+              <button class="btn btn-danger btn-sm" onclick="removeItem(${cIdx}, ${iIdx})"><i class="fas fa-trash"></i></button>
+            </div>
+          `;
           renderFields(item, box, `c${cIdx}-i${iIdx}`);
-          group.appendChild(box);
+          sortableList.appendChild(box);
         });
-        const addBtn = document.createElement('button');
-        addBtn.className = 'btn btn-gold btn-sm';
-        addBtn.innerText = "+ Thêm mới mục";
-        addBtn.onclick = () => addItem(cIdx);
-        group.appendChild(addBtn);
+
         container.appendChild(group);
+
+        // Init SortableJS
+        if(typeof Sortable !== 'undefined') {
+          new Sortable(sortableList, {
+            animation: 150,
+            handle: '.item-drag-handle',
+            onEnd: function (evt) {
+              const items = Array.from(con.querySelectorAll('[data-admin-item]'));
+              const movedItem = items[evt.oldIndex];
+              // Reorder DOM in htmlDoc
+              if(evt.newIndex > evt.oldIndex) {
+                 if(evt.newIndex === items.length - 1) con.appendChild(movedItem);
+                 else con.insertBefore(movedItem, items[evt.newIndex + 1]);
+              } else {
+                 con.insertBefore(movedItem, items[evt.newIndex]);
+              }
+            }
+          });
+        }
       });
 
-      const loners = Array.from(htmlDoc.querySelectorAll('[data-admin-editable]')).filter(el => !el.closest('[data-admin-container]'));
-      if (loners.length > 0) {
-        const div = document.createElement('div');
-        div.innerHTML = `<h4>THÔNG TIN KHÁC</h4>`;
-        renderFields(htmlDoc, div, 'loner', loners);
-        container.appendChild(div);
+      if(window.__sectionTemplateData) {
+        const btnAddSec = document.createElement('button');
+        btnAddSec.className = 'btn btn-gold';
+        btnAddSec.style.width = '100%';
+        btnAddSec.style.padding = '15px';
+        btnAddSec.style.fontSize = '16px';
+        btnAddSec.innerHTML = `<i class="fas fa-folder-plus"></i> THÊM DANH SÁCH / SỰ KIỆN MỚI`;
+        btnAddSec.onclick = addSection;
+        container.appendChild(btnAddSec);
       }
     }
 
@@ -397,7 +433,7 @@
         const id = `${prefix}-${idx}`;
         el.setAttribute('data-admin-id', id);
         const div = document.createElement('div');
-        div.className = 'editable-group';
+        div.style.marginBottom = "15px";
         div.innerHTML = `<label>${el.getAttribute('data-admin-editable')}</label>`;
         if (el.tagName === 'IMG') {
           div.innerHTML += `
@@ -407,10 +443,9 @@
                  ondrop="event.preventDefault(); this.classList.remove('dragover'); handleDrop(event, '${id}')"
                  onclick="document.getElementById('file-${id}').click()">
               <img src="${el.src}" class="img-preview" id="p-${id}">
-              <div class="drop-text"><i class="fas fa-cloud-upload-alt" style="font-size:24px; margin-bottom:8px; display:block; color:var(--gold);"></i>Kéo thả ảnh vào đây hoặc Click để tải lên</div>
+              <div class="drop-text"><i class="fas fa-cloud-upload-alt"></i> Click/Kéo thả ảnh tải lên</div>
               <input type="file" id="file-${id}" onchange="handleUp(this, '${id}')" style="display:none;">
-            </div>
-            <input type="text" value="${el.getAttribute('src')}" placeholder="Hoặc dán link ảnh vào đây..." oninput="upVal('${id}', 'src', this.value)">`;
+            </div>`;
         } else if (el.tagName === 'LINK') {
           div.innerHTML += `
             <div class="drop-zone" id="dz-${id}" 
@@ -418,13 +453,12 @@
                  ondragleave="this.classList.remove('dragover');" 
                  ondrop="event.preventDefault(); this.classList.remove('dragover'); handleDrop(event, '${id}')"
                  onclick="document.getElementById('file-${id}').click()">
-              <img src="${el.href}" class="img-preview" id="p-${id}" style="width:50px;height:50px;object-fit:contain">
-              <div class="drop-text"><i class="fas fa-cloud-upload-alt" style="font-size:24px; margin-bottom:8px; display:block; color:var(--gold);"></i>Kéo thả ảnh/icon vào đây hoặc Click để tải lên</div>
+              <img src="${el.getAttribute('href')}" class="img-preview" id="p-${id}" style="width:50px;height:50px;object-fit:contain">
+              <div class="drop-text"><i class="fas fa-cloud-upload-alt"></i> Click/Kéo thả ảnh tải lên</div>
               <input type="file" id="file-${id}" onchange="handleUp(this, '${id}')" style="display:none;">
-            </div>
-            <input type="text" value="${el.getAttribute('href')}" placeholder="Hoặc dán link vào đây..." oninput="upVal('${id}', 'href', this.value)">`;
+            </div>`;
         } else if (el.tagName === 'IFRAME') {
-          div.innerHTML += `<input type="text" value="${el.getAttribute('src')}" placeholder="Dán link (VD: Youtube embed) vào đây..." oninput="upVal('${id}', 'src', this.value)">`;
+          div.innerHTML += `<input type="text" value="${el.getAttribute('src')}" oninput="upVal('${id}', 'src', this.value)">`;
         } else {
           const area = document.createElement('textarea');
           area.value = el.textContent;
@@ -437,9 +471,7 @@
 
     window.upVal = (id, type, val) => {
       const el = htmlDoc.querySelector(`[data-admin-id="${id}"]`);
-      if (type === 'text') {
-        el.textContent = val;
-      }
+      if (type === 'text') el.textContent = val;
       else { 
         el.setAttribute(type, val); 
         const p = document.getElementById(`p-${id}`); 
@@ -448,16 +480,24 @@
     };
 
     window.removeItem = (cIdx, iIdx) => {
-      if(!confirm("Xóa?")) return;
+      if(!confirm("Xóa mục này?")) return;
       htmlDoc.querySelectorAll('[data-admin-container]')[cIdx].querySelectorAll('[data-admin-item]')[iIdx].remove();
       renderEditor();
     };
 
+    window.removeSection = (cIdx) => {
+      if(!confirm("Bạn có chắc muốn xóa toàn bộ danh sách này không?")) return;
+      const con = htmlDoc.querySelectorAll('[data-admin-container]')[cIdx];
+      const sec = con.closest('[data-admin-section]');
+      if(sec) sec.remove();
+      renderEditor();
+    }
+
     window.addItem = (cIdx) => {
       const con = htmlDoc.querySelectorAll('[data-admin-container]')[cIdx];
       const items = con.querySelectorAll('[data-admin-item]');
-      // Nếu còn item thì lấy item cuối làm mẫu, nếu lỡ xóa sạch thì lấy từ file gốc (đã lưu tạm)
-      const template = items.length > 0 ? items[items.length - 1] : window.__templates[cIdx];
+      let template = items.length > 0 ? items[items.length - 1] : window.__itemTemplates[cIdx];
+      if(!template) { alert("Không tìm thấy mẫu để copy"); return; }
       const newItem = template.cloneNode(true);
       newItem.querySelectorAll('[data-admin-editable]').forEach(e => {
         if(e.tagName === 'IMG') e.src = "/img/placeholder.jpg";
@@ -466,6 +506,36 @@
       });
       con.appendChild(newItem);
       renderEditor();
+    };
+
+    window.addSection = () => {
+      if(!window.__sectionTemplateData) return;
+      const { parent, template } = window.__sectionTemplateData;
+      const newSec = template.cloneNode(true);
+      
+      const con = newSec.querySelector('[data-admin-container]');
+      if(con) con.innerHTML = '';
+      
+      const titleEl = newSec.querySelector('[data-admin-editable]');
+      if(titleEl && !titleEl.closest('[data-admin-container]')) {
+         titleEl.textContent = "Danh Sách Mới";
+      }
+
+      const allSections = htmlDoc.querySelectorAll('[data-admin-section]');
+      const lastSection = allSections[allSections.length - 1];
+      if(lastSection) {
+         lastSection.insertAdjacentElement('afterend', newSec);
+      } else {
+         const p = htmlDoc.querySelector('.container') || htmlDoc.body;
+         p.appendChild(newSec);
+      }
+      
+      const allCons = Array.from(htmlDoc.querySelectorAll('[data-admin-container]'));
+      const newIdx = allCons.indexOf(con);
+      window.__itemTemplates[newIdx] = window.__itemTemplates[0]; 
+      
+      renderEditor();
+      setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100);
     };
 
     window.handleDrop = (event, id) => {
@@ -478,40 +548,70 @@
       if(file) processFile(file, id);
     };
 
-    const processFile = async (file, id) => {
-      const dropText = document.querySelector(`#dz-${id} .drop-text`);
-      const originalHtml = dropText ? dropText.innerHTML : '';
-      if(dropText) dropText.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:24px; margin-bottom:8px; display:block; color:var(--gold);"></i>Đang tải lên...';
+    window.handleBulkUp = async (input, cIdx) => {
+      const files = input.files;
+      if(!files.length) return;
+      const con = htmlDoc.querySelectorAll('[data-admin-container]')[cIdx];
+      const items = con.querySelectorAll('[data-admin-item]');
+      let template = items.length > 0 ? items[items.length - 1] : window.__itemTemplates[cIdx];
+      if(!template) return;
+
+      document.getElementById(`bulk-${cIdx}`).innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang tải lên ${files.length} ảnh...`;
       
-      const reader = new FileReader();
-      reader.onload = async e => {
-        try {
-          const idToken = await auth.currentUser.getIdToken();
-          const filename = `img/${Date.now()}_${file.name.replace(/[^a-z0-9.]/gi, '_')}`;
-          const resp = await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: idToken, path: filename, content: e.target.result, isImage: true })
-          });
-          const res = await resp.json();
-          if(res.success) {
-            upVal(id, 'src', '/'+filename);
-            upVal(id, 'href', '/'+filename);
-          } else {
-            alert("Lỗi tải lên: " + (res.error || ''));
+      for(let i=0; i<files.length; i++) {
+        const file = files[i];
+        const res = await uploadFileToAPI(file);
+        if(res) {
+          const newItem = template.cloneNode(true);
+          const imgEl = newItem.querySelector('img[data-admin-editable]');
+          if(imgEl) {
+             imgEl.src = res;
+             imgEl.setAttribute('src', res);
           }
-        } catch(err) {
-          alert("Lỗi kết nối khi tải ảnh.");
-        } finally {
-          if(dropText) dropText.innerHTML = originalHtml;
+          con.appendChild(newItem);
         }
-      };
-      reader.readAsDataURL(file);
+      }
+      renderEditor();
     };
 
-    document.getElementById('btn-save').onclick = async () => {
-      const status = document.getElementById('save-status');
-      status.innerText = "Đang lưu...";
+    async function uploadFileToAPI(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = async e => {
+          try {
+            const idToken = await auth.currentUser.getIdToken();
+            const filename = `img/${Date.now()}_${file.name.replace(/[^a-z0-9.]/gi, '_')}`;
+            const resp = await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token: idToken, path: filename, content: e.target.result, isImage: true })
+            });
+            const res = await resp.json();
+            if(res.success) resolve('/'+filename);
+            else resolve(null);
+          } catch(err) { resolve(null); }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    const processFile = async (file, id) => {
+      const dropText = document.querySelector(`#dz-${id} .drop-text`);
+      if(dropText) dropText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải lên...';
+      const res = await uploadFileToAPI(file);
+      if(res) {
+        upVal(id, 'src', res);
+        upVal(id, 'href', res);
+        showNotif("Tải ảnh lên thành công!");
+      } else {
+        alert("Lỗi tải ảnh");
+      }
+      if(dropText) dropText.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Click/Kéo thả ảnh tải lên';
+    };
+
+    document.getElementById('btn-save-global').onclick = async () => {
+      const btn = document.getElementById('btn-save-global');
+      btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang lưu...`;
       const clone = htmlDoc.cloneNode(true);
       clone.querySelectorAll('[data-admin-id]').forEach(e => e.removeAttribute('data-admin-id'));
       try {
@@ -522,21 +622,11 @@
           body: JSON.stringify({ token: idToken, path: currentFile, content: '<!DOCTYPE html>\n' + clone.documentElement.outerHTML })
         });
         const resData = await response.json();
-        if(response.ok) status.innerText = "Đã cập nhật GitHub thành công!"; 
+        if(response.ok) showNotif("Lưu thay đổi thành công!");
         else alert("Lỗi lưu: " + (resData.error || response.statusText));
       } catch(e) { alert(e.message); }
+      btn.innerHTML = `<i class="fas fa-save"></i> LƯU THAY ĐỔI`;
     };
-
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.onclick = () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        currentFile = tab.dataset.file;
-        loadPage(currentFile);
-      };
-    });
   </script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-<script>Fancybox.bind("[data-fancybox]", {});</script>
 </body>
 </html>
