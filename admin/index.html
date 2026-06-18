@@ -146,8 +146,9 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    window.addEventListener('dragover', e => e.preventDefault());
-    window.addEventListener('drop', e => e.preventDefault());
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(evt => {
+      window.addEventListener(evt, e => e.preventDefault(), false);
+    });
 
     const ADMIN_EMAILS = ["giang10012004@gmail.com", "mchoangphuc2207@gmail.com"];
     const firebaseConfig = {
@@ -380,7 +381,15 @@
       const container = document.getElementById('editor-container');
       container.innerHTML = "";
       
-      const loners = Array.from(htmlDoc.querySelectorAll('[data-admin-editable]')).filter(el => !el.closest('[data-admin-container]'));
+      const loners = Array.from(htmlDoc.querySelectorAll('[data-admin-editable]')).filter(el => {
+        if (el.closest('[data-admin-container]')) return false;
+        const parentSec = el.closest('[data-admin-section]');
+        if (parentSec) {
+           const secTitleEl = parentSec.querySelector('[data-admin-editable]');
+           if (el === secTitleEl) return false;
+        }
+        return true;
+      });
       if (loners.length > 0) {
         const card = document.createElement('div');
         card.className = 'card';
@@ -417,9 +426,14 @@
         const isCompact = hasImage && !hasText;
 
         const bulkUploadHTML = hasImage ? `
-          <div class="bulk-upload-zone" id="bulk-${cIdx}" onclick="document.getElementById('bulk-file-${cIdx}').click()">
+          <div class="bulk-upload-zone" id="bulk-${cIdx}" 
+               ondragenter="this.classList.add('dragover');"
+               ondragover="this.classList.add('dragover');"
+               ondragleave="this.classList.remove('dragover');"
+               ondrop="this.classList.remove('dragover'); handleBulkDrop(event, ${cIdx})"
+               onclick="document.getElementById('bulk-file-${cIdx}').click()">
             <i class="fas fa-images" style="font-size:24px; color:var(--gold); margin-bottom:5px; display:block;"></i>
-            <strong>Tải lên hàng loạt</strong> (Chọn nhiều ảnh cùng lúc)
+            <strong>Tải lên hàng loạt</strong> (Chọn nhiều ảnh cùng lúc hoặc kéo thả vào đây)
             <input type="file" multiple id="bulk-file-${cIdx}" style="display:none;" onchange="handleBulkUp(this, ${cIdx})">
           </div>` : '';
 
@@ -687,6 +701,13 @@
     window.handleUp = (input, id) => {
       const file = input.files[0];
       if(file) processFile(file, id);
+    };
+
+    window.handleBulkDrop = (event, cIdx) => {
+      const files = event.dataTransfer.files;
+      if (files && files.length > 0) {
+        handleBulkUp({ files: files }, cIdx);
+      }
     };
 
     window.handleBulkUp = async (input, cIdx) => {
