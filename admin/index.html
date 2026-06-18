@@ -805,7 +805,12 @@
 
     window.__imagePreviews = window.__imagePreviews || {};
 
-    async function uploadFileToAPI(file) {
+      try {
+        const cached = localStorage.getItem('imagePreviews');
+        window.__imagePreviews = cached ? JSON.parse(cached) : {};
+      } catch(e) { window.__imagePreviews = {}; }
+
+      async function uploadFileToAPI(file) {
       return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = async e => {
@@ -850,7 +855,16 @@
             try {
               const idToken = await auth.currentUser.getIdToken();
               const filename = `img/${Date.now()}_${rawName.replace(/[^a-z0-9.]/gi, '_')}`;
+              
               window.__imagePreviews['/' + filename] = b64;
+              try {
+                const keys = Object.keys(window.__imagePreviews);
+                if(keys.length > 20) {
+                   const oldKeys = keys.slice(0, keys.length - 20);
+                   for(let k of oldKeys) delete window.__imagePreviews[k];
+                }
+                localStorage.setItem('imagePreviews', JSON.stringify(window.__imagePreviews));
+              } catch(e) {}
   
               const resp = await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
                 method: 'POST',
