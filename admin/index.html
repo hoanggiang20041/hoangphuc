@@ -373,7 +373,7 @@
                        onclick="document.getElementById('file-global-favicon').click()">
                     <img src="${currentFavicon}" class="img-preview" id="p-global-favicon" style="width:50px;height:50px;object-fit:contain">
                     <div class="drop-text"><i class="fas fa-cloud-upload-alt"></i> Click/Kéo thả ảnh tải lên</div>
-                    <input type="file" id="file-global-favicon" onchange="handleUp(this, 'global-favicon')" style="display:none;">
+                    <input type="file" accept="image/*" id="file-global-favicon" onchange="handleUp(this, 'global-favicon')" style="display:none;">
                   </div>
                 </div>
               </div>
@@ -468,7 +468,7 @@
                onclick="document.getElementById('bulk-file-${cIdx}').click()">
             <i class="fas fa-images" style="font-size:24px; color:var(--gold); margin-bottom:5px; display:block;"></i>
             <strong>Tải lên hàng loạt</strong> (Chọn nhiều ảnh cùng lúc hoặc kéo thả vào đây)
-            <input type="file" multiple id="bulk-file-${cIdx}" style="display:none;" onchange="handleBulkUp(this, ${cIdx})">
+            <input type="file" multiple accept="image/*" id="bulk-file-${cIdx}" style="display:none;" onchange="handleBulkUp(this, ${cIdx})">
           </div>` : '';
 
         group.innerHTML = `
@@ -619,7 +619,7 @@
                  onclick="document.getElementById('file-${id}').click()">
               <img src="${displaySrc}" class="img-preview" id="p-${id}">
               <div class="drop-text"><i class="fas fa-cloud-upload-alt"></i> Click/Kéo thả ảnh tải lên</div>
-              <input type="file" id="file-${id}" onchange="handleUp(this, '${id}')" style="display:none;">
+              <input type="file" accept="image/*" id="file-${id}" onchange="handleUp(this, '${id}')" style="display:none;">
             </div>`;
         } else if (el.tagName === 'LINK') {
           let displaySrc = el.getAttribute('href');
@@ -634,7 +634,7 @@
                  onclick="document.getElementById('file-${id}').click()">
               <img src="${displaySrc}" class="img-preview" id="p-${id}" style="width:50px;height:50px;object-fit:contain">
               <div class="drop-text"><i class="fas fa-cloud-upload-alt"></i> Click/Kéo thả ảnh tải lên</div>
-              <input type="file" id="file-${id}" onchange="handleUp(this, '${id}')" style="display:none;">
+              <input type="file" accept="image/*" id="file-${id}" onchange="handleUp(this, '${id}')" style="display:none;">
             </div>`;
         } else if (el.tagName === 'IFRAME') {
           div.innerHTML += `<input type="text" value="${el.getAttribute('src')}" oninput="upVal('${id}', 'src', this.value)">`;
