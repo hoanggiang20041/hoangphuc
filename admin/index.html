@@ -797,21 +797,57 @@
       return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = async e => {
-          try {
-            const idToken = await auth.currentUser.getIdToken();
-            const filename = `img/${Date.now()}_${file.name.replace(/[^a-z0-9.]/gi, '_')}`;
-            const b64 = e.target.result;
-            window.__imagePreviews['/' + filename] = b64;
+          const originalB64 = e.target.result;
+          
+          if(file.type.startsWith('image/') && file.type !== 'image/svg+xml' && file.type !== 'image/gif') {
+            const img = new Image();
+            img.onload = async () => {
+              const canvas = document.createElement('canvas');
+              let width = img.width;
+              let height = img.height;
+              const max_size = 1920;
+              if (width > height) {
+                if (width > max_size) { height *= max_size / width; width = max_size; }
+              } else {
+                if (height > max_size) { width *= max_size / height; height = max_size; }
+              }
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+              
+              const b64 = canvas.toDataURL('image/webp', 0.8);
+              await doUpload(file.name.replace(/\.[^/.]+$/, "") + ".webp", b64);
+            };
+            img.src = originalB64;
+          } else {
+            await doUpload(file.name, originalB64);
+          }
 
-            const resp = await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ token: idToken, path: filename, content: b64, isImage: true })
-            });
-            const res = await resp.json();
-            if(res.success) resolve('/'+filename);
-            else resolve(null);
-          } catch(err) { resolve(null); }
+          async function doUpload(rawName, b64) {
+            try {
+              const idToken = await auth.currentUser.getIdToken();
+              const filename = `img/${Date.now()}_${rawName.replace(/[^a-z0-9.]/gi, '_')}`;
+              window.__imagePreviews['/' + filename] = b64;
+  
+              const resp = await fetch('https://hoangphuc-56rg.vercel.app/api/save-content', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: idToken, path: filename, content: b64, isImage: true })
+              });
+              
+              if(resp.status === 413) {
+                 showNotif("Ảnh vẫn quá lớn sau khi nén! Vui lòng chọn ảnh nhẹ hơn.", true);
+                 return resolve(null);
+              }
+              const res = await resp.json();
+              if(res.success) resolve('/'+filename);
+              else resolve(null);
+            } catch(err) { 
+              showNotif("Lỗi kết nối khi tải ảnh", true);
+              resolve(null); 
+            }
+          }
         };
         reader.readAsDataURL(file);
       });
